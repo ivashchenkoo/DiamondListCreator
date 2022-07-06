@@ -1,0 +1,44 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Base Colors -->
+    <Color x:Key="DarkBaseColor">Black</Color>
+    <SolidColorBrush x:Key="DarkBaseColorBrush" Color="{StaticResource DarkBaseColor}"/>
+
+    <Color x:Key="MediumBaseColor">#7f7f7f</Color>
+    <SolidColorBrush x:Key="MediumBaseColorBrush" Color="{StaticResource MediumBaseColor}"/>
+
+    <Color x:Key="LightBaseColor">LightGray</Color>
+    <SolidColorBrush x:Key="LightBaseColorBrush" Color="{StaticResource LightBaseColor}"/>
+    
+    <Color x:Key="UltraLightBaseColor">White</Color>
+    <SolidColorBrush x:Key="UltraLightBaseColorBrush" Color="{StaticResource UltraLightBaseColor}"/>
+
+    <Color x:Key="DisabledBaseColor">#7a99a1</Color>
+    <SolidColorBrush x:Key="DisabledBaseColorBrush" Color="{StaticResource DisabledBaseColor}"/>
+
+    <!-- Additional Colors -->
+    <Color x:Key="DarkAdditionalColor">#007a98</Color>
+    <SolidColorBrush x:Key="DarkAdditionalColorBrush" Color="{StaticResource DarkAdditionalColor}"/>
+
+    <Color x:Key="MediumAdditionalColor">#1295b5</Color>
+    <SolidColorBrush x:Key="MediumAdditionalColorBrush" Color="{StaticResource MediumAdditionalColor}"/>
+
+    <Color x:Key="LightAdditionalColor">#5baec2</Color>
+    <SolidColorBrush x:Key="LightAdditionalColorBrush" Color="{StaticResource LightAdditionalColor}"/>
+    
+    <!-- CheckBox Colors -->
+    <SolidColorBrush x:Key="OptionMark.MouseOver.Background" Color="#1f1f1f"/>
+    <SolidColorBrush x:Key="OptionMark.MouseOver.Border" Color="{StaticResource DarkAdditionalColor}"/>
+    <SolidColorBrush x:Key="OptionMark.MouseOver.Glyph" Color="#3dbbd9"/>
+    <SolidColorBrush x:Key="OptionMark.Disabled.Background" Color="#363535"/>
+    <SolidColorBrush x:Key="OptionMark.Disabled.Border" Color="#5baec2"/>
+    <SolidColorBrush x:Key="OptionMark.Disabled.Glyph" Color="#7a99a1"/>
+    <SolidColorBrush x:Key="OptionMark.Pressed.Background" Color="#347e90"/>
+    <SolidColorBrush x:Key="OptionMark.Pressed.Border" Color="{StaticResource DarkAdditionalColor}"/>
+    <SolidColorBrush x:Key="OptionMark.Pressed.Glyph" Color="#012933"/>
+    <SolidColorBrush x:Key="OptionMark.Static.Glyph" Color="{StaticResource DarkAdditionalColor}"/>
+    <SolidColorBrush x:Key="OptionMark.Static.Background" Color="{StaticResource DarkBaseColor}"/>
+    <SolidColorBrush x:Key="OptionMark.Static.Border" Color="{StaticResource DarkAdditionalColor}"/>
+
+</ResourceDictionary>

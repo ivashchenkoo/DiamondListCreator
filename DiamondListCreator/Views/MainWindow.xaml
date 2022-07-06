@@ -1,0 +1,94 @@
+﻿<Window x:Class="DiamondListCreator.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DiamondListCreator"
+        xmlns:vm="clr-namespace:DiamondListCreator.ViewModels"
+        mc:Ignorable="d"
+        Title="DLC" Height="550" Width="800"
+        ResizeMode="CanMinimize"
+        Background="{StaticResource LightBaseColorBrush}">
+
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+    
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto" MinHeight="50"/>
+            </Grid.RowDefinitions>
+
+            <TextBox Style="{StaticResource ListTextBoxStyle}"
+                     Grid.Row="0"
+                     Margin="0,0,0,20"
+                     />
+            
+            <Button Style="{StaticResource ButtonBase}"
+                    Grid.Row="1">
+                СТАРТ
+            </Button>
+            
+        </Grid>
+        <Grid Grid.Column="1"
+              Margin="20,0,0,0">
+
+            <Viewbox Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                <StackPanel Orientation="Vertical">
+
+                    <CheckBox Style="{StaticResource CheckBoxBase}"
+                              x:Name="ListCheckBox">
+                        СПИСОК
+                    </CheckBox>
+
+                    <CheckBox x:Name="AccountingCheckBox">
+                        ОБЛІК
+
+                        <CheckBox.Style>
+                            <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource CheckBoxBase}">
+                                <Style.Triggers>
+                                    
+                                    <DataTrigger Binding="{Binding ElementName=ListCheckBox, Path=IsChecked}" Value="False">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </DataTrigger>
+                                    
+                                    <DataTrigger Binding="{Binding ElementName=ListCheckBox, Path=IsChecked}" Value="True">
+                                        <Setter Property="IsEnabled" Value="True"/>
+                                    </DataTrigger>
+                                    
+                                    <DataTrigger Binding="{Binding ElementName=ListCheckBox, Path=IsChecked}" Value="False">
+                                        <Setter Property="IsChecked" Value="False"/>
+                                    </DataTrigger>
+                                    
+                                </Style.Triggers>
+                            </Style>
+                        </CheckBox.Style>
+                        
+                    </CheckBox>
+
+                    <CheckBox Style="{StaticResource CheckBoxBase}"
+                              x:Name="LegendsCheckBox">
+                        ЛЕГЕНДИ
+                    </CheckBox>
+
+                    <CheckBox Style="{StaticResource CheckBoxBase}"
+                              x:Name="StickersCheckBox">
+                        СТІКЕРИ
+                    </CheckBox>
+
+                    <CheckBox Style="{StaticResource CheckBoxBase}"
+                              x:Name="CanvasesCheckBox">
+                        ХОЛСТИ
+                    </CheckBox>
+
+                </StackPanel>
+            </Viewbox>
+        </Grid>
+    </Grid>
+</Window>
