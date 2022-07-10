@@ -12,7 +12,7 @@ namespace DiamondListCreator.Services
     public class LegendsService
     {
         /// <summary>
-        /// Creating Legends and saving them into pdf /Legends2List {Date.Now}.pfd
+        /// Creating Legends and saving them into pdf /Legends2List {Date.Now}.pdf
         /// </summary>
         /// <param name="diamonds">DiamondSettings list</param>
         /// <param name="paths">Path settings</param>
