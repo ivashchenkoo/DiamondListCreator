@@ -61,9 +61,13 @@
                                     <DataTrigger Binding="{Binding ElementName=ListCheckBox, Path=IsChecked}" Value="True">
                                         <Setter Property="IsEnabled" Value="True"/>
                                     </DataTrigger>
-                                    
+
                                     <DataTrigger Binding="{Binding ElementName=ListCheckBox, Path=IsChecked}" Value="False">
                                         <Setter Property="IsChecked" Value="False"/>
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding ElementName=ListCheckBox, Path=IsChecked}" Value="True">
+                                        <Setter Property="IsChecked" Value="True"/>
                                     </DataTrigger>
                                     
                                 </Style.Triggers>
