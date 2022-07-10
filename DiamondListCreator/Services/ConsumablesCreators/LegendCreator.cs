@@ -17,6 +17,11 @@ namespace DiamondListCreator.Services.ConsumablesCreators
             pfc = InitCustomFont();
         }
 
+        ~LegendCreator()
+        {
+            pfc.Dispose();
+        }
+
         /// <summary>
         /// Creating Legend pages for diamond
         /// </summary>
@@ -41,7 +46,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
 
                         using (Bitmap legend3Bitmap = new Bitmap(diamond.Path + "/Легенда, лист 3.png"))
                         {
-                            legends[1] = AppendColumnOfLegend(new Bitmap(legendPage), CutRectangleFromBitmap(legend3Bitmap, 250, 540, 1100, 2450), 95, 775);
+                            legends[1] = AppendColumnOfLegend(new Bitmap(legendPage), GraphicsService.CutRectangleFromBitmap(legend3Bitmap, 250, 540, 1100, 2450), 95, 775);
                         }
 
                         if (diamond.DiamondType == DiamondType.Standart)
@@ -58,12 +63,12 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                         ? new Bitmap(diamond.Path + "/Легенда, лист 1.png")
                         : new Bitmap(diamond.Path + "/Легенда.png"))
                     {
-                        legends[0] = AppendColumnOfLegend(new Bitmap(legendPage), CutRectangleFromBitmap(legend1Bitmap, 260, 780, 1100, 2450), 95, 782);
+                        legends[0] = AppendColumnOfLegend(new Bitmap(legendPage), GraphicsService.CutRectangleFromBitmap(legend1Bitmap, 260, 780, 1100, 2450), 95, 782);
                     }
 
                     using (Bitmap legend2Bitmap = new Bitmap(diamond.Path + "/Легенда, лист 2.png"))
                     {
-                        legends[0] = AppendColumnOfLegend(legends[0], CutRectangleFromBitmap(legend2Bitmap, 250, 540, 1100, 2700), 1335, 542);
+                        legends[0] = AppendColumnOfLegend(legends[0], GraphicsService.CutRectangleFromBitmap(legend2Bitmap, 250, 540, 1100, 2700), 1335, 542);
                     }
 
                     if (diamond.DiamondType == DiamondType.Standart)
@@ -85,26 +90,12 @@ namespace DiamondListCreator.Services.ConsumablesCreators
         /// </summary>
         private Bitmap AppendColumnOfLegend(Bitmap targetBitmap, Bitmap legendBitmap, int x, int y)
         {
-            using (Graphics graph = GetGraphFromImage(targetBitmap))
+            using (Graphics graph = GraphicsService.GetGraphFromImage(targetBitmap))
             {
                 graph.DrawImage(legendBitmap, x, y, legendBitmap.Width, legendBitmap.Height);
             }
 
             return targetBitmap;
-        }
-
-        /// <summary>
-        /// Cutting rectangle from bitmap
-        /// </summary>
-        /// <param name="targetBitmap"></param>
-        /// <param name="x">Initial coordinate along the x-axis</param>
-        /// <param name="y">Initial coordinate along the y-axis</param>
-        /// <param name="width">Rectangle width</param>
-        /// <param name="height">Rectangle height</param>
-        /// <returns>Cutted rectangle from bitmap</returns>
-        private Bitmap CutRectangleFromBitmap(Bitmap targetBitmap, int x, int y, int width, int height)
-        {
-            return targetBitmap.Clone(new Rectangle(x, y, width, height), targetBitmap.PixelFormat);
         }
 
         /// <summary>
@@ -147,7 +138,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
         {
             Bitmap legendTemplate = new Bitmap(Properties.Resources.LegendaTemplate);
             Bitmap resultBitmap = new Bitmap(legendTemplate.Width, legendTemplate.Height, PixelFormat.Format32bppArgb);
-            using (Graphics graph = GetGraphFromImage(resultBitmap))
+            using (Graphics graph = GraphicsService.GetGraphFromImage(resultBitmap))
             {
                 graph.DrawImage(legendTemplate, 0, 0);
 
@@ -220,17 +211,6 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                 }
             }
             return null;
-        }
-
-        private Graphics GetGraphFromImage(Bitmap image)
-        {
-            Graphics graph = Graphics.FromImage(image);
-            graph.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
-            graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            graph.TextRenderingHint = TextRenderingHint.AntiAlias;
-            graph.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-
-            return graph;
         }
 
         private PrivateFontCollection InitCustomFont()

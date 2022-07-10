@@ -19,7 +19,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
         /// Appending sticker on page on specified position
         /// </summary>
         /// <returns>Page with appended sticker on specified position</returns>
-        public Bitmap AppendStickerOnPage(DiamondSettings diamond, int row, int column)
+        public Bitmap AppendStickerOnPage(Bitmap page, DiamondSettings diamond, int row, int column)
         {
             return null;
         }
