@@ -24,7 +24,7 @@ namespace DiamondListCreator.Services
             _ = PdfWriter.GetInstance(document, stream);
             document.Open();
 
-            LegendCreator legendCreator = new LegendCreator();
+            LegendCreator legendCreator = new LegendCreator(FontCollectionService.InitCustomFont(Properties.Resources.VanishingSizeName_Regular));
 
             for (int i = 0; i < diamonds.Count; i++)
             {
