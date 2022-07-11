@@ -6,6 +6,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using DiamondListCreator.Services.ConsumablesCreators;
 using System.Drawing.Imaging;
+using Bitmap = System.Drawing.Bitmap;
 
 namespace DiamondListCreator.Services
 {
@@ -28,12 +29,22 @@ namespace DiamondListCreator.Services
 
             for (int i = 0; i < diamonds.Count; i++)
             {
-                System.Drawing.Bitmap[] legends = legendCreator.Create(diamonds[i], paths.SavedLegendsPath);
-
-                for (int j = legends.Length - 1; j >= 0; j--)
+                if (GetSavedLegends(diamonds[i], paths.SavedLegendsPath) is Bitmap[] savedLegends)
                 {
-                    Image image = Image.GetInstance(legends[j], ImageFormat.Tiff);
-                    _ = document.Add(image);
+                    AppendPagesToPdf(savedLegends, ref document);
+                }
+                else
+                {
+                    Bitmap[] legends = legendCreator.CreateUkrainian(diamonds[i]);
+                    AppendPagesToPdf(legends, ref document);
+                    FileService.SaveBitmapsInTif(legends, paths.SavedLegendsPath, diamonds[i].Name);
+
+                    if (diamonds[i].IsEnglishVersion)
+                    {
+                        legends = legendCreator.CreateEnglish(diamonds[i]);
+                        AppendPagesToPdf(legends, ref document);
+                        FileService.SaveBitmapsInTif(legends, paths.SavedLegendsPath, diamonds[i].Name);
+                    }
                 }
             }
 
@@ -42,6 +53,47 @@ namespace DiamondListCreator.Services
             using (FileStream fs = File.Create(paths.FilesSavePath + "/Legends2List " + DateTime.Today.ToString().Substring(0, 10) + ".pdf"))
             {
                 fs.Write(content, 0, content.Length);
+            }
+        }
+
+        /// <summary>
+        /// Checking for already created legends in legends saving folder and get it if exist
+        /// </summary>
+        /// <param name="savedLegendsPath">Legends saving folder</param>
+        /// <returns>Array of Legends Bitmaps if it exist, otherwise returns null</returns>
+        private Bitmap[] GetSavedLegends(DiamondSettings diamond, string savedLegendsPath)
+        {
+            Bitmap[] result;
+            string legendPath = $"{savedLegendsPath}/{diamond.ShortName.Substring(0, 2)}000";
+
+            if (File.Exists($"{legendPath}/{diamond.Name}.tif"))
+            {
+                if (File.Exists($"{legendPath}/{diamond.Name}_1.tif"))
+                {
+                    result = new Bitmap[2];
+                    result[1] = new Bitmap($"{legendPath}/{diamond.Name}_1.tif");
+                }
+                else
+                {
+                    result = new Bitmap[1];
+                }
+
+                result[0] = new Bitmap($"{legendPath}/{diamond.Name}.tif");
+
+                return result;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private void AppendPagesToPdf(Bitmap[] pages, ref Document document)
+        {
+            for (int j = pages.Length - 1; j >= 0; j--)
+            {
+                Image image = Image.GetInstance(pages[j], ImageFormat.Tiff);
+                _ = document.Add(image);
             }
         }
     }

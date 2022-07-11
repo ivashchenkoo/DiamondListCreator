@@ -1,10 +1,8 @@
 ﻿using DiamondListCreator.Models;
-using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
-using System.Runtime.InteropServices;
 
 namespace DiamondListCreator.Services.ConsumablesCreators
 {
@@ -22,59 +20,51 @@ namespace DiamondListCreator.Services.ConsumablesCreators
             pfc.Dispose();
         }
 
+        public Bitmap[] CreateEnglish(DiamondSettings diamond)
+        {
+            return CreateLegend(diamond, CreateLegendTemplate(diamond, true));
+        }
+
+        public Bitmap[] CreateUkrainian(DiamondSettings diamond)
+        {
+            return CreateLegend(diamond, CreateLegendTemplate(diamond, false));
+        }
+
         /// <summary>
         /// Creating Legend pages for diamond
         /// </summary>
-        /// <returns>Array of Bitmaps with created legends.</returns>
-        public Bitmap[] Create(DiamondSettings diamond, string savedLegendsPath)
+        /// <returns>Array of Bitmaps with created legends</returns>
+        private Bitmap[] CreateLegend(DiamondSettings diamond, Bitmap legendPage)
         {
-            if (GetSavedLegends(diamond, savedLegendsPath) is Bitmap[] savedLegends)
+            Bitmap[] legends;
+
+            if (File.Exists(diamond.Path + "/Легенда, лист 3.png"))
             {
-                return savedLegends;
+                legends = new Bitmap[2];
+
+                using (Bitmap legend3Bitmap = new Bitmap(diamond.Path + "/Легенда, лист 3.png"))
+                {
+                    legends[1] = AppendColumnOfLegend(new Bitmap(legendPage), GraphicsService.CutRectangleFromBitmap(legend3Bitmap, 250, 540, 1100, 2450), 95, 775);
+                }
+            }
+            else
+            {
+                legends = new Bitmap[1];
             }
 
-            using (Bitmap legendPage = CreateLegendTemplate(diamond))
+            using (Bitmap legend1Bitmap = File.Exists(diamond.Path + "/Легенда, лист 1.png")
+                ? new Bitmap(diamond.Path + "/Легенда, лист 1.png")
+                : new Bitmap(diamond.Path + "/Легенда.png"))
             {
-                Bitmap[] legends;
-
-                if (File.Exists(diamond.Path + "/Легенда, лист 3.png"))
-                {
-                    legends = new Bitmap[2];
-
-                    using (Bitmap legend3Bitmap = new Bitmap(diamond.Path + "/Легенда, лист 3.png"))
-                    {
-                        legends[1] = AppendColumnOfLegend(new Bitmap(legendPage), GraphicsService.CutRectangleFromBitmap(legend3Bitmap, 250, 540, 1100, 2450), 95, 775);
-                    }
-
-                    if (diamond.DiamondType == DiamondType.Standart)
-                    {
-                        SaveBitmapInTif(legends[1], savedLegendsPath, diamond.Name + "_1");
-                    }
-                }
-                else
-                {
-                    legends = new Bitmap[1];
-                }
-
-                using (Bitmap legend1Bitmap = File.Exists(diamond.Path + "/Легенда, лист 1.png")
-                    ? new Bitmap(diamond.Path + "/Легенда, лист 1.png")
-                    : new Bitmap(diamond.Path + "/Легенда.png"))
-                {
-                    legends[0] = AppendColumnOfLegend(new Bitmap(legendPage), GraphicsService.CutRectangleFromBitmap(legend1Bitmap, 260, 780, 1100, 2450), 95, 782);
-                }
-
-                using (Bitmap legend2Bitmap = new Bitmap(diamond.Path + "/Легенда, лист 2.png"))
-                {
-                    legends[0] = AppendColumnOfLegend(legends[0], GraphicsService.CutRectangleFromBitmap(legend2Bitmap, 250, 540, 1100, 2700), 1335, 542);
-                }
-
-                if (diamond.DiamondType == DiamondType.Standart)
-                {
-                    SaveBitmapInTif(legends[0], savedLegendsPath, diamond.Name);
-                }
-
-                return legends;
+                legends[0] = AppendColumnOfLegend(new Bitmap(legendPage), GraphicsService.CutRectangleFromBitmap(legend1Bitmap, 260, 780, 1100, 2450), 95, 782);
             }
+
+            using (Bitmap legend2Bitmap = new Bitmap(diamond.Path + "/Легенда, лист 2.png"))
+            {
+                legends[0] = AppendColumnOfLegend(legends[0], GraphicsService.CutRectangleFromBitmap(legend2Bitmap, 250, 540, 1100, 2700), 1335, 542);
+            }
+
+            return legends;
         }
 
         /// <summary>
@@ -91,45 +81,14 @@ namespace DiamondListCreator.Services.ConsumablesCreators
         }
 
         /// <summary>
-        /// Checking for already created legends in legends saving folder and get it if exist
-        /// </summary>
-        /// <param name="savedLegendsPath">Legends saving folder</param>
-        /// <returns>Array of Legends Bitmaps if it exist, otherwise returns null</returns>
-        private Bitmap[] GetSavedLegends(DiamondSettings diamond, string savedLegendsPath)
-        {
-            Bitmap[] result;
-            string legendPath = $"{savedLegendsPath}/{diamond.ShortName.Substring(0, 2)}000";
-
-            if (File.Exists($"{legendPath}/{diamond.Name}.tif"))
-            {
-                if (File.Exists($"{legendPath}/{diamond.Name}_1.tif"))
-                {
-                    result = new Bitmap[2];
-                    result[1] = new Bitmap($"{legendPath}/{diamond.Name}_1.tif");
-                }
-                else
-                {
-                    result = new Bitmap[1];
-                }
-
-                result[0] = new Bitmap($"{legendPath}/{diamond.Name}.tif");
-
-                return result;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
         /// Creating legend template with thumbnail, diamond name and size text
         /// </summary>
         /// <returns>Bitmap with legend template</returns>
-        private Bitmap CreateLegendTemplate(DiamondSettings diamond)
+        private Bitmap CreateLegendTemplate(DiamondSettings diamond, bool isEnglish)
         {
-            Bitmap legendTemplate = new Bitmap(Properties.Resources.LegendaTemplate);
+            Bitmap legendTemplate = new Bitmap(isEnglish ? Properties.Resources.LegendaTemplate_English : Properties.Resources.LegendaTemplate);
             Bitmap resultBitmap = new Bitmap(legendTemplate.Width, legendTemplate.Height, PixelFormat.Format32bppArgb);
+
             using (Graphics graph = GraphicsService.GetGraphFromImage(resultBitmap))
             {
                 graph.DrawImage(legendTemplate, 0, 0);
@@ -172,37 +131,12 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                 }
 
                 // Append size text
-                string diamondSize = $"ЛЕГЕНДА ДЛЯ СХЕМИ РОЗМІРОМ {diamond.Width}x{diamond.Height}*";
+                string diamondSize = (isEnglish ? "LEGEND FOR SHEME WITH SIZE" : "ЛЕГЕНДА ДЛЯ СХЕМИ РОЗМІРОМ") + $" {diamond.Width}x{diamond.Height}*";
                 font = new Font(pfc.Families[0], 65);
                 graph.DrawString(diamondSize, font, drawBrush, 90, 445);
             }
 
             return legendTemplate;
-        }
-
-        private void SaveBitmapInTif(Bitmap bitmap, string savingPath, string fileName)
-        {
-            ImageCodecInfo myImageCodecInfo = GetEncoderInfo("image/tiff");
-            Encoder myEncoder = Encoder.Compression;
-            EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, (long)EncoderValue.CompressionNone);
-            EncoderParameters myEncoderParameters = new EncoderParameters(1);
-            myEncoderParameters.Param[0] = myEncoderParameter;
-            bitmap.Save($"{savingPath}/{fileName}.tif", myImageCodecInfo, myEncoderParameters);
-        }
-
-        private ImageCodecInfo GetEncoderInfo(string mimeType)
-        {
-            int j;
-            ImageCodecInfo[] encoders;
-            encoders = ImageCodecInfo.GetImageEncoders();
-            for (j = 0; j < encoders.Length; ++j)
-            {
-                if (encoders[j].MimeType == mimeType)
-                {
-                    return encoders[j];
-                }
-            }
-            return null;
         }
     }
 }
