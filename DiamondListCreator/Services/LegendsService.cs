@@ -13,7 +13,7 @@ namespace DiamondListCreator.Services
     public class LegendsService
     {
         /// <summary>
-        /// Creating Legends and saving them into pdf /Legends2List {Date.Now}.pdf
+        /// Creating Legends and saving them into pdf /Legends {Date.Now}.pdf
         /// </summary>
         /// <param name="diamonds">DiamondSettings list</param>
         /// <param name="paths">Path settings</param>
@@ -32,25 +32,24 @@ namespace DiamondListCreator.Services
                 if (GetSavedLegends(diamonds[i], paths.SavedLegendsPath) is Bitmap[] savedLegends)
                 {
                     AppendPagesToPdf(savedLegends, ref document);
+
+                    if (diamonds[i].IsEnglishVersion)
+                    {
+                        Bitmap[] legends = legendCreator.CreateEnglish(diamonds[i]);
+                        AppendPagesToPdf(legends, ref document);
+                    }
                 }
                 else
                 {
                     Bitmap[] legends = legendCreator.CreateUkrainian(diamonds[i]);
                     AppendPagesToPdf(legends, ref document);
                     FileService.SaveBitmapsInTif(legends, paths.SavedLegendsPath, diamonds[i].Name);
-
-                    if (diamonds[i].IsEnglishVersion)
-                    {
-                        legends = legendCreator.CreateEnglish(diamonds[i]);
-                        AppendPagesToPdf(legends, ref document);
-                        FileService.SaveBitmapsInTif(legends, paths.SavedLegendsPath, diamonds[i].Name);
-                    }
                 }
             }
 
             document.Close();
             byte[] content = stream.ToArray();
-            using (FileStream fs = File.Create(paths.FilesSavePath + "/Legends2List " + DateTime.Today.ToString().Substring(0, 10) + ".pdf"))
+            using (FileStream fs = File.Create(paths.FilesSavePath + "/Legends " + DateTime.Today.ToString().Substring(0, 10) + ".pdf"))
             {
                 fs.Write(content, 0, content.Length);
             }
