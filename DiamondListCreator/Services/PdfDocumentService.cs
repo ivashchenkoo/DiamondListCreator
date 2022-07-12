@@ -1,0 +1,93 @@
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.Drawing.Imaging;
+using System.IO;
+using Bitmap = System.Drawing.Bitmap;
+
+namespace DiamondListCreator.Services
+{
+    public class PdfDocumentService
+    {
+        private readonly MemoryStream stream;
+        private readonly Rectangle pageSize;
+        private readonly Document document;
+
+        public PdfDocumentService(int pageWidth, int pageHeight)
+        {
+            stream = new MemoryStream();
+            pageSize = new Rectangle(0, 0, pageWidth, pageHeight);
+            document = new Document(pageSize, 0, 0, 0, 0);
+            _ = PdfWriter.GetInstance(document, stream);
+            document.Open();
+        }
+
+        ~PdfDocumentService()
+        {
+            stream.Dispose();
+            document.Dispose();
+        }
+
+        /// <summary>
+        /// Adds an element to the document
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns>True if the element was added, otherwise false</returns>
+        public bool AddPage(Image image)
+        {
+            return document.Add(image);
+        }
+
+        /// <summary>
+        /// Adds an element to the document
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns>True if the element was added, otherwise false</returns>
+        public bool AddPage(Bitmap bitmap)
+        {
+            Image image = Image.GetInstance(bitmap, ImageFormat.Tiff);
+            return document.Add(image);
+        }
+
+        /// <summary>
+        /// Adds some elements to the document
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns></returns>
+        public void AddPages(Bitmap[] pages)
+        {
+            for (int i = 0; i < pages.Length; i++)
+            {
+                Image image = Image.GetInstance(pages[i], ImageFormat.Tiff);
+                _ = document.Add(image);
+            }
+        }
+
+        /// <summary>
+        /// Adds some elements to the document in reverse order
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns></returns>
+        public void AddPagesReverse(Bitmap[] pages)
+        {
+            for (int i = pages.Length - 1; i >= 0; i--)
+            {
+                Image image = Image.GetInstance(pages[i], ImageFormat.Tiff);
+                _ = document.Add(image);
+            }
+        }
+
+        /// <summary>
+        /// Saves pdf file by given path
+        /// </summary>
+        /// <param name="path"></param>
+        public void Save(string path)
+        {
+            document.Close();
+            byte[] content = stream.ToArray();
+            using (FileStream fs = File.Create(path))
+            {
+                fs.Write(content, 0, content.Length);
+            }
+        }
+    }
+}

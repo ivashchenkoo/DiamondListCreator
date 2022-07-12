@@ -2,11 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
 using DiamondListCreator.Services.ConsumablesCreators;
-using System.Drawing.Imaging;
-using Bitmap = System.Drawing.Bitmap;
+using System.Drawing;
 
 namespace DiamondListCreator.Services
 {
@@ -19,40 +16,35 @@ namespace DiamondListCreator.Services
         /// <param name="paths">Path settings</param>
         public void CreateLegendsPdf(List<DiamondSettings> diamonds, PathSettings paths)
         {
-            MemoryStream stream = new MemoryStream();
-            Rectangle pageSize = new Rectangle(0, 0, 2480, 3507);
-            Document document = new Document(pageSize, 0, 0, 0, 0);
-            _ = PdfWriter.GetInstance(document, stream);
-            document.Open();
+            PdfDocumentService document = new PdfDocumentService(2480, 3507);
 
             LegendCreator legendCreator = new LegendCreator(FontCollectionService.InitCustomFont(Properties.Resources.VanishingSizeName_Regular));
 
             for (int i = 0; i < diamonds.Count; i++)
             {
-                if (GetSavedLegends(diamonds[i], paths.SavedLegendsPath) is Bitmap[] savedLegends)
+                if (diamonds[i].DiamondType == DiamondType.Standart && GetSavedLegends(diamonds[i], paths.SavedLegendsPath) is Bitmap[] savedLegends)
                 {
-                    AppendPagesToPdf(savedLegends, ref document);
-
-                    if (diamonds[i].IsEnglishVersion)
-                    {
-                        Bitmap[] legends = legendCreator.CreateEnglish(diamonds[i]);
-                        AppendPagesToPdf(legends, ref document);
-                    }
+                    document.AddPages(savedLegends);
                 }
                 else
                 {
                     Bitmap[] legends = legendCreator.CreateUkrainian(diamonds[i]);
-                    AppendPagesToPdf(legends, ref document);
-                    FileService.SaveBitmapsInTif(legends, paths.SavedLegendsPath, diamonds[i].Name);
+                    document.AddPages(legends);
+
+                    if (diamonds[i].DiamondType == DiamondType.Standart)
+                    {
+                        FileService.SaveBitmapsInTif(legends, paths.SavedLegendsPath, diamonds[i].Name);
+                    }
+                }
+
+                if (diamonds[i].IsEnglishVersion)
+                {
+                    Bitmap[] legends = legendCreator.CreateEnglish(diamonds[i]);
+                    document.AddPages(legends);
                 }
             }
 
-            document.Close();
-            byte[] content = stream.ToArray();
-            using (FileStream fs = File.Create(paths.FilesSavePath + "/Legends " + DateTime.Today.ToString().Substring(0, 10) + ".pdf"))
-            {
-                fs.Write(content, 0, content.Length);
-            }
+            document.Save(paths.FilesSavePath + "/Legends " + DateTime.Today.ToString().Substring(0, 10) + ".pdf");
         }
 
         /// <summary>
@@ -84,15 +76,6 @@ namespace DiamondListCreator.Services
             else
             {
                 return null;
-            }
-        }
-
-        private void AppendPagesToPdf(Bitmap[] pages, ref Document document)
-        {
-            for (int j = pages.Length - 1; j >= 0; j--)
-            {
-                Image image = Image.GetInstance(pages[j], ImageFormat.Tiff);
-                _ = document.Add(image);
             }
         }
     }
