@@ -24,12 +24,12 @@ namespace DiamondListCreator.Services
             {
                 if (diamonds[i].DiamondType == DiamondType.Standart && GetSavedLegends(diamonds[i], paths.SavedLegendsPath) is Bitmap[] savedLegends)
                 {
-                    document.AddPages(savedLegends);
+                    document.AddPagesReverse(savedLegends);
                 }
                 else
                 {
                     Bitmap[] legends = legendCreator.CreateUkrainian(diamonds[i]);
-                    document.AddPages(legends);
+                    document.AddPagesReverse(legends);
 
                     if (diamonds[i].DiamondType == DiamondType.Standart)
                     {
@@ -40,7 +40,7 @@ namespace DiamondListCreator.Services
                 if (diamonds[i].IsEnglishVersion)
                 {
                     Bitmap[] legends = legendCreator.CreateEnglish(diamonds[i]);
-                    document.AddPages(legends);
+                    document.AddPagesReverse(legends);
                 }
             }
 

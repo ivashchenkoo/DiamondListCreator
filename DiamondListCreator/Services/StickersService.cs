@@ -20,7 +20,7 @@ namespace DiamondListCreator.Services
             StickerCreator stickerCreator = new StickerCreator(FontCollectionService.InitCustomFont(Properties.Resources.VanishingSizeName_Regular));
             Bitmap[] stickers = stickerCreator.CreateStickersPage(diamonds);
             
-            document.AddPages(stickers);
+            document.AddPagesReverse(stickers);
             document.Save(paths.FilesSavePath + "/Stickers " + DateTime.Today.ToString().Substring(0, 10) + ".pdf");
         }
     }
