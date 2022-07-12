@@ -121,10 +121,12 @@
     <Compile Include="Services\ConsumablesCreators\CanvasCreator.cs" />
     <Compile Include="Services\ConsumablesCreators\StickerCreator.cs" />
     <Compile Include="Services\DiamondSettingsService.cs" />
+    <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\FontCollectionService.cs" />
     <Compile Include="Services\GraphicsService.cs" />
     <Compile Include="Services\ConsumablesCreators\LegendCreator.cs" />
     <Compile Include="Services\LegendsService.cs" />
+    <Compile Include="Services\OcrService.cs" />
     <Compile Include="Services\StickersService.cs" />
     <Compile Include="Services\PathSettingsService.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -147,6 +149,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Resources\Images\LegendaTemplate_English.jpg" />
     <Resource Include="tessdata\pdf.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

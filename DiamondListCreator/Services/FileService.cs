@@ -9,7 +9,7 @@ namespace DiamondListCreator.Services
         {
             for (int i = 0; i < bitmaps.Length; i++)
             {
-                SaveBitmapInTif(bitmaps[i], savingPath, fileName);
+                SaveBitmapInTif(bitmaps[i], savingPath, fileName + (i > 0 ? $"_{i}" : ""));
             }
         }
 
