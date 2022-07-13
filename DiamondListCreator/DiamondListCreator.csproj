@@ -127,6 +127,7 @@
     <Compile Include="Services\ConsumablesCreators\LegendCreator.cs" />
     <Compile Include="Services\LegendsService.cs" />
     <Compile Include="Services\OcrService.cs" />
+    <Compile Include="Services\PdfDocumentService.cs" />
     <Compile Include="Services\StickersService.cs" />
     <Compile Include="Services\PathSettingsService.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />

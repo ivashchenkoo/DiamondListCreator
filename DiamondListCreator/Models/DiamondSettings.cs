@@ -9,6 +9,10 @@
         /// </summary>
         public string ShortName { get; set; }
         /// <summary>
+        /// Size letter without +
+        /// </summary>
+        public string SizeLetter { get; set; }
+        /// <summary>
         /// Path to diamond folder
         /// </summary>
         public string Path { get; set; }
