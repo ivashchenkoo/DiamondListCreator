@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 
 namespace DiamondListCreator.Services
 {
@@ -37,6 +38,29 @@ namespace DiamondListCreator.Services
                 }
             }
             return null;
+        }
+
+        /// <summary>
+        /// Saves all files in directory to new folder in this directory
+        /// </summary>
+        public static void SaveAllToNewFolder(string directory, string newFolderName)
+        {
+            if (Directory.Exists(directory))
+            {
+                string newFolder = $"{directory}/{newFolderName};
+                foreach (FileInfo file in new DirectoryInfo(directory).GetFiles())
+                {
+                    if (file.Name.Contains(".db"))
+                    {
+                        continue;
+                    }
+                    if (!Directory.Exists(newFolder))
+                    {
+                        _ = Directory.CreateDirectory($"{newFolder}");
+                    }
+                    file.MoveTo($@"{newFolder}\{file.Name}");
+                }
+            }
         }
     }
 }
