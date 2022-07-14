@@ -118,6 +118,7 @@
     <Compile Include="Models\CanvasSettings.cs" />
     <Compile Include="Models\DiamondSettings.cs" />
     <Compile Include="Models\PathSettings.cs" />
+    <Compile Include="Services\CanvasesService.cs" />
     <Compile Include="Services\ConsumablesCreators\CanvasCreator.cs" />
     <Compile Include="Services\ConsumablesCreators\StickerCreator.cs" />
     <Compile Include="Services\DiamondSettingsService.cs" />

@@ -47,7 +47,7 @@ namespace DiamondListCreator.Services
         {
             if (Directory.Exists(directory))
             {
-                string newFolder = $"{directory}/{newFolderName};
+                string newFolder = $"{directory}/{newFolderName}";
                 foreach (FileInfo file in new DirectoryInfo(directory).GetFiles())
                 {
                     if (file.Name.Contains(".db"))
