@@ -26,6 +26,6 @@
     public enum DiamondType
     {
         PoPhoto,
-        Standart
+        Standard
     }
 }

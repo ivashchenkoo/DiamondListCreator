@@ -36,7 +36,7 @@ namespace DiamondListCreator.Services
                             canvas.SetResolution(72f, 72f);
                             FileService.SaveBitmapInTif(canvas, paths.CanvasesSavePath, diamonds[i].Name);
 
-                            if (diamonds[i].DiamondType == DiamondType.Standart)
+                            if (diamonds[i].DiamondType == DiamondType.Standard)
                             {
                                 FileService.SaveBitmapInTif(canvas, paths.SavedCanvasesPath, diamonds[i].Name);
                             }

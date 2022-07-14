@@ -22,7 +22,7 @@ namespace DiamondListCreator.Services
 
             for (int i = 0; i < diamonds.Count; i++)
             {
-                if (diamonds[i].DiamondType == DiamondType.Standart && GetSavedLegends(diamonds[i], paths.SavedLegendsPath) is Bitmap[] savedLegends)
+                if (diamonds[i].DiamondType == DiamondType.Standard && GetSavedLegends(diamonds[i], paths.SavedLegendsPath) is Bitmap[] savedLegends)
                 {
                     document.AddPagesReverse(savedLegends);
                 }
@@ -31,7 +31,7 @@ namespace DiamondListCreator.Services
                     Bitmap[] legends = legendCreator.CreateUkrainian(diamonds[i]);
                     document.AddPagesReverse(legends);
 
-                    if (diamonds[i].DiamondType == DiamondType.Standart)
+                    if (diamonds[i].DiamondType == DiamondType.Standard)
                     {
                         FileService.SaveBitmapsInTif(legends, paths.SavedLegendsPath, diamonds[i].Name);
                     }
