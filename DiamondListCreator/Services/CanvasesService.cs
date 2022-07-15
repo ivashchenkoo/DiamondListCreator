@@ -45,7 +45,7 @@ namespace DiamondListCreator.Services
                 }
             }
 
-            File.WriteAllText($"{paths.CanvasesSavePath}/Canvases {DateTime.Today.ToString().Substring(0, 10)}.txt", diamondsListString);
+            File.WriteAllText($"{paths.CanvasesSavePath}/Canvases {DateTime.Now : dd.MM.yyyy}.txt", diamondsListString);
         }
 
         /// <summary>

@@ -44,7 +44,7 @@ namespace DiamondListCreator.Services
                 }
             }
 
-            document.Save(paths.FilesSavePath + "/Legends " + DateTime.Today.ToString().Substring(0, 10) + ".pdf");
+            document.Save($"{paths.FilesSavePath}/Legends {DateTime.Now: dd.MM.yyyy}.pdf");
         }
 
         /// <summary>
