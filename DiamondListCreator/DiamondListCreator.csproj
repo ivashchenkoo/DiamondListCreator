@@ -53,6 +53,10 @@
     <Reference Include="itextsharp, Version=5.5.13.3, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\iTextSharp.5.5.13.3\lib\itextsharp.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1001\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -116,17 +120,21 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\CanvasSettings.cs" />
+    <Compile Include="Models\DiamondColor.cs" />
     <Compile Include="Models\DiamondSettings.cs" />
     <Compile Include="Models\PathSettings.cs" />
     <Compile Include="Services\CanvasesService.cs" />
     <Compile Include="Services\ConsumablesCreators\CanvasCreator.cs" />
+    <Compile Include="Services\ConsumablesCreators\ColorsListCreator.cs" />
     <Compile Include="Services\ConsumablesCreators\StickerCreator.cs" />
+    <Compile Include="Services\DiamondListService.cs" />
     <Compile Include="Services\DiamondSettingsService.cs" />
     <Compile Include="Services\FileService.cs" />
     <Compile Include="Services\FontCollectionService.cs" />
     <Compile Include="Services\GraphicsService.cs" />
     <Compile Include="Services\ConsumablesCreators\LegendCreator.cs" />
     <Compile Include="Services\LegendsService.cs" />
+    <Compile Include="Services\ListStickersService.cs" />
     <Compile Include="Services\OcrService.cs" />
     <Compile Include="Services\PdfDocumentService.cs" />
     <Compile Include="Services\StickersService.cs" />
