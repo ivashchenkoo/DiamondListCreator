@@ -11,20 +11,49 @@ namespace DiamondListCreator.Services
         private readonly MemoryStream stream;
         private readonly Rectangle pageSize;
         private readonly Document document;
+        private readonly PdfWriter writer;
+        private readonly PdfContentByte cb;
+        private readonly BaseFont bf;
 
         public PdfDocumentService(int pageWidth, int pageHeight)
         {
             stream = new MemoryStream();
             pageSize = new Rectangle(0, 0, pageWidth, pageHeight);
             document = new Document(pageSize, 0, 0, 0, 0);
-            _ = PdfWriter.GetInstance(document, stream);
+            writer = PdfWriter.GetInstance(document, stream);
             document.Open();
+
+            // the pdf content
+            cb = writer.DirectContent;
+            // select the font properties
+            bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
         }
 
         ~PdfDocumentService()
         {
             stream.Dispose();
             document.Dispose();
+        }
+
+        /// <summary>
+        /// Writes text on page
+        /// </summary>
+        public void DrawText(string text, int fontSize, int x, int y)
+        {
+            cb.SetColorFill(BaseColor.BLACK);
+            cb.SetFontAndSize(bf, fontSize);
+            cb.BeginText();
+            cb.ShowTextAligned(0, text, x, y, 0);
+            cb.EndText();
+        }
+
+        /// <summary>
+        /// Signals that a new page has to be started
+        /// </summary>
+        /// <returns>True if the page added, false if not</returns>
+        public bool NewPage()
+        {
+            return document.NewPage();
         }
 
         /// <summary>
