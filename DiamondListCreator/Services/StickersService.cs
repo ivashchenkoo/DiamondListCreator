@@ -3,6 +3,7 @@ using DiamondListCreator.Services.ConsumablesCreators;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 
 namespace DiamondListCreator.Services
 {
@@ -22,6 +23,16 @@ namespace DiamondListCreator.Services
             
             document.AddPagesReverse(stickers);
             document.Save($"{paths.FilesSavePath}/Stickers {DateTime.Now: dd.MM.yyyy}.pdf");
+        }
+
+        /// <summary>
+        /// Creating Stickers and saving them into pdf /Stickers {Date.Now}.pdf async
+        /// </summary>
+        /// <param name="diamonds">DiamondSettings list</param>
+        /// <param name="paths">Path settings</param>
+        public async void CreateStickersPdfAsync(List<DiamondSettings> diamonds, PathSettings paths)
+        {
+            await Task.Run(() => CreateStickersPdf(diamonds, paths));
         }
     }
 }

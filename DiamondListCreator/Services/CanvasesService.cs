@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace DiamondListCreator.Services
 {
@@ -46,6 +47,16 @@ namespace DiamondListCreator.Services
             }
 
             File.WriteAllText($"{paths.CanvasesSavePath}/Canvases {DateTime.Now : dd.MM.yyyy}.txt", diamondsListString);
+        }
+
+        /// <summary>
+        /// Creating canvases and saving them into canvases saving folder async
+        /// </summary>
+        /// <param name="diamonds">DiamondSettings list</param>
+        /// <param name="paths">Path settings</param>
+        public async void CreateCanvasesFilesAsync(List<DiamondSettings> diamonds, PathSettings paths)
+        {
+            await Task.Run(() => CreateCanvasesFiles(diamonds, paths));
         }
 
         /// <summary>

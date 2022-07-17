@@ -4,6 +4,7 @@ using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 
 namespace DiamondListCreator.Services
 {
@@ -83,6 +84,18 @@ namespace DiamondListCreator.Services
                 ListStickersService listStickersService = new ListStickersService();
                 listStickersService.CreateListStickersPdf(diamondsColors, paths.FilesSavePath);
             }
+        }
+
+        /// <summary>
+        /// Creates diamonds list in MS Excel async
+        /// </summary>
+        /// <param name="diamonds"></param>
+        /// <param name="paths"></param>
+        /// <param name="isSaveAccounting">Saves created Excel file to accounting table</param>
+        /// <param name="isSaveListStickersPdf">Creates pdf with diamonds colors list stickers</param>
+        public async void CreateDiamondsListAsync(List<DiamondSettings> diamonds, PathSettings paths, bool isSaveAccounting, bool isSaveListStickersPdf)
+        {
+            await Task.Run(() => CreateDiamondsList(diamonds, paths, isSaveAccounting, isSaveListStickersPdf));
         }
 
         /// <summary>

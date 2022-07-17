@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using DiamondListCreator.Services.ConsumablesCreators;
 using System.Drawing;
+using System.Threading.Tasks;
 
 namespace DiamondListCreator.Services
 {
@@ -45,6 +46,16 @@ namespace DiamondListCreator.Services
             }
 
             document.Save($"{paths.FilesSavePath}/Legends {DateTime.Now: dd.MM.yyyy}.pdf");
+        }
+
+        /// <summary>
+        /// Creating Legends and saving them into pdf /Legends {Date.Now}.pdf async
+        /// </summary>
+        /// <param name="diamonds">DiamondSettings list</param>
+        /// <param name="paths">Path settings</param>
+        public async void CreateLegendsPdfAsync(List<DiamondSettings> diamonds, PathSettings paths)
+        {
+            await Task.Run(() => CreateLegendsPdf(diamonds, paths));
         }
 
         /// <summary>
