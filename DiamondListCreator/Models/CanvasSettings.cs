@@ -2,7 +2,7 @@
 
 namespace DiamondListCreator.Models
 {
-    class CanvasSettings
+    public class CanvasSettings
     {
         [JsonProperty("Розмір")]
         public string SizeName { get; set; }

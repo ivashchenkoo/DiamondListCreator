@@ -1,5 +1,4 @@
 ﻿using DiamondListCreator.Models;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,12 +12,12 @@ namespace DiamondListCreator.Services.ConsumablesCreators
     public class CanvasCreator
     {
         private readonly PrivateFontCollection pfc;
-        private readonly CanvasSettings[] canvasesSettings;
+        private List<CanvasSettings> canvasesSettings;
 
         public CanvasCreator(PrivateFontCollection pfc)
         {
             this.pfc = pfc;
-            canvasesSettings = JsonConvert.DeserializeObject<CanvasSettings[]>(File.ReadAllText(Environment.CurrentDirectory + "\\Resources\\canvases.json"));
+            canvasesSettings = CanvasSettingsService.ReadSettings().ToList();
         }
 
         ~CanvasCreator()
@@ -26,6 +25,11 @@ namespace DiamondListCreator.Services.ConsumablesCreators
             pfc.Dispose();
         }
 
+        /// <summary>
+        /// Creates the standard canvas for the diamond
+        /// </summary>
+        /// <param name="diamond"></param>
+        /// <returns>The canvas bitmap</returns>
         public Bitmap Create(DiamondSettings diamond)
         {
             int width, height;
@@ -41,11 +45,15 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                 height = diamond.Height;
             }
 
+            // trying to find the canvas settings for these width and height
             CanvasSettings canvasSettings = GetCanvasSettings(width, height);
+            // if didn't find, then create the canvas settings by aspect ratio from standard and save it to json
             if (canvasSettings == null)
             {
                 canvasSettings = new CanvasSettings(GetCanvasSettings(diamond.SizeLetter));
                 canvasSettings.SetSize(diamond.Width, diamond.Height);
+                canvasesSettings.Add(canvasSettings);
+                CanvasSettingsService.WriteSettings(canvasesSettings.ToArray());
             }
 
             return IsVertical(diamond.Path)
