@@ -28,7 +28,20 @@ namespace DiamondListCreator.Services.ConsumablesCreators
 
         public Bitmap Create(DiamondSettings diamond)
         {
-            CanvasSettings canvasSettings = GetCanvasSettings(diamond.Width, diamond.Height);
+            int width, height;
+
+            if (diamond.Height < diamond.Width)
+            {
+                width = diamond.Height;
+                height = diamond.Width;
+            }
+            else
+            {
+                width = diamond.Width;
+                height = diamond.Height;
+            }
+
+            CanvasSettings canvasSettings = GetCanvasSettings(width, height);
             if (canvasSettings == null)
             {
                 canvasSettings = new CanvasSettings(GetCanvasSettings(diamond.SizeLetter));
