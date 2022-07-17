@@ -1,8 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <FontFamily x:Key="BaseFont">/DiamondListCreator;component/Resources/Fonts/#Troika</FontFamily>
-    <system:Double x:Key="Smal">14</system:Double>
+    <FontFamily x:Key="Troika">/DiamondListCreator;component/Resources/Fonts/#Troika</FontFamily>
+    <system:Double x:Key="Small">14</system:Double>
     <system:Double x:Key="Regular">16</system:Double>
     <system:Double x:Key="Big">30</system:Double>
     <system:Double x:Key="H1">35</system:Double>

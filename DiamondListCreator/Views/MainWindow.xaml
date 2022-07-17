@@ -26,12 +26,14 @@
             </Grid.RowDefinitions>
 
             <TextBox Style="{StaticResource ListTextBoxStyle}"
+                     Text="{Binding ListText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      Grid.Row="0"
                      Margin="0,0,0,20"
                      />
-            
+
             <Button Style="{StaticResource ButtonBase}"
-                    Grid.Row="1">
+                    Grid.Row="1"
+                    Command="{Binding Start}">
                 СТАРТ
             </Button>
             
@@ -39,60 +41,232 @@
         <Grid Grid.Column="1"
               Margin="20,0,0,0">
 
-            <Viewbox Grid.Column="1" Width="200" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-                <StackPanel Orientation="Vertical">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto" MinHeight="50"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" DataContext="{Binding Paths}">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox x:Name="DiamondsFolderPathTextBox"
+                         Text="{Binding DiamondsFolderPath}"
+                         Grid.Row="0"
+                         Grid.Column="0"
+                         ToolTip="Шлях до папки з алмазками"
+                         BorderThickness="3"
+                         Margin="0,0,10,10"
+                         Style="{DynamicResource PathTextBoxStyle}"/>
+
+                <Button x:Name="GetDiamondsFolderPathButton"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        ToolTip="Обрати шлях до папки з алмазками"
+                        Margin="0,0,0,10"
+                        Content="{StaticResource FolderIcon}"
+                        Style="{StaticResource ButtonPathStyle}"/>
+
+                <TextBox x:Name="FilesSavePathTextBox"
+                         Text="{Binding FilesSavePath}"
+                         Grid.Row="1"
+                         Grid.Column="0"
+                         ToolTip="Шлях до збереження списку"
+                         BorderThickness="3"
+                         Margin="0,0,10,10"
+                         Style="{DynamicResource PathTextBoxStyle}"/>
+
+                <Button x:Name="GetFilesSavePathButton"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        ToolTip="Обрати шлях до збереження списку"
+                        Margin="0,0,0,10"
+                        Content="{StaticResource FolderIcon}"
+                        Style="{StaticResource ButtonPathStyle}"/>
+
+                <TextBox x:Name="AccountingExcelFilePathTextBox"
+                         Text="{Binding AccountingExcelFilePath}"
+                         Grid.Row="2"
+                         Grid.Column="0"
+                         ToolTip="Шлях до загального обліку"
+                         BorderThickness="3"
+                         Margin="0,0,10,10"
+                         Style="{DynamicResource PathTextBoxStyle}"/>
+
+                <Button x:Name="GetAccountingExcelFilePathButton"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        ToolTip="Обрати шлях до загального обліку"
+                        Margin="0,0,0,10"
+                        Content="{StaticResource FileIcon}"
+                        Style="{StaticResource ButtonPathStyle}"/>
+
+                <TextBox x:Name="SavedLegendsPathTextBox"
+                         Text="{Binding SavedLegendsPath}"
+                         Grid.Row="3"
+                         Grid.Column="0"
+                         ToolTip="Шлях до створених легенд"
+                         BorderThickness="3"
+                         Margin="0,0,10,10"
+                         Style="{DynamicResource PathTextBoxStyle}"/>
+
+                <Button x:Name="GetSavedLegendsPathButton"
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        ToolTip="Обрати шлях до створених легенд"
+                        Margin="0,0,0,10"
+                        Content="{StaticResource FolderIcon}"
+                        Style="{StaticResource ButtonPathStyle}"/>
+
+                <TextBox x:Name="SavedCanvasesPathTextBox"
+                         Text="{Binding SavedCanvasesPath}"
+                         Grid.Row="4"
+                         Grid.Column="0"
+                         ToolTip="Шлях до створених холстів"
+                         BorderThickness="3"
+                         Margin="0,0,10,10"
+                         Style="{DynamicResource PathTextBoxStyle}"/>
+
+                <Button x:Name="GetSavedCanvasesPathButton"
+                        Grid.Row="4"
+                        Grid.Column="1"
+                        ToolTip="Обрати шлях до створених холстів"
+                        Margin="0,0,0,10"
+                        Content="{StaticResource FolderIcon}"
+                        Style="{StaticResource ButtonPathStyle}"/>
+
+                <TextBox x:Name="CanvasesSavePathTextBox"
+                         Text="{Binding CanvasesSavePath}"
+                         Grid.Row="5"
+                         Grid.Column="0"
+                         ToolTip="Шлях до збереження холстів"
+                         BorderThickness="3"
+                         Margin="0,0,10,10"
+                         Style="{DynamicResource PathTextBoxStyle}"/>
+
+                <Button x:Name="GetCanvasesSavePathButton"
+                        Grid.Row="5"
+                        Grid.Column="1"
+                        ToolTip="Обрати шлях до збереження холстів"
+                        Margin="0,0,0,10"
+                        Content="{StaticResource FolderIcon}"
+                        Style="{StaticResource ButtonPathStyle}"/>
+
+            </Grid>
+
+            <Viewbox Margin="5" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
                     <CheckBox Style="{StaticResource CheckBoxBase}"
-                              x:Name="ListCheckBox">
+                              x:Name="ListCheckBox"
+                              IsChecked="{Binding IsListChecked}"
+                              Grid.Row="0"
+                              Grid.Column="0"
+                              Margin="0,0,5,5">
                         СПИСОК
                     </CheckBox>
 
-                    <CheckBox x:Name="AccountingCheckBox">
+                    <CheckBox x:Name="AccountingCheckBox"
+                              IsChecked="{Binding IsAccountingChecked}"
+                              Grid.Row="0"
+                              Grid.Column="1"
+                              Margin="0,0,5,5">
                         ОБЛІК
 
                         <CheckBox.Style>
                             <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource CheckBoxBase}">
                                 <Style.Triggers>
-                                    
+
                                     <DataTrigger Binding="{Binding ElementName=ListCheckBox, Path=IsChecked}" Value="False">
                                         <Setter Property="IsEnabled" Value="False"/>
                                     </DataTrigger>
-                                    
+
                                     <DataTrigger Binding="{Binding ElementName=ListCheckBox, Path=IsChecked}" Value="True">
                                         <Setter Property="IsEnabled" Value="True"/>
                                     </DataTrigger>
 
-                                    <DataTrigger Binding="{Binding ElementName=ListCheckBox, Path=IsChecked}" Value="False">
-                                        <Setter Property="IsChecked" Value="False"/>
-                                    </DataTrigger>
-
-                                    <DataTrigger Binding="{Binding ElementName=ListCheckBox, Path=IsChecked}" Value="True">
-                                        <Setter Property="IsChecked" Value="True"/>
-                                    </DataTrigger>
-                                    
                                 </Style.Triggers>
                             </Style>
                         </CheckBox.Style>
-                        
+
+                    </CheckBox>
+
+                    <CheckBox x:Name="ListStickersCheckBox"
+                              IsChecked="{Binding IsListStickersChecked}"
+                              Grid.Row="0"
+                              Grid.Column="2"
+                              Margin="0,0,5,0">
+                        НАКЛЕЙКИ
+
+                        <CheckBox.Style>
+                            <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource CheckBoxBase}">
+                                <Style.Triggers>
+
+                                    <DataTrigger Binding="{Binding ElementName=ListCheckBox, Path=IsChecked}" Value="False">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding ElementName=ListCheckBox, Path=IsChecked}" Value="True">
+                                        <Setter Property="IsEnabled" Value="True"/>
+                                    </DataTrigger>
+
+                                </Style.Triggers>
+                            </Style>
+                        </CheckBox.Style>
+
                     </CheckBox>
 
                     <CheckBox Style="{StaticResource CheckBoxBase}"
-                              x:Name="LegendsCheckBox">
+                              IsChecked="{Binding IsLegendsChecked}"
+                              x:Name="LegendsCheckBox"
+                              Grid.Row="1"
+                              Grid.Column="0"
+                              Margin="0,0,5,0">
                         ЛЕГЕНДИ
                     </CheckBox>
 
                     <CheckBox Style="{StaticResource CheckBoxBase}"
-                              x:Name="StickersCheckBox">
+                              IsChecked="{Binding IsStickersChecked}"
+                              x:Name="StickersCheckBox"
+                              Grid.Row="1"
+                              Grid.Column="1"
+                              Margin="0,0,5,0">
                         СТІКЕРИ
                     </CheckBox>
 
                     <CheckBox Style="{StaticResource CheckBoxBase}"
-                              x:Name="CanvasesCheckBox">
+                              IsChecked="{Binding IsCanvasesChecked}"
+                              x:Name="CanvasesCheckBox"
+                              Grid.Row="1"
+                              Grid.Column="2">
                         ХОЛСТИ
                     </CheckBox>
 
-                </StackPanel>
-            </Viewbox>
+                </Grid>
+                </Viewbox>
+
         </Grid>
     </Grid>
 </Window>

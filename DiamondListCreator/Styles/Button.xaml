@@ -3,7 +3,7 @@
 
     <!-- Base Button Style -->
     <Style x:Key="ButtonBase" TargetType="{x:Type Button}">
-        <Setter Property="FontFamily" Value="{StaticResource BaseFont}"/>
+        <Setter Property="FontFamily" Value="{StaticResource Troika}"/>
         <Setter Property="FontSize" Value="{StaticResource H1}"/>
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="Foreground" Value="{StaticResource DarkBaseColorBrush}"/>
@@ -15,7 +15,7 @@
                     <Border
                         Name="brd"
                         Background="{TemplateBinding Background}"
-                        CornerRadius="2">
+                        CornerRadius="0">
                         <ContentPresenter
                             Margin="5"
                             HorizontalAlignment="Center"
@@ -39,6 +39,11 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style> 
-        
+    </Style>
+
+    <Style x:Key="ButtonPathStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonBase}">
+        <Setter Property="Width" Value="50"/>
+        <Setter Property="Height" Value="45"/>
+    </Style>
+
 </ResourceDictionary>

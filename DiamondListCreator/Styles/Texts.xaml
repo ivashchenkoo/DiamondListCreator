@@ -3,7 +3,7 @@
 
     <!-- Base TextBox Style -->
     <Style x:Key="TextBoxBase" TargetType="{x:Type TextBox}">
-        <Setter Property="FontFamily" Value="{StaticResource BaseFont}"/>
+        <Setter Property="FontFamily" Value="{StaticResource Troika}"/>
         <Setter Property="FontSize" Value="{StaticResource Big}"/>
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="Foreground" Value="{StaticResource UltraLightBaseColorBrush}"/>
@@ -41,12 +41,21 @@
         </Style.Triggers>
     </Style>
 
+    <!-- PathTextBox Style -->
+    <Style x:Key="PathTextBoxStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxBase}">
+        <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="Height" Value="45"/>
+        <Setter Property="Padding" Value="5"/>
+    </Style>
+
     <!-- ListTextBox Style -->
     <Style x:Key="ListTextBoxStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxBase}">
         <Setter Property="AcceptsReturn" Value="True"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
-        <Setter Property="Padding" Value="10"/>
         <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="Padding" Value="10"/>
     </Style>
     
 </ResourceDictionary>

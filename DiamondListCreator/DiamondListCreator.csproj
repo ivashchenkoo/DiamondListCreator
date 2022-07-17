@@ -102,6 +102,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Styles\Icons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\ScrollBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -118,11 +122,13 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\BaseVM.cs" />
     <Compile Include="Models\CanvasSettings.cs" />
     <Compile Include="Models\DiamondColor.cs" />
     <Compile Include="Models\DiamondSettings.cs" />
     <Compile Include="Models\PathSettings.cs" />
     <Compile Include="Services\CanvasesService.cs" />
+    <Compile Include="Services\CanvasSettingsService.cs" />
     <Compile Include="Services\ConsumablesCreators\CanvasCreator.cs" />
     <Compile Include="Services\ConsumablesCreators\ColorsListCreator.cs" />
     <Compile Include="Services\ConsumablesCreators\StickerCreator.cs" />
