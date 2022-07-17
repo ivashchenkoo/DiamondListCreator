@@ -7,7 +7,7 @@ namespace DiamondListCreator.Services
 {
     public class PathSettingsService
     {
-        private static readonly string jsonPath = Environment.CurrentDirectory + "\\Resources\\canvases.json";
+        private static readonly string jsonPath = Environment.CurrentDirectory + "\\Resources\\PathSettings.json";
 
         public static PathSettings ReadSettings()
         {
