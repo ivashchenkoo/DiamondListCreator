@@ -37,8 +37,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>Resources\favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
@@ -127,6 +126,7 @@
     <Compile Include="Services\ConsumablesCreators\CanvasCreator.cs" />
     <Compile Include="Services\ConsumablesCreators\ColorsListCreator.cs" />
     <Compile Include="Services\ConsumablesCreators\StickerCreator.cs" />
+    <Compile Include="Services\CreatorService.cs" />
     <Compile Include="Services\DiamondListService.cs" />
     <Compile Include="Services\DiamondSettingsService.cs" />
     <Compile Include="Services\FileService.cs" />
