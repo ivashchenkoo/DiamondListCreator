@@ -46,7 +46,7 @@
                 <RowDefinition Height="Auto" MinHeight="50"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" DataContext="{Binding Paths}">
+            <Grid Grid.Row="0" DataContext="{Binding Paths, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -71,11 +71,12 @@
                          Margin="0,0,10,10"
                          Style="{DynamicResource PathTextBoxStyle}"/>
 
-                <Button x:Name="GetDiamondsFolderPathButton"
+                <Button x:Name="ChooseDiamondsFolderPathButton"
                         Grid.Row="0"
                         Grid.Column="1"
                         ToolTip="Обрати шлях до папки з алмазками"
                         Margin="0,0,0,10"
+                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.ChooseDiamondsFolder}"
                         Content="{StaticResource FolderIcon}"
                         Style="{StaticResource ButtonPathStyle}"/>
 
@@ -88,11 +89,12 @@
                          Margin="0,0,10,10"
                          Style="{DynamicResource PathTextBoxStyle}"/>
 
-                <Button x:Name="GetFilesSavePathButton"
+                <Button x:Name="ChooseFilesSavePathButton"
                         Grid.Row="1"
                         Grid.Column="1"
                         ToolTip="Обрати шлях до збереження списку"
                         Margin="0,0,0,10"
+                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.ChooseFilesSaveFolder}"
                         Content="{StaticResource FolderIcon}"
                         Style="{StaticResource ButtonPathStyle}"/>
 
@@ -105,12 +107,13 @@
                          Margin="0,0,10,10"
                          Style="{DynamicResource PathTextBoxStyle}"/>
 
-                <Button x:Name="GetAccountingExcelFilePathButton"
+                <Button x:Name="ChooseAccountingExcelFilePathButton"
                         Grid.Row="2"
                         Grid.Column="1"
                         ToolTip="Обрати шлях до загального обліку"
                         Margin="0,0,0,10"
                         Content="{StaticResource FileIcon}"
+                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.ChooseAccountingFile}"
                         Style="{StaticResource ButtonPathStyle}"/>
 
                 <TextBox x:Name="SavedLegendsPathTextBox"
@@ -122,11 +125,12 @@
                          Margin="0,0,10,10"
                          Style="{DynamicResource PathTextBoxStyle}"/>
 
-                <Button x:Name="GetSavedLegendsPathButton"
+                <Button x:Name="ChooseSavedLegendsPathButton"
                         Grid.Row="3"
                         Grid.Column="1"
                         ToolTip="Обрати шлях до створених легенд"
                         Margin="0,0,0,10"
+                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.ChooseSavedLegendsFolder}"
                         Content="{StaticResource FolderIcon}"
                         Style="{StaticResource ButtonPathStyle}"/>
 
@@ -139,11 +143,12 @@
                          Margin="0,0,10,10"
                          Style="{DynamicResource PathTextBoxStyle}"/>
 
-                <Button x:Name="GetSavedCanvasesPathButton"
+                <Button x:Name="ChooseSavedCanvasesPathButton"
                         Grid.Row="4"
                         Grid.Column="1"
                         ToolTip="Обрати шлях до створених холстів"
                         Margin="0,0,0,10"
+                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.ChooseSavedCanvasesFolder}"
                         Content="{StaticResource FolderIcon}"
                         Style="{StaticResource ButtonPathStyle}"/>
 
@@ -156,11 +161,12 @@
                          Margin="0,0,10,10"
                          Style="{DynamicResource PathTextBoxStyle}"/>
 
-                <Button x:Name="GetCanvasesSavePathButton"
+                <Button x:Name="ChooseCanvasesSavePathButton"
                         Grid.Row="5"
                         Grid.Column="1"
                         ToolTip="Обрати шлях до збереження холстів"
                         Margin="0,0,0,10"
+                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.ChooseCanvasesSaveFolder}"
                         Content="{StaticResource FolderIcon}"
                         Style="{StaticResource ButtonPathStyle}"/>
 

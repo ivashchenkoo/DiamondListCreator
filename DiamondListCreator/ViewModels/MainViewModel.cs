@@ -1,7 +1,6 @@
 ﻿using DevExpress.Mvvm;
 using DiamondListCreator.Models;
 using DiamondListCreator.Services;
-using System.Windows;
 using System.Windows.Input;
 
 namespace DiamondListCreator.ViewModels
@@ -115,5 +114,71 @@ namespace DiamondListCreator.ViewModels
             }
         }
 
+
+        public ICommand ChooseDiamondsFolder
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    Paths.DiamondsFolderPath = FileService.OpenDirectory("Оберіть шлях до папки з алмазками", Paths.DiamondsFolderPath);
+                });
+            }
+        }
+
+        public ICommand ChooseFilesSaveFolder
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    Paths.FilesSavePath = FileService.OpenDirectory("Оберіть шлях до збереження списку", Paths.FilesSavePath);
+                });
+            }
+        }
+
+        public ICommand ChooseAccountingFile
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    Paths.AccountingExcelFilePath = FileService.OpenFile("Оберіть шлях до створених легенд", Paths.AccountingExcelFilePath);
+                });
+            }
+        }
+
+        public ICommand ChooseSavedLegendsFolder
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    Paths.SavedLegendsPath = FileService.OpenDirectory("Оберіть шлях до створених легенд", Paths.SavedLegendsPath);
+                });
+            }
+        }
+
+        public ICommand ChooseSavedCanvasesFolder
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    Paths.SavedCanvasesPath = FileService.OpenDirectory("Оберіть шлях до створених холстів", Paths.SavedCanvasesPath);
+                });
+            }
+        }
+
+        public ICommand ChooseCanvasesSaveFolder
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    Paths.CanvasesSavePath = FileService.OpenDirectory("Обріть шлях до збереження холстів", Paths.CanvasesSavePath);
+                });
+            }
+        }
     }
 }

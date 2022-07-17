@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Windows.Forms;
 
 namespace DiamondListCreator.Services
 {
@@ -59,6 +60,50 @@ namespace DiamondListCreator.Services
                         _ = Directory.CreateDirectory($"{newFolder}");
                     }
                     file.MoveTo($@"{newFolder}\{file.Name}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Opens a dialog window to choose a directory
+        /// </summary>
+        /// <returns>The path to a picked directory if dialog was successfully closed, null if dialog was closed by close button</returns>
+        public static string OpenDirectory(string title = "Оберіть папку", string selectedPath = "C:\\Users")
+        {
+            using (FolderBrowserDialog dialog = new FolderBrowserDialog { Description = title, SelectedPath = selectedPath})
+            {
+                DialogResult result = dialog.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    return dialog.SelectedPath;
+                }
+                else
+                {
+                    return selectedPath;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Opens a dialog window to choose a file
+        /// </summary>
+        /// <returns>The path to a picked file if dialog was successfully closed, null if dialog was closed by close button</returns>
+        public static string OpenFile(string title = "Оберіть файл", string selectedPath = "C:\\Users", string filter = "Excel Worksheets (*.xls;*.xlsx)|*.xls;*.xlsx")
+        {
+            using (OpenFileDialog dialog = new OpenFileDialog
+            {
+                InitialDirectory = selectedPath,
+                Filter = filter,
+                Title = title
+            })
+            {
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    return dialog.FileName;
+                }
+                else
+                {
+                    return selectedPath;
                 }
             }
         }

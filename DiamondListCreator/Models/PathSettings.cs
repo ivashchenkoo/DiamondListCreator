@@ -1,9 +1,10 @@
-﻿using DiamondListCreator.Services;
+﻿using DevExpress.Mvvm;
+using DiamondListCreator.Services;
 using Newtonsoft.Json;
 
 namespace DiamondListCreator.Models
 {
-    public class PathSettings : BaseVM
+    public class PathSettings : ViewModelBase
     {
         private string _filesSavePath;
         [JsonProperty("Шлях до збереження файлів пдф")]
@@ -18,6 +19,7 @@ namespace DiamondListCreator.Models
                 {
                     PathSettingsService.WriteSettings(this);
                 }
+                RaisePropertyChanged(() => FilesSavePath);
             }
         }
 
@@ -34,6 +36,7 @@ namespace DiamondListCreator.Models
                 {
                     PathSettingsService.WriteSettings(this);
                 }
+                RaisePropertyChanged(() => DiamondsFolderPath);
             }
         }
 
@@ -50,6 +53,7 @@ namespace DiamondListCreator.Models
                 {
                     PathSettingsService.WriteSettings(this);
                 }
+                RaisePropertyChanged(() => AccountingExcelFilePath);
             }
         }
 
@@ -66,6 +70,7 @@ namespace DiamondListCreator.Models
                 {
                     PathSettingsService.WriteSettings(this);
                 }
+                RaisePropertyChanged(() => SavedLegendsPath);
             }
         }
 
@@ -82,6 +87,7 @@ namespace DiamondListCreator.Models
                 {
                     PathSettingsService.WriteSettings(this);
                 }
+                RaisePropertyChanged(() => CanvasesSavePath);
             }
         }
 
@@ -97,6 +103,7 @@ namespace DiamondListCreator.Models
                 {
                     PathSettingsService.WriteSettings(this);
                 }
+                RaisePropertyChanged(() => SavedCanvasesPath);
             }
         }
     }
