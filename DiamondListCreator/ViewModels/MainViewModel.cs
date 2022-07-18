@@ -1,6 +1,8 @@
 ﻿using DevExpress.Mvvm;
 using DiamondListCreator.Models;
 using DiamondListCreator.Services;
+using System;
+using System.Windows;
 using System.Windows.Input;
 
 namespace DiamondListCreator.ViewModels
@@ -108,7 +110,15 @@ namespace DiamondListCreator.ViewModels
             {
                 return new DelegateCommand(() =>
                 {
-                    
+                    try
+                    {
+                        var diamonds = DiamondSettingsService.GetFromString(ListText, Paths.DiamondsFolderPath);
+                        CreatorService.Create(diamonds, IsListChecked, IsAccountingChecked, IsListStickersChecked, IsLegendsChecked, IsStickersChecked, IsCanvasesChecked);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 },
                 () => ListText != "" && (IsListChecked || IsLegendsChecked || IsStickersChecked || IsCanvasesChecked));
             }
