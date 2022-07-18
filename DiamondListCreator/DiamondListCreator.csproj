@@ -165,7 +165,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Resource Include="Resources\Images\LegendaTemplate_English.jpg" />
     <Resource Include="tessdata\pdf.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
@@ -184,6 +183,7 @@
     <None Include="tessdata\pdf.ttx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Resource Include="Resources\Images\LegendaTemplate_English.jpg" />
     <Resource Include="Resources\Images\diamonds_logo.png" />
     <Resource Include="Resources\Images\dmc.png" />
     <Resource Include="Resources\Images\inst.png" />
