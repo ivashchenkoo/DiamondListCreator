@@ -60,6 +60,11 @@ namespace DiamondListCreator.Services.ConsumablesCreators
 
             for (int i = 0; i < textRows.Length; ++i)
             {
+                if (textRows[i].Length < 5)
+                {
+                    continue;
+                }
+
                 string[] rowItems = textRows[i].Split(' ');
                 if (rowItems.Length > 2)
                 {
@@ -81,24 +86,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                         }
                     }
                 }
-
-                if (rowItems.Length < 2)
-                {
-                    continue;
-                }
-
-                if (rowItems.Length == 2 && !int.TryParse(rowItems[0], out _))
-                {
-                    if (rowItems[0] == "anc")
-                    {
-                        rowItems[0] = "Blanc";
-                    }
-                    else if (rowItems[0] == "Ean")
-                    {
-                        rowItems[0] = "Ecru";
-                    }
-                }
-
+                
                 colors.Add(new DiamondColor
                 {
                     Name = rowItems[0],
@@ -117,8 +105,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
         private string LegendOcr(Bitmap legend)
         {
             legend = GraphicsService.CutRectangleFromBitmap(legend, 720, 550, 605, 2695);
-            OcrService ocrService = new OcrService();
-            return ocrService.GetTextFromImage(legend);
+            return OcrService.GetTextFromImage(legend);
         }
     }
 }

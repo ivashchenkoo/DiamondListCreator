@@ -50,6 +50,7 @@ namespace DiamondListCreator.Services
             for (int i = 0; i < diamonds.Count; i++)
             {
                 List<DiamondColor> diamondColors = colorsListCreator.Create(diamonds[i]);
+                int lastRow = row;
 
                 for (int j = 0; j < diamondColors.Count; j++)
                 {
@@ -60,13 +61,15 @@ namespace DiamondListCreator.Services
                     xlWorkSheet.Cells[row, 4] = diamonds[i].Name;
                 }
 
-                xlWorkSheet.Range[$"A{diamondColors.Count + 1}:D{row}"].Interior.Color = ColorTranslator.ToOle(ColorTranslator.FromHtml(colors[i]));
+                xlWorkSheet.Range[$"A{lastRow + 1}:D{row}"].Interior.Color = ColorTranslator.ToOle(ColorTranslator.FromHtml(colors[i]));
 
                 if (isSaveListStickersPdf)
                 {
                     diamondsColors.AddRange(diamondColors);
                 }
             }
+
+            FormatWorksheet(row, ref xlWorkSheet);
 
             xlWorkBook.CheckCompatibility = false;
             xlWorkBook.DoNotPromptForConvert = true;
