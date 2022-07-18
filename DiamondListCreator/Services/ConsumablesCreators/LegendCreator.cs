@@ -131,12 +131,14 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                 }
 
                 // Append size text
-                string diamondSize = (isEnglish ? "LEGEND FOR THE SHEME IN THE SIZE" : "ЛЕГЕНДА ДЛЯ СХЕМИ РОЗМІРОМ") + $" {diamond.Width}x{diamond.Height}см*";
+                string diamondSize = (isEnglish ? "LEGEND FOR THE SHEME IN THE SIZE" : "ЛЕГЕНДА ДЛЯ СXЕМИ РОЗМІРОМ") + $" {diamond.Width}x{diamond.Height}см*";
                 font = new Font(pfc.Families[0], 65);
                 graph.DrawString(diamondSize, font, drawBrush, 90, 445);
             }
 
-            return legendTemplate;
+            legendTemplate.Dispose();
+
+            return resultBitmap;
         }
     }
 }

@@ -313,7 +313,6 @@ namespace DiamondListCreator.Services.ConsumablesCreators
         {
             string ocrText;
             int colorsCount = 0;
-            OcrService ocrService = new OcrService();
 
             using (Bitmap legendPage = File.Exists(diamondPath + "/Легенда, лист 1.png")
                         ? new Bitmap(diamondPath + "/Легенда, лист 1.png")
@@ -321,7 +320,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
             {
                 if (diamondSize != "S")
                 {
-                    ocrText = ocrService.GetTextFromImage(GraphicsService.CutRectangleFromBitmap(legendPage, 830, 225, 100, 70)).Trim();
+                    ocrText = OcrService.GetTextFromImage(GraphicsService.CutRectangleFromBitmap(legendPage, 830, 225, 100, 70)).Trim();
 
                     if (!int.TryParse(ocrText, out colorsCount))
                     {
@@ -330,13 +329,13 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                 }
                 else
                 {
-                    ocrText = ocrService.GetTextFromImage(GraphicsService.CutRectangleFromBitmap(legendPage, 770, 225, 100, 70)).Trim();
+                    ocrText = OcrService.GetTextFromImage(GraphicsService.CutRectangleFromBitmap(legendPage, 770, 225, 100, 70)).Trim();
                     if (!int.TryParse(ocrText, out colorsCount))
                     {
-                        ocrText = ocrService.GetTextFromImage(GraphicsService.CutRectangleFromBitmap(legendPage, 830, 225, 100, 70)).Trim();
+                        ocrText = OcrService.GetTextFromImage(GraphicsService.CutRectangleFromBitmap(legendPage, 830, 225, 100, 70)).Trim();
                         if (!int.TryParse(ocrText, out colorsCount))
                         {
-                            ocrText = ocrService.GetTextFromImage(GraphicsService.CutRectangleFromBitmap(legendPage, 790, 225, 100, 70)).Trim();
+                            ocrText = OcrService.GetTextFromImage(GraphicsService.CutRectangleFromBitmap(legendPage, 790, 225, 100, 70)).Trim();
                             if (!int.TryParse(ocrText, out colorsCount))
                             {
                                 throw new Exception("Невдалося зісканувати з легенди кількість кольорів у алмазці");
@@ -381,7 +380,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                 // Thumbnail
                 using (Bitmap thumbnailBitmap = new Bitmap(diamondPath + "/Вид вышивки.png"))
                 {
-                    float thumbnailAspectRatio = thumbnailBitmap.Width / thumbnailBitmap.Height;
+                    float thumbnailAspectRatio = (float)thumbnailBitmap.Width / (float)thumbnailBitmap.Height;
 
                     using (Bitmap thumbnail = new Bitmap(canvasSettings.ThumbnailWidth + (canvasSettings.ThumbnailBorderThickness * 2), (int)(canvasSettings.ThumbnailWidth / thumbnailAspectRatio) + (canvasSettings.ThumbnailBorderThickness * 2), PixelFormat.Format32bppArgb))
                     {
@@ -406,8 +405,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                     Bitmap legendBitmap = GraphicsService.CutRectangleFromBitmap(canvasShemeBitmap, canvasSettings.LegendsFromShemeVerticalMarginLeft, canvasSettings.LegendsFromShemeVerticalMarginTop, canvasSettings.LegendsFromShemeVerticalWidth, canvasSettings.LegendsFromShemeVerticalHeight);
 
                     // Calculate legend height on canvas sheme
-                    OcrService ocrService = new OcrService();
-                    string ocrText = ocrService.GetTextFromImage(legendBitmap);
+                    string ocrText = OcrService.GetTextFromImage(legendBitmap);
                     string[] ocrTextArr = ocrText.Split('\n');
                     int legendHeight = ocrTextArr.Length * canvasSettings.LegendsFromShemeRowHeight;
 
@@ -420,17 +418,17 @@ namespace DiamondListCreator.Services.ConsumablesCreators
 
                     graph.FillRectangle(new SolidBrush(Color.White), new Rectangle(canvasSettings.PageWidth - canvasSettings.MarginRight + ((canvasSettings.MarginRight - legendBitmap.Width) / 2) - 1, RightElementsMarginTop - 1, legendBitmap.Width, 45));
 
-                    // Update X coord for next element to draw
-                    RightElementsMarginTop += legendHeight + canvasSettings.Spacing;
-
-                    legendBitmap.Dispose();
-
                     // Image "DMC"
                     using (Bitmap dmc = new Bitmap(Properties.Resources.dmc))
                     {
                         float dmcAspectRatio = dmc.Width / (float)dmc.Height;
                         graph.DrawImage(dmc, canvasSettings.PageWidth - canvasSettings.MarginRight + ((canvasSettings.MarginRight - thumbnailWidth) / 2), RightElementsMarginTop, 35 * dmcAspectRatio, 35);
                     }
+
+                    // Update X coord for next element to draw
+                    RightElementsMarginTop += legendHeight + canvasSettings.Spacing;
+
+                    legendBitmap.Dispose();
 
                     // Main canvas image
                     using (Bitmap canvasBitmap = GraphicsService.CutRectangleFromBitmap(canvasShemeBitmap, canvasSettings.CanvasFromShemeMarginLeft, canvasSettings.CanvasFromShemeMarginTop, canvasSettings.CanvasFromShemeWidth, canvasShemeBitmap.Height - 2 - (canvasSettings.CanvasFromShemeMarginTop * 2)))
@@ -604,7 +602,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                     using (Bitmap canvasCopy = new Bitmap(canvas))
                     {
                         graph.Clear(Color.White);
-                        graph.DrawImage(canvasCopy, -canvasSettings.PageOffsetX, 0);
+                        graph.DrawImage(canvasCopy, canvasSettings.PageOffsetX, 0);
                     }
                 }
             }

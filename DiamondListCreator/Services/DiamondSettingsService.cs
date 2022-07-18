@@ -59,6 +59,8 @@ namespace DiamondListCreator.Services
                     path = $"{mainDiamondsDirectory}/almaz/{name.Substring(0, 2)}000/{name.Replace("M", "").Replace("SL", "")}";
                 }
 
+                diamond.Path = path;
+
                 if (!Directory.Exists(path))
                 {
                     failedDiamonds += $"{name} - не знайдено\n";
@@ -105,10 +107,9 @@ namespace DiamondListCreator.Services
                     ? new Bitmap(diamond.Path + "/Легенда, лист 1.png")
                     : new Bitmap(diamond.Path + "/Легенда.png"))
             {
-                OcrService ocrService = new OcrService();
-                string ocrText = ocrService.GetTextFromImage(GraphicsService.CutRectangleFromBitmap(legend, 1190, 120, 450, 90)).Trim();
+                string ocrText = OcrService.GetTextFromImage(GraphicsService.CutRectangleFromBitmap(legend, 1190, 120, 450, 90)).Trim();
 
-                ocrText = ocrText.Replace("O", "0").Replace("I", "1").Replace("l", "1").ToLower();
+                ocrText = ocrText.ToLower().Replace("l", "1");
                 string[] sizes = ocrText.Split('x');
 
                 _ = int.TryParse(string.Join("", sizes[0].Where(c => char.IsDigit(c))), out int sizeWidth);
