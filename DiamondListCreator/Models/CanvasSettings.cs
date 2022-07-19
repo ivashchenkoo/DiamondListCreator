@@ -230,6 +230,8 @@ namespace DiamondListCreator.Models
                 : sizeWidth < sizeHeight ? ((int)pixelsInOneSm * sizeHeight) : oldSizeWidth;
 
             PageHeight += CanvasHeight - oldCanvasHeight;
+
+            SizeName += "+";
         }
     }
 }
