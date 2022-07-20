@@ -120,6 +120,22 @@ namespace DiamondListCreator.Services
         }
 
         /// <summary>
+        /// Removes all norders from a bitmap that has a specific color
+        /// </summary>
+        /// <param name="bitmap"></param>
+        /// <param name="borderColor"></param>
+        /// <returns>A bitmap without borders</returns>
+        public static Bitmap RemoveBorders(Bitmap bitmap, Color borderColor)
+        {
+            bitmap = RemoveLeftBorder(bitmap, borderColor);
+            bitmap = RemoveTopBorder(bitmap, borderColor);
+            bitmap = RemoveRightBorder(bitmap, borderColor);
+            bitmap = RemoveBottomBorder(bitmap, borderColor);
+
+            return bitmap;
+        }
+
+        /// <summary>
         /// Creates bitmap with a transparent background and with the passed text and the font size
         /// </summary>
         /// <param name="text"></param>
@@ -159,10 +175,7 @@ namespace DiamondListCreator.Services
                 }
             }
 
-            textBitmap = RemoveLeftBorder(textBitmap, Color.FromArgb(255, 255, 255, 255));
-            textBitmap = RemoveTopBorder(textBitmap, Color.FromArgb(255, 255, 255, 255));
-            textBitmap = RemoveRightBorder(textBitmap, Color.FromArgb(255, 255, 255, 255));
-            textBitmap = RemoveBottomBorder(textBitmap, Color.FromArgb(255, 255, 255, 255));
+            textBitmap = RemoveBorders(textBitmap, Color.FromArgb(255, 255, 255, 255));
 
             return textBitmap;
         }
