@@ -118,5 +118,73 @@ namespace DiamondListCreator.Services
 
             return bitmap;
         }
+
+        /// <summary>
+        /// Creates bitmap with a transparent background and with the passed text and the font size
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="fontSize"></param>
+        /// <returns></returns>
+        public static Bitmap CreateBitmapWithText(string text, FontFamily fontFamily, int fontSize)
+        {
+            Bitmap textBitmap;
+
+            using (Font font = new Font(fontFamily, fontSize))
+            {
+                textBitmap = CreateBitmapWithText(text, font);
+            }
+
+            return textBitmap;
+        }
+
+        /// <summary>
+        /// Creates bitmap with a transparent background and with the passed text and the font size
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="fontSize"></param>
+        /// <returns></returns>
+        public static Bitmap CreateBitmapWithText(string text, Font font)
+        {
+            Bitmap textBitmap;
+
+            SizeF sizef = MeasureString(text, font);
+
+            textBitmap = new Bitmap((int)sizef.Width, (int)sizef.Height);
+            textBitmap.MakeTransparent();
+            using (Graphics graph = GetGraphFromImage(textBitmap))
+            {
+                using (SolidBrush drawBrush = new SolidBrush(Color.Black))
+                {
+                    graph.DrawString(text, font, drawBrush, 0, 0);
+                }
+            }
+
+            textBitmap = RemoveLeftBorder(textBitmap, Color.FromArgb(255, 255, 255, 255));
+            textBitmap = RemoveTopBorder(textBitmap, Color.FromArgb(255, 255, 255, 255));
+            textBitmap = RemoveRightBorder(textBitmap, Color.FromArgb(255, 255, 255, 255));
+            textBitmap = RemoveBottomBorder(textBitmap, Color.FromArgb(255, 255, 255, 255));
+
+            return textBitmap;
+        }
+
+        /// <summary>
+        /// Measures the size of the text with the font
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="font"></param>
+        /// <returns></returns>
+        public static SizeF MeasureString(string text, Font font)
+        {
+            SizeF result;
+            using (Bitmap image = new Bitmap(1, 1))
+            {
+                using (Graphics graph = Graphics.FromImage(image))
+                {
+                    result = graph.MeasureString(text, font);
+                }
+            }
+
+            return result;
+        }
     }
 }

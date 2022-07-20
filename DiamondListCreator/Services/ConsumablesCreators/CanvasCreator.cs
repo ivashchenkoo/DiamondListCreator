@@ -519,62 +519,22 @@ namespace DiamondListCreator.Services.ConsumablesCreators
 
                 // Size
                 string sizeStr = "(" + canvasSettings.SizeName + ") - ";
-                using (Bitmap thumbnailBitmap = new Bitmap(diamondPath + "/Вид вышивки.png"))
+                sizeStr += IsVertical(diamondPath)
+                           ? canvasSettings.SizeWidth + "x" + canvasSettings.SizeHeight + "см"
+                           : canvasSettings.SizeHeight + "x" + canvasSettings.SizeWidth + "см";
+
+                float marginRightDiamondname;
+                using (Bitmap sizeBitmap = GraphicsService.CreateBitmapWithText(sizeStr, pfc.Families[0], canvasSettings.DiamondSizeFontSize))
                 {
-                    if (thumbnailBitmap.Height >= thumbnailBitmap.Width)
-                    {
-                        sizeStr += canvasSettings.SizeWidth + "x" + canvasSettings.SizeHeight + "см";
-                    }
-                    else
-                    {
-                        sizeStr += canvasSettings.SizeHeight + "x" + canvasSettings.SizeWidth + "см";
-                    }
+                    marginRightDiamondname = canvasSettings.PageWidth - canvasSettings.MarginRight - sizeBitmap.Width;
+                    graph.DrawImage(sizeBitmap, marginRightDiamondname, canvasSettings.PageHeight - canvasSettings.MarginBottom + ((canvasSettings.MarginBottom - sizeBitmap.Height) / 2));
                 }
-
-                Font font = new Font(pfc.Families[0], canvasSettings.DiamondSizeFontSize);
-                SizeF sizef = graph.MeasureString(sizeStr, font);
-                Bitmap sizeBitmap = new Bitmap((int)sizef.Width, (int)sizef.Height);
-
-                using (Graphics sizeGraphics = GraphicsService.GetGraphFromImage(sizeBitmap))
-                {
-                    sizeGraphics.Clear(Color.White);
-                    using (SolidBrush drawBrush = new SolidBrush(Color.Black))
-                    {
-                        sizeGraphics.DrawString(sizeStr, font, drawBrush, 0, 0);
-                    }
-                }
-
-                sizeBitmap = GraphicsService.RemoveLeftBorder(sizeBitmap, Color.FromArgb(255, 255, 255, 255));
-                sizeBitmap = GraphicsService.RemoveTopBorder(sizeBitmap, Color.FromArgb(255, 255, 255, 255));
-                sizeBitmap = GraphicsService.RemoveBottomBorder(sizeBitmap, Color.FromArgb(255, 255, 255, 255));
-
-                float marginRightDiamondname = canvasSettings.PageWidth - canvasSettings.MarginRight - sizeBitmap.Width;
-                graph.DrawImage(sizeBitmap, marginRightDiamondname, canvasSettings.PageHeight - canvasSettings.MarginBottom + ((canvasSettings.MarginBottom - sizeBitmap.Height) / 2));
-
-                sizeBitmap.Dispose();
 
                 // Diamond Name
-                font = new Font(pfc.Families[0], canvasSettings.DiamondNameFontSize);
-                sizef = graph.MeasureString("#" + diamondName, font);
-                Bitmap diamondNameBitmap = new Bitmap((int)sizef.Width, (int)sizef.Height);
-                using (Graphics diamondNameGraphics = GraphicsService.GetGraphFromImage(diamondNameBitmap))
+                using (Bitmap diamondNameBitmap = GraphicsService.CreateBitmapWithText("#" + diamondName, pfc.Families[0], canvasSettings.DiamondNameFontSize))
                 {
-                    diamondNameGraphics.Clear(Color.White);
-
-                    using (SolidBrush drawBrush = new SolidBrush(Color.Black))
-                    {
-                        diamondNameGraphics.DrawString("#" + diamondName, font, drawBrush, 0, 0);
-                    }
+                    graph.DrawImage(diamondNameBitmap, canvasSettings.MarginLeft + canvasSettings.BottomLogoWidth + ((marginRightDiamondname - (canvasSettings.MarginLeft + canvasSettings.BottomLogoWidth) - diamondNameBitmap.Width) / 2), canvasSettings.PageHeight - canvasSettings.MarginBottom + ((canvasSettings.MarginBottom - diamondNameBitmap.Height) / 2));
                 }
-
-                diamondNameBitmap = GraphicsService.RemoveLeftBorder(diamondNameBitmap, Color.FromArgb(255, 255, 255, 255));
-                diamondNameBitmap = GraphicsService.RemoveRightBorder(diamondNameBitmap, Color.FromArgb(255, 255, 255, 255));
-                diamondNameBitmap = GraphicsService.RemoveTopBorder(diamondNameBitmap, Color.FromArgb(255, 255, 255, 255));
-                diamondNameBitmap = GraphicsService.RemoveBottomBorder(diamondNameBitmap, Color.FromArgb(255, 255, 255, 255));
-                graph.DrawImage(diamondNameBitmap, canvasSettings.MarginLeft + canvasSettings.BottomLogoWidth + ((marginRightDiamondname - (canvasSettings.MarginLeft + canvasSettings.BottomLogoWidth) - diamondNameBitmap.Width) / 2), canvasSettings.PageHeight - canvasSettings.MarginBottom + ((canvasSettings.MarginBottom - diamondNameBitmap.Height) / 2));
-
-                diamondNameBitmap.Dispose();
-                font.Dispose();
             }
 
             return template;
