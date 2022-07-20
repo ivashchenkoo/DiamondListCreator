@@ -91,6 +91,18 @@ namespace DiamondListCreator.Models
         [JsonProperty("Ширина холста зі схеми")]
         public int CanvasFromShemeWidth { get; set; }
 
+        [JsonProperty("Розмір шрифту")]
+        public int FontSize { get; set; }
+
+        [JsonProperty("Відступ збоку бокових елементів")]
+        public int SideElementSideOffset { get; set; }
+
+        [JsonProperty("Відступ знизу бокових елементів")]
+        public int SideElementBottomOffset { get; set; }
+
+        [JsonProperty("Висота бокових елементів")]
+        public int SideElementHeight { get; set; }
+
         public int MarginLeft { get; set; }
 
         public int MarginTop { get; set; }

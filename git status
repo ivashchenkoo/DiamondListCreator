@@ -1,0 +1,40 @@
+[33m385795a[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m Added stretched canvases creation
+[33m4b570c3[m Added stretched canvas settings model
+[33m0bca41d[m Fixed the size name property for non standard sizes
+[33mdf6cea6[m Added command to call the consumables creator
+[33me270675[m Fixed bugs with the legend template and canvas elements
+[33m7529934[m Fixed issues with text recognizing
+[33mbfddd9c[m Added tess files
+[33m6962f3c[m Added functionality to choose and change paths settings
+[33m6b590b0[m Added ui elements to change path settings
+[33mb4f64e4[m Added functionality to convert passed string to DiamondSettings model
+[33m5f9dffc[m Added automatic saving path settings
+[33m468822f[m Added saving new canvas settings, created by aspect ratio
+[33m645075b[m Fixed an issue with confusion between diamond width and height
+[33m7f96ba5[m Fixed the path settings json path
+[33mdefb123[m Added application icon
+[33m2faef91[m Added async methods
+[33ma8986f9[m Added MS Excel package and creation of diamonds list
+[33m68f873a[m Added creation of diamond colors list stickers
+[33m9bd7069[m Added functionality to create new page and to draw text on page
+[33m91d464f[m Changed saving files names
+[33m8d573db[m Fixed some mistakes
+[33mc55b048[m Fixed a mistake
+[33mcb535b1[m Added functionality to create and save standard canvases
+[33m4685b9c[m Added new method to save all files to new folder in the specified directory
+[33md432369[m Added images for canvas creation
+[33m9a375b2[m Added ocr service
+[33m3db3a4b[m Added size letter property
+[33mf201247[m Fixed a mistake in english text
+[33m90df58e[m Fixed the order of adding pages to pdf document
+[33mb53d3e8[m Added service for creation an instance of pdf document
+[33m99bfa8c[m Fixed some bugs and updated legend template for english version
+[33m01f92aa[m Fixed issue with same names in File saving class
+[33m1490bd2[m Added creation of english version legends
+[33m3035d3c[m Added stickers creation
+[33m731e620[m Fixed comment
+[33me966c4c[m Moved private font collection initialisation to separate class
+[33me0d9425[m Transferred methods for working with graphics to a separate class
+[33m1d518e4[m Added legends creation
+[33m277dc83[m Add README.md.
+[33mc1d9dae[m Initial commit
