@@ -518,7 +518,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                 }
 
                 // Size
-                string sizeStr = "(" + canvasSettings.SizeName + ") - ";
+                string sizeStr = "(" + canvasSettings.SizeName.Replace("+", "") + ") - ";
                 sizeStr += IsVertical(diamondPath)
                            ? canvasSettings.SizeWidth + "x" + canvasSettings.SizeHeight + "см"
                            : canvasSettings.SizeHeight + "x" + canvasSettings.SizeWidth + "см";
