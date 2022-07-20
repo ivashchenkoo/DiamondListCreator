@@ -127,11 +127,13 @@
     <Compile Include="Models\DiamondColor.cs" />
     <Compile Include="Models\DiamondSettings.cs" />
     <Compile Include="Models\PathSettings.cs" />
+    <Compile Include="Models\StretchedCanvasSettings.cs" />
     <Compile Include="Services\CanvasesService.cs" />
     <Compile Include="Services\CanvasSettingsService.cs" />
     <Compile Include="Services\ConsumablesCreators\CanvasCreator.cs" />
     <Compile Include="Services\ConsumablesCreators\ColorsListCreator.cs" />
     <Compile Include="Services\ConsumablesCreators\StickerCreator.cs" />
+    <Compile Include="Services\ConsumablesCreators\StretchedCanvasCreator.cs" />
     <Compile Include="Services\CreatorService.cs" />
     <Compile Include="Services\DiamondListService.cs" />
     <Compile Include="Services\DiamondSettingsService.cs" />
@@ -145,6 +147,7 @@
     <Compile Include="Services\PdfDocumentService.cs" />
     <Compile Include="Services\StickersService.cs" />
     <Compile Include="Services\PathSettingsService.cs" />
+    <Compile Include="Services\StretchedCanvasSettingsService.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -168,6 +171,9 @@
     <Resource Include="tessdata\pdf.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Content Include="Config\stretched_canvases.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="tessdata\configs\config.cfg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

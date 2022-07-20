@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 
 namespace DiamondListCreator.Services
@@ -8,10 +9,10 @@ namespace DiamondListCreator.Services
         public static Graphics GetGraphFromImage(Bitmap image)
         {
             Graphics graph = Graphics.FromImage(image);
-            graph.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
-            graph.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            graph.CompositingMode = CompositingMode.SourceOver;
+            graph.SmoothingMode = SmoothingMode.HighQuality;
             graph.TextRenderingHint = TextRenderingHint.AntiAlias;
-            graph.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+            graph.CompositingQuality = CompositingQuality.HighQuality;
 
             return graph;
         }

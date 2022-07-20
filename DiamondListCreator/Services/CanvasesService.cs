@@ -20,16 +20,24 @@ namespace DiamondListCreator.Services
             FileService.SaveAllToNewFolder(paths.CanvasesSavePath, $"Old {DateTime.Now}".Replace(":", "_"));
 
             CanvasCreator canvasCreator = new CanvasCreator(FontCollectionService.InitCustomFont(Properties.Resources.VanishingSizeName_Regular));
+            StretchedCanvasCreator stretchedCanvasCreator = new StretchedCanvasCreator(FontCollectionService.InitCustomFont(Properties.Resources.VanishingSizeName_Regular));
             string diamondsListString = "";
             for (int i = 0; i < diamonds.Count; i++)
             {
                 if (diamonds[i].IsStretchedCanvas)
                 {
                     diamondsListString += $"{diamonds[i].Name}P\n";
+
+                    using (Bitmap canvas = stretchedCanvasCreator.Create(diamonds[i]))
+                    {
+                        canvas.SetResolution(72f, 72f);
+                        FileService.SaveBitmapInTif(canvas, paths.CanvasesSavePath, diamonds[i].Name + "P");
+                    }
                 }
                 else
                 {
                     diamondsListString += $"{diamonds[i].Name}\n";
+
                     if (!CopySavedCanvas(diamonds[i].Name, paths.SavedCanvasesPath, paths.CanvasesSavePath))
                     {
                         using (Bitmap canvas = canvasCreator.Create(diamonds[i]))

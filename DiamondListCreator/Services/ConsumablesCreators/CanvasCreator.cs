@@ -12,7 +12,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
     public class CanvasCreator
     {
         private readonly PrivateFontCollection pfc;
-        private List<CanvasSettings> canvasesSettings;
+        private readonly List<CanvasSettings> canvasesSettings;
 
         public CanvasCreator(PrivateFontCollection pfc)
         {
