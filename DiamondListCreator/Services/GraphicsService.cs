@@ -141,13 +141,13 @@ namespace DiamondListCreator.Services
         /// <param name="text"></param>
         /// <param name="fontSize"></param>
         /// <returns></returns>
-        public static Bitmap CreateBitmapWithText(string text, FontFamily fontFamily, int fontSize)
+        public static Bitmap CreateTextBitmap(string text, FontFamily fontFamily, int fontSize, FontStyle fontStyle, Color color)
         {
             Bitmap textBitmap;
-
-            using (Font font = new Font(fontFamily, fontSize))
+            
+            using (Font font = new Font(fontFamily, fontSize, fontStyle))
             {
-                textBitmap = CreateBitmapWithText(text, font);
+                textBitmap = CreateTextBitmap(text, font, color);
             }
 
             return textBitmap;
@@ -159,7 +159,7 @@ namespace DiamondListCreator.Services
         /// <param name="text"></param>
         /// <param name="fontSize"></param>
         /// <returns></returns>
-        public static Bitmap CreateBitmapWithText(string text, Font font)
+        public static Bitmap CreateTextBitmap(string text, Font font, Color color)
         {
             Bitmap textBitmap;
 
@@ -169,7 +169,56 @@ namespace DiamondListCreator.Services
             textBitmap.MakeTransparent();
             using (Graphics graph = GetGraphFromImage(textBitmap))
             {
-                using (SolidBrush drawBrush = new SolidBrush(Color.Black))
+                using (SolidBrush drawBrush = new SolidBrush(color))
+                {
+                    graph.DrawString(text, font, drawBrush, 0, 0);
+                }
+            }
+
+            textBitmap = RemoveBorders(textBitmap, Color.FromArgb(255, 255, 255, 255));
+
+            return textBitmap;
+        }
+
+        /// <summary>
+        /// Creates bitmap with a transparent background and with the passed text and the font size
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="fontSize"></param>
+        /// <returns></returns>
+        public static Bitmap CreateTextBitmapWithShadow(string text, FontFamily fontFamily, int fontSize, FontStyle fontStyle, Color color, Color shadowColor, Size shadowOffset)
+        {
+            Bitmap textBitmap;
+
+            using (Font font = new Font(fontFamily, fontSize, fontStyle))
+            {
+                textBitmap = CreateTextBitmapWithShadow(text, font, color, shadowColor, shadowOffset);
+            }
+
+            return textBitmap;
+        }
+
+        /// <summary>
+        /// Creates bitmap with a transparent background, shadow and with the passed text and the font size
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="fontSize"></param>
+        /// <returns></returns>
+        public static Bitmap CreateTextBitmapWithShadow(string text, Font font, Color color, Color shadowColor, Size shadowOffset)
+        {
+            Bitmap textBitmap;
+
+            SizeF sizef = MeasureString(text, font);
+
+            textBitmap = new Bitmap((int)sizef.Width, (int)sizef.Height);
+            textBitmap.MakeTransparent();
+            using (Graphics graph = GetGraphFromImage(textBitmap))
+            {
+                using (SolidBrush shadowBrush = new SolidBrush(shadowColor))
+                {
+                    graph.DrawString(text, font, shadowBrush, shadowOffset.Width, shadowOffset.Height);
+                }
+                using (SolidBrush drawBrush = new SolidBrush(color))
                 {
                     graph.DrawString(text, font, drawBrush, 0, 0);
                 }
