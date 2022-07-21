@@ -66,7 +66,7 @@ namespace DiamondListCreator.Services
                     failedDiamonds += $"{name} - не знайдено\n";
                     continue;
                 }
-                else if (Directory.Exists(path + "/new") || Directory.Exists(path + "/new2"))
+                else if (HasSubfolders(path))
                 {
                     failedDiamonds += $"{name} - папка new\n";
                     continue;
@@ -95,6 +95,17 @@ namespace DiamondListCreator.Services
             }
 
             return diamonds;
+        }
+
+        /// <summary>
+        /// Checks if the directory has subfolders
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns>True if the directory has subfolders, false if its not</returns>
+        private static bool HasSubfolders(string path)
+        {
+            IEnumerable<string> subfolders = Directory.EnumerateDirectories(path);
+            return subfolders != null && subfolders.Any();
         }
 
         /// <summary>
