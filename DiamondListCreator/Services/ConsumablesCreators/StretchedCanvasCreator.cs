@@ -48,7 +48,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                 {
                     throw new Exception("Creating horizontally placed canvases on a sheet is currently not available.");
                 }
-                canvasSettings.SetSize(diamond.Width, diamond.Height);
+                canvasSettings.SetSize(width, height);
                 canvasesSettings.Add(canvasSettings);
                 StretchedCanvasSettingsService.WriteSettings(canvasesSettings.ToArray());
             }
@@ -59,7 +59,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
         }
 
         /// <summary>
-        /// Creates a vertically positioned canvas
+        /// Creates a horizontally positioned canvas
         /// </summary>
         private Bitmap CreateHorizontalCanvas(StretchedCanvasSettings canvasSettings, DiamondSettings diamond)
         {
@@ -71,32 +71,47 @@ namespace DiamondListCreator.Services.ConsumablesCreators
 
                 int sideBarWidth = canvasSettings.CanvasWidth;
                 int sideBarHeight = canvasSettings.BorderHeight;
+                int sideElementOffset = canvasSettings.SideElementOffsetHorizontal;
 
                 using (Bitmap shemeBitmap = new Bitmap(diamond.Path + "/Схема для печати.png"))
                 {
-                    Bitmap thumbnail = new Bitmap(diamond.Path + "/Вид вышивки.png");
+                    Bitmap thumbnail;
+                    using (Bitmap thumbnailTemp = new Bitmap(diamond.Path + "/Вид вышивки.png"))
+                    {
+                        thumbnail = new Bitmap(thumbnailTemp.Width, thumbnailTemp.Height);
+                        using (Graphics thumbnailGraph = GraphicsService.GetGraphFromImage(thumbnail))
+                        {
+                            thumbnailGraph.Clear(Color.Black);
+                            thumbnailGraph.DrawImage(thumbnailTemp, 0, 0, thumbnailTemp.Width, thumbnailTemp.Height);
+                        }
+                    }                   
 
                     if (IsVertical(thumbnail))
                     {
                         thumbnail.RotateFlip(RotateFlipType.Rotate270FlipNone);
-                        shemeBitmap.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                        shemeBitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);
 
-                        sideBarWidth = canvasSettings.BorderWidth;
-                        sideBarHeight = canvasSettings.CanvasHeight;
+                        sideBarWidth = canvasSettings.CanvasHeight;
+                        sideBarHeight = canvasSettings.BorderWidth;
+                        sideElementOffset = canvasSettings.SideElementOffsetVertical;
                     }
-
-                    Bitmap sheme = GraphicsService.CutRectangleFromBitmap(shemeBitmap, canvasSettings.CanvasFromShemeMarginLeft, canvasSettings.CanvasFromShemeMarginTop, shemeBitmap.Width - 2 - (canvasSettings.CanvasFromShemeMarginLeft * 2), canvasSettings.CanvasFromShemeWidth);
-                    sheme = GraphicsService.RemoveBorders(sheme, Color.FromArgb(255, 255, 255, 255));
-                    graph.DrawImage(sheme, canvasSettings.MarginLeft, canvasSettings.MarginTop, canvasSettings.CanvasWidth, canvasSettings.CanvasHeight);
-                    sheme.Dispose();
 
                     thumbnail = new Bitmap(thumbnail, new Size(canvasSettings.CanvasWidth, canvasSettings.CanvasHeight));
                     graph.DrawImage(CreateBorders(canvas, thumbnail, canvasSettings), 0, 0);
 
-                    using (Bitmap sideElements = CreateSideElements(sideBarWidth, sideBarHeight, canvasSettings.SideElementHeight, canvasSettings.SideElementSideOffset,
-                                                                    canvasSettings.SideElementBottomOffset, diamond))
+                    Bitmap sheme = GraphicsService.CutRectangleFromBitmap(shemeBitmap, canvasSettings.CanvasFromShemeMarginLeft, canvasSettings.CanvasFromShemeMarginTop, shemeBitmap.Width - 2 - (canvasSettings.CanvasFromShemeMarginLeft * 2), canvasSettings.CanvasFromShemeWidth);
+                    sheme = GraphicsService.RemoveBorders(sheme, Color.FromArgb(255, 255, 255, 255));
+                    if (IsVertical(diamond.Path))
                     {
-                        if (!IsVertical(thumbnail))
+                        sheme.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                    }
+                    graph.DrawImage(sheme, canvasSettings.MarginLeft, canvasSettings.MarginTop, canvasSettings.CanvasWidth, canvasSettings.CanvasHeight);
+                    sheme.Dispose();
+
+                    using (Bitmap sideElements = CreateSideElements(sideBarWidth, sideBarHeight, canvasSettings.SideElementHeight, canvasSettings.SideElementSideOffset,
+                                                                    sideElementOffset, diamond))
+                    {
+                        if (!IsVertical(diamond.Path))
                         {
                             sideElements.RotateFlip(RotateFlipType.Rotate180FlipNone);
                             graph.DrawImage(sideElements, canvasSettings.MarginLeft, canvasSettings.MarginBottom, sideElements.Width, sideElements.Height);
@@ -109,7 +124,75 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                     }
 
                     thumbnail.Dispose();
-                }                
+                }
+            }
+
+            return canvas;
+        }
+
+        /// <summary>
+        /// Creates a vertically arranged canvas
+        /// </summary>
+        private Bitmap CreateVerticalCanvas(StretchedCanvasSettings canvasSettings, DiamondSettings diamond)
+        {
+            Bitmap canvas = new Bitmap(canvasSettings.PageWidth, canvasSettings.PageHeight);
+
+            using (Graphics graph = GraphicsService.GetGraphFromImage(canvas))
+            {
+                graph.Clear(Color.White);
+
+                int sideBarWidth = canvasSettings.CanvasWidth;
+                int sideBarHeight = canvasSettings.BorderHeight;
+                int sideElementOffset = canvasSettings.SideElementOffsetVertical;
+
+                using (Bitmap shemeBitmap = new Bitmap(diamond.Path + "/Схема для печати.png"))
+                {
+                    Bitmap thumbnail;
+                    using (Bitmap thumbnailTemp = new Bitmap(diamond.Path + "/Вид вышивки.png"))
+                    {
+                        thumbnail = new Bitmap(thumbnailTemp.Width, thumbnailTemp.Height);
+                        using (Graphics thumbnailGraph = GraphicsService.GetGraphFromImage(thumbnail))
+                        {
+                            thumbnailGraph.Clear(Color.Black);
+                            thumbnailGraph.DrawImage(thumbnailTemp, 0, 0, thumbnailTemp.Width, thumbnailTemp.Height);
+                        }
+                    }
+
+                    if (!IsVertical(thumbnail))
+                    {
+                        thumbnail.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                        shemeBitmap.RotateFlip(RotateFlipType.Rotate270FlipNone);
+
+                        sideBarWidth = canvasSettings.CanvasHeight;
+                        sideBarHeight = canvasSettings.BorderWidth;
+                        sideElementOffset = canvasSettings.SideElementOffsetHorizontal;
+                    }
+
+                    thumbnail = new Bitmap(thumbnail, new Size(canvasSettings.CanvasWidth, canvasSettings.CanvasHeight));
+                    graph.DrawImage(CreateBorders(canvas, thumbnail, canvasSettings), 0, 0);
+
+                    Bitmap sheme = GraphicsService.CutRectangleFromBitmap(shemeBitmap, canvasSettings.CanvasFromShemeMarginLeft, canvasSettings.CanvasFromShemeMarginTop, canvasSettings.CanvasFromShemeWidth, shemeBitmap.Height - 2 - (canvasSettings.CanvasFromShemeMarginTop * 2));
+                    sheme = GraphicsService.RemoveBorders(sheme, Color.FromArgb(255, 255, 255, 255));
+                    graph.DrawImage(sheme, canvasSettings.MarginLeft, canvasSettings.MarginTop, canvasSettings.CanvasWidth, canvasSettings.CanvasHeight);
+                    sheme.Dispose();
+
+                    using (Bitmap sideElements = CreateSideElements(sideBarWidth, sideBarHeight, canvasSettings.SideElementHeight, canvasSettings.SideElementSideOffset,
+                                                                    sideElementOffset, diamond))
+                    {
+                        if (IsVertical(diamond.Path))
+                        {
+                            sideElements.RotateFlip(RotateFlipType.Rotate180FlipNone);
+                            graph.DrawImage(sideElements, canvasSettings.MarginLeft, canvasSettings.MarginBottom, sideElements.Width, sideElements.Height);
+                        }
+                        else
+                        {
+                            sideElements.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                            graph.DrawImage(sideElements, canvasSettings.MarginRight, canvasSettings.MarginTop, sideElements.Width, sideElements.Height);
+                        }
+                    }
+
+                    thumbnail.Dispose();
+                }
             }
 
             return canvas;
@@ -175,63 +258,6 @@ namespace DiamondListCreator.Services.ConsumablesCreators
         }
 
         /// <summary>
-        /// Creates a horizontally arranged canvas
-        /// </summary>
-        private Bitmap CreateVerticalCanvas(StretchedCanvasSettings canvasSettings, DiamondSettings diamond)
-        {
-            Bitmap canvas = new Bitmap(canvasSettings.PageWidth, canvasSettings.PageHeight);
-
-            using (Graphics graph = GraphicsService.GetGraphFromImage(canvas))
-            {
-                graph.Clear(Color.White);
-
-                int sideBarWidth = canvasSettings.CanvasWidth;
-                int sideBarHeight = canvasSettings.BorderHeight;
-
-                using (Bitmap shemeBitmap = new Bitmap(diamond.Path + "/Схема для печати.png"))
-                {
-                    Bitmap thumbnail = new Bitmap(diamond.Path + "/Вид вышивки.png");
-
-                    if (!IsVertical(thumbnail))
-                    {
-                        thumbnail.RotateFlip(RotateFlipType.Rotate270FlipNone);
-                        shemeBitmap.RotateFlip(RotateFlipType.Rotate270FlipNone);
-
-                        sideBarWidth = canvasSettings.BorderWidth;
-                        sideBarHeight = canvasSettings.CanvasHeight;
-                    }
-
-                    Bitmap sheme = GraphicsService.CutRectangleFromBitmap(shemeBitmap, canvasSettings.CanvasFromShemeMarginLeft, canvasSettings.CanvasFromShemeMarginTop, canvasSettings.CanvasFromShemeWidth, shemeBitmap.Height - 2 - (canvasSettings.CanvasFromShemeMarginTop * 2));
-                    sheme = GraphicsService.RemoveBorders(sheme, Color.FromArgb(255, 255, 255, 255));
-                    graph.DrawImage(sheme, canvasSettings.MarginLeft, canvasSettings.MarginTop, canvasSettings.CanvasWidth, canvasSettings.CanvasHeight);
-                    sheme.Dispose();
-
-                    thumbnail = new Bitmap(thumbnail, new Size(canvasSettings.CanvasWidth, canvasSettings.CanvasHeight));
-                    graph.DrawImage(CreateBorders(canvas, thumbnail, canvasSettings), 0, 0);
-
-                    using (Bitmap sideElements = CreateSideElements(sideBarWidth, sideBarHeight, canvasSettings.SideElementHeight, canvasSettings.SideElementSideOffset,
-                                                                    canvasSettings.SideElementBottomOffset, diamond))
-                    {
-                        if (IsVertical(thumbnail))
-                        {
-                            sideElements.RotateFlip(RotateFlipType.Rotate180FlipNone);
-                            graph.DrawImage(sideElements, canvasSettings.MarginLeft, canvasSettings.MarginBottom, sideElements.Width, sideElements.Height);
-                        }
-                        else
-                        {
-                            sideElements.RotateFlip(RotateFlipType.Rotate90FlipNone);
-                            graph.DrawImage(sideElements, canvasSettings.MarginRight, canvasSettings.MarginTop, sideElements.Width, sideElements.Height);
-                        }
-                    }
-
-                    thumbnail.Dispose();
-                }
-            }
-
-            return canvas;
-        }
-
-        /// <summary>
         /// Creates a bitmap with horizontal orientation with side elements (size, name, logo)
         /// </summary>
         /// <param name="width">The width of the result bitmap</param>
@@ -244,14 +270,22 @@ namespace DiamondListCreator.Services.ConsumablesCreators
 
             using (Graphics graph = GraphicsService.GetGraphFromImage(sideBitmap))
             {
-                // Bottom logo
-                using (Bitmap logoBitmap = new Bitmap(Properties.Resources.diamonds_logo))
+                // Logo
+                using (Bitmap logoBitmap = new Bitmap(Properties.Resources.diamonds_logo_white))
                 {
-                    graph.DrawImage(logoBitmap, sideElementSideOffset, sideElementBottomOffset, logoBitmap.Width / logoBitmap.Height * sideElementHeight, sideElementHeight);
+                    int newWidth = logoBitmap.Width / logoBitmap.Height * sideElementHeight;
+
+                    // Logo shadow
+                    using (Bitmap shadowBitmap = new Bitmap(Properties.Resources.diamonds_logo_black))
+                    {
+                        graph.DrawImage(shadowBitmap, sideElementSideOffset + 2, sideElementBottomOffset + 2, newWidth, sideElementHeight);
+                    }
+
+                    graph.DrawImage(logoBitmap, sideElementSideOffset, sideElementBottomOffset, newWidth, sideElementHeight);
                 }
 
                 // Diamond Name
-                using (Bitmap diamondNameBitmap = GraphicsService.CreateBitmapWithText("#" + diamond.Name, pfc.Families[0], 200))
+                using (Bitmap diamondNameBitmap = GraphicsService.CreateTextBitmapWithShadow(diamond.Name, pfc.Families[0], 200, FontStyle.Bold, Color.White, Color.Black, new Size(5, 5)))
                 {
                     int newWidth = diamondNameBitmap.Width / diamondNameBitmap.Height * sideElementHeight;
                     graph.DrawImage(diamondNameBitmap, (width - newWidth) / 2, sideElementBottomOffset, newWidth, sideElementHeight);
@@ -260,7 +294,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                 // Size
                 string sizeStr = "(" + diamond.SizeLetter.Replace("+", "") + ") - " + diamond.Width + "x" + diamond.Height + "см";
 
-                using (Bitmap sizeBitmap = GraphicsService.CreateBitmapWithText(sizeStr, pfc.Families[0], 200))
+                using (Bitmap sizeBitmap = GraphicsService.CreateTextBitmapWithShadow(sizeStr, pfc.Families[0], 200, FontStyle.Bold, Color.White, Color.Black, new Size(5, 5)))
                 {
                     int newWidth = sizeBitmap.Width / sizeBitmap.Height * sideElementHeight;
                     graph.DrawImage(sizeBitmap, width - sideElementSideOffset - newWidth, sideElementBottomOffset, newWidth, sideElementHeight);
