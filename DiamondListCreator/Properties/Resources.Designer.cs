@@ -73,6 +73,26 @@ namespace DiamondListCreator.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap diamonds_logo_black {
+            get {
+                object obj = ResourceManager.GetObject("diamonds_logo_black", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap diamonds_logo_white {
+            get {
+                object obj = ResourceManager.GetObject("diamonds_logo_white", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap dmc {
             get {
                 object obj = ResourceManager.GetObject("dmc", resourceCulture);
