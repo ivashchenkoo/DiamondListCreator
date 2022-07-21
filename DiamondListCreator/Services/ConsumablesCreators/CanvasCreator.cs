@@ -524,14 +524,14 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                            : canvasSettings.SizeHeight + "x" + canvasSettings.SizeWidth + "см";
 
                 float marginRightDiamondname;
-                using (Bitmap sizeBitmap = GraphicsService.CreateBitmapWithText(sizeStr, pfc.Families[0], canvasSettings.DiamondSizeFontSize))
+                using (Bitmap sizeBitmap = GraphicsService.CreateTextBitmap(sizeStr, pfc.Families[0], canvasSettings.DiamondSizeFontSize, FontStyle.Regular, Color.Black))
                 {
                     marginRightDiamondname = canvasSettings.PageWidth - canvasSettings.MarginRight - sizeBitmap.Width;
                     graph.DrawImage(sizeBitmap, marginRightDiamondname, canvasSettings.PageHeight - canvasSettings.MarginBottom + ((canvasSettings.MarginBottom - sizeBitmap.Height) / 2));
                 }
 
                 // Diamond Name
-                using (Bitmap diamondNameBitmap = GraphicsService.CreateBitmapWithText("#" + diamondName, pfc.Families[0], canvasSettings.DiamondNameFontSize))
+                using (Bitmap diamondNameBitmap = GraphicsService.CreateTextBitmap("#" + diamondName, pfc.Families[0], canvasSettings.DiamondNameFontSize, FontStyle.Regular, Color.Black))
                 {
                     graph.DrawImage(diamondNameBitmap, canvasSettings.MarginLeft + canvasSettings.BottomLogoWidth + ((marginRightDiamondname - (canvasSettings.MarginLeft + canvasSettings.BottomLogoWidth) - diamondNameBitmap.Width) / 2), canvasSettings.PageHeight - canvasSettings.MarginBottom + ((canvasSettings.MarginBottom - diamondNameBitmap.Height) / 2));
                 }
