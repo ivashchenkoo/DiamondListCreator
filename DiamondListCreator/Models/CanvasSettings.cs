@@ -13,8 +13,20 @@ namespace DiamondListCreator.Models
         [JsonProperty("Розмір Висота")]
         public int SizeHeight { get; set; }
 
+        private int _pageWidth;
         [JsonProperty("Ширина листа")]
-        public int PageWidth { get; set; }
+        public int PageWidth
+        {
+            get { return _pageWidth; }
+            set
+            {
+                _pageWidth = value;
+                if (IsSizePropertiesInitialized())
+                {
+                    SetMargins();
+                }
+            }
+        }
 
         private int _pageHeight;
         [JsonProperty("Висота листа")]
@@ -24,15 +36,27 @@ namespace DiamondListCreator.Models
             set
             {
                 _pageHeight = value;
-                if (CanvasHeight != 0)
+                if (IsSizePropertiesInitialized())
                 {
                     SetMargins();
                 }
             }
         }
 
+        private int _canvasWidth;
         [JsonProperty("Ширина холста")]
-        public int CanvasWidth { get; set; }
+        public int CanvasWidth
+        {
+            get { return _canvasWidth; }
+            set
+            {
+                _canvasWidth = value;
+                if (IsSizePropertiesInitialized())
+                {
+                    SetMargins();
+                }
+            }
+        }
 
         private int _canvasHeight;
         [JsonProperty("Висота холста")]
@@ -42,12 +66,27 @@ namespace DiamondListCreator.Models
             set
             {
                 _canvasHeight = value;
-                SetMargins();
+                if (IsSizePropertiesInitialized())
+                {
+                    SetMargins();
+                }
             }
         }
 
+        private int _canvasMarginLeft;
         [JsonProperty("Відступ холста зліва")]
-        public int CanvasMarginLeft { get; set; }
+        public int CanvasMarginLeft
+        {
+            get { return _canvasMarginLeft; }
+            set
+            {
+                _canvasMarginLeft = value;
+                if (IsSizePropertiesInitialized())
+                {
+                    SetMargins();
+                }
+            }
+        }
 
         [JsonProperty("Зсув готового холста ліворуч")]
         public int PageOffsetX { get; set; }
@@ -133,16 +172,16 @@ namespace DiamondListCreator.Models
         [JsonProperty("Відступ зверху до легенди на горизонтальній схемі")]
         public int LegendsFromShemeHorizontalMarginTop { get; set; }
 
-        [JsonProperty("Відступ зверху")]
+        [JsonIgnore]
         public int MarginTop { get; set; }
 
-        [JsonProperty("Відступ знизу")]
+        [JsonIgnore]
         public int MarginBottom { get; set; }
 
-        [JsonProperty("Відступ ліворуч")]
+        [JsonIgnore]
         public int MarginLeft { get; set; }
 
-        [JsonProperty("Відступ праворуч")]
+        [JsonIgnore]
         public int MarginRight { get; set; }
 
         public CanvasSettings()
@@ -218,20 +257,28 @@ namespace DiamondListCreator.Models
         /// <returns></returns>
         public void SetSize(int sizeWidth, int sizeHeight)
         {
-            int oldSizeWidth = SizeWidth;
             int oldSizeHeight = SizeHeight;
             int oldCanvasHeight = CanvasHeight;
             SizeWidth = sizeWidth;
             SizeHeight = sizeHeight;
 
-            float pixelsInOneSm = oldCanvasHeight / oldSizeHeight;
-            CanvasHeight = sizeWidth > sizeHeight
-                ? ((int)pixelsInOneSm * sizeWidth)
-                : sizeWidth < sizeHeight ? ((int)pixelsInOneSm * sizeHeight) : oldSizeWidth;
-
+            if (sizeWidth == sizeHeight)
+            {
+                CanvasHeight = CanvasWidth;
+            }
+            else
+            {
+                float pixelsInOneSm = oldCanvasHeight / oldSizeHeight;
+                CanvasHeight = (int)pixelsInOneSm * SizeHeight;
+            }
             PageHeight += CanvasHeight - oldCanvasHeight;
 
             SizeName += "+";
+        }
+
+        private bool IsSizePropertiesInitialized()
+        {
+            return PageWidth != 0 && PageHeight != 0 && CanvasWidth != 0 && CanvasHeight != 0 && CanvasMarginLeft != 0;
         }
     }
 }

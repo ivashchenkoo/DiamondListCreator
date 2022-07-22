@@ -51,7 +51,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
             if (canvasSettings == null)
             {
                 canvasSettings = new CanvasSettings(GetCanvasSettings(diamond.SizeLetter));
-                canvasSettings.SetSize(diamond.Width, diamond.Height);
+                canvasSettings.SetSize(width, height);
                 canvasesSettings.Add(canvasSettings);
                 CanvasSettingsService.WriteSettings(canvasesSettings.ToArray());
             }
@@ -562,7 +562,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                     using (Bitmap canvasCopy = new Bitmap(canvas))
                     {
                         graph.Clear(Color.White);
-                        graph.DrawImage(canvasCopy, canvasSettings.PageOffsetX, 0);
+                        graph.DrawImage(canvasCopy, -canvasSettings.PageOffsetX, 0);
                     }
                 }
             }
