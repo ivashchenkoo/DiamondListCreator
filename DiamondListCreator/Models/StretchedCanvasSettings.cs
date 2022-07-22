@@ -103,12 +103,16 @@ namespace DiamondListCreator.Models
         [JsonProperty("Висота бокових елементів")]
         public int SideElementHeight { get; set; }
 
+        [JsonIgnore]
         public int MarginLeft { get; set; }
 
+        [JsonIgnore]
         public int MarginTop { get; set; }
 
+        [JsonIgnore]
         public int MarginRight { get; set; }
 
+        [JsonIgnore]
         public int MarginBottom { get; set; }
 
         public StretchedCanvasSettings()
@@ -123,12 +127,8 @@ namespace DiamondListCreator.Models
             SizeHeight = stretchedCanvasSettings.SizeHeight;
             IsVertical = stretchedCanvasSettings.IsVertical;
             PageWidth = stretchedCanvasSettings.PageWidth;
-            PageWidth = stretchedCanvasSettings.PageWidth;
-            PageHeight = stretchedCanvasSettings.PageHeight;
             PageHeight = stretchedCanvasSettings.PageHeight;
             CanvasWidth = stretchedCanvasSettings.CanvasWidth;
-            CanvasWidth = stretchedCanvasSettings.CanvasWidth;
-            CanvasHeight = stretchedCanvasSettings.CanvasHeight;
             CanvasHeight = stretchedCanvasSettings.CanvasHeight;
             BorderWidth = stretchedCanvasSettings.BorderWidth;
             BorderHeight = stretchedCanvasSettings.BorderHeight;
@@ -147,20 +147,28 @@ namespace DiamondListCreator.Models
 
         public void SetSize(int sizeWidth, int sizeHeight)
         {
-            int oldSizeWidth = SizeWidth;
+            if (!IsVertical)
+            {
+                IsVertical = true;
+                PageHeight = PageWidth - (PageWidth - CanvasWidth - BorderWidth * 2);
+                SwapCanvasHeightAndWidth();
+            }
+
             int oldSizeHeight = SizeHeight;
             int oldCanvasHeight = CanvasHeight;
             SizeWidth = sizeWidth;
             SizeHeight = sizeHeight;
 
             float pixelsInOneSm = oldCanvasHeight / oldSizeHeight;
-            CanvasHeight = sizeWidth > sizeHeight
-                ? ((int)pixelsInOneSm * sizeWidth)
-                : sizeWidth < sizeHeight ? ((int)pixelsInOneSm * sizeHeight) : oldSizeWidth;
-
+            CanvasHeight = (int)pixelsInOneSm * SizeHeight;
             PageHeight += CanvasHeight - oldCanvasHeight;
 
             SizeName += "+";
+        }
+        
+        private void SwapCanvasHeightAndWidth()
+        {
+            (CanvasHeight, CanvasWidth) = (CanvasWidth, CanvasHeight);
         }
 
         private bool IsSizePropertiesInitialized()

@@ -1,5 +1,4 @@
 ﻿using DiamondListCreator.Models;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Text;
@@ -44,10 +43,10 @@ namespace DiamondListCreator.Services.ConsumablesCreators
             if (canvasSettings == null)
             {
                 canvasSettings = new StretchedCanvasSettings(GetCanvasSettings(diamond.SizeLetter));
-                if (!canvasSettings.IsVertical)
+                /*if (!canvasSettings.IsVertical)
                 {
                     throw new Exception("Creating horizontally placed canvases on a sheet is currently not available.");
-                }
+                }*/
                 canvasSettings.SetSize(width, height);
                 canvasesSettings.Add(canvasSettings);
                 StretchedCanvasSettingsService.WriteSettings(canvasesSettings.ToArray());
