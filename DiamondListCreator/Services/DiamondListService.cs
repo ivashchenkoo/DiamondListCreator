@@ -58,7 +58,7 @@ namespace DiamondListCreator.Services
                     xlWorkSheet.Cells[row, 1] = diamondColors[j].Name;
                     xlWorkSheet.Cells[row, 2] = diamondColors[j].Quantity;
                     xlWorkSheet.Cells[row, 3] = diamondColors[j].Weight;
-                    xlWorkSheet.Cells[row, 4] = diamonds[i].Name;
+                    xlWorkSheet.Cells[row, 4] = diamonds[i].ShortName;
                 }
 
                 xlWorkSheet.Range[$"A{lastRow + 1}:D{row}"].Interior.Color = ColorTranslator.ToOle(ColorTranslator.FromHtml(colors[i]));
