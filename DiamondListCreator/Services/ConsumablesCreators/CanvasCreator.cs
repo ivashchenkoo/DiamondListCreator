@@ -129,7 +129,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                     float thumbnailAspectRatio = thumbnailBitmap.Width / thumbnailBitmap.Height;
                     thumbnailBitmap.RotateFlip(RotateFlipType.Rotate270FlipNone);
 
-                    using (Bitmap thumbnail = new Bitmap(canvasSettings.ThumbnailWidth + (canvasSettings.ThumbnailBorderThickness * 2), (int)(canvasSettings.ThumbnailWidth * thumbnailAspectRatio) + (canvasSettings.ThumbnailBorderThickness * 2), PixelFormat.Format32bppArgb))
+                    using (Bitmap thumbnail = new Bitmap(canvasSettings.ThumbnailWidth + (canvasSettings.ThumbnailBorderThickness * 2), (int)(canvasSettings.ThumbnailHeight * thumbnailAspectRatio) + (canvasSettings.ThumbnailBorderThickness * 2), PixelFormat.Format32bppArgb))
                     {
                         using (Graphics graphThumbnail = GraphicsService.GetGraphFromImage(thumbnail))
                         {

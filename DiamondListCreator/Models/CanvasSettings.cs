@@ -21,10 +21,7 @@ namespace DiamondListCreator.Models
             set
             {
                 _pageWidth = value;
-                if (IsSizePropertiesInitialized())
-                {
-                    SetMargins();
-                }
+                SetMargins();
             }
         }
 
@@ -36,10 +33,7 @@ namespace DiamondListCreator.Models
             set
             {
                 _pageHeight = value;
-                if (IsSizePropertiesInitialized())
-                {
-                    SetMargins();
-                }
+                SetMargins();
             }
         }
 
@@ -51,10 +45,7 @@ namespace DiamondListCreator.Models
             set
             {
                 _canvasWidth = value;
-                if (IsSizePropertiesInitialized())
-                {
-                    SetMargins();
-                }
+                SetMargins();
             }
         }
 
@@ -66,25 +57,19 @@ namespace DiamondListCreator.Models
             set
             {
                 _canvasHeight = value;
-                if (IsSizePropertiesInitialized())
-                {
-                    SetMargins();
-                }
+                SetMargins();
             }
         }
 
-        private int _canvasMarginLeft;
+        private int? _canvasMarginLeft;
         [JsonProperty("Відступ холста зліва")]
-        public int CanvasMarginLeft
+        public int? CanvasMarginLeft
         {
             get { return _canvasMarginLeft; }
             set
             {
                 _canvasMarginLeft = value;
-                if (IsSizePropertiesInitialized())
-                {
-                    SetMargins();
-                }
+                SetMargins();
             }
         }
 
@@ -234,6 +219,11 @@ namespace DiamondListCreator.Models
         /// </summary>
         private void SetMargins()
         {
+            if (!IsSizePropertiesInitialized())
+            {
+                return;
+            }
+
             MarginTop = (PageHeight - CanvasHeight) / 2;
             MarginBottom = PageHeight - CanvasHeight - MarginTop;
             if (SizeName == "XL")
@@ -243,7 +233,7 @@ namespace DiamondListCreator.Models
             }
             else
             {
-                MarginLeft = CanvasMarginLeft;
+                MarginLeft = (int)CanvasMarginLeft;
                 MarginRight = PageWidth - MarginLeft - CanvasWidth;
             }
         }
@@ -278,7 +268,7 @@ namespace DiamondListCreator.Models
 
         private bool IsSizePropertiesInitialized()
         {
-            return PageWidth != 0 && PageHeight != 0 && CanvasWidth != 0 && CanvasHeight != 0 && CanvasMarginLeft != 0;
+            return PageWidth != 0 && PageHeight != 0 && CanvasWidth != 0 && CanvasHeight != 0 && CanvasMarginLeft != null;
         }
     }
 }
