@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Diagnostics;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 
@@ -65,6 +66,7 @@ namespace DiamondListCreator.Services
             {
                 for (int j = 0; j < bitmap.Width; j++)
                 {
+                    //Debug.WriteLine(bitmap.GetPixel(j, bitmap.Height - i) + "  " + bitmap.GetPixel(j, bitmap.Height - i).ToString());
                     if (bitmap.GetPixel(j, bitmap.Height - i) != borderColor)
                     {
                         return bitmap.Clone(new Rectangle(0, 0, bitmap.Width, bitmap.Height - i + 1), bitmap.PixelFormat);
@@ -175,7 +177,7 @@ namespace DiamondListCreator.Services
                 }
             }
 
-            textBitmap = RemoveBorders(textBitmap, Color.FromArgb(255, 255, 255, 255));
+            textBitmap = RemoveBorders(textBitmap, Color.FromArgb(0, 0, 0, 0));
 
             return textBitmap;
         }
@@ -224,7 +226,7 @@ namespace DiamondListCreator.Services
                 }
             }
 
-            textBitmap = RemoveBorders(textBitmap, Color.FromArgb(255, 255, 255, 255));
+            textBitmap = RemoveBorders(textBitmap, Color.FromArgb(0, 0, 0, 0));
 
             return textBitmap;
         }
