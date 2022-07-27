@@ -31,8 +31,8 @@ namespace DiamondListCreator.Services
 
         ~PdfDocumentService()
         {
-            stream.Dispose();
             document.Dispose();
+            stream.Dispose();
         }
 
         /// <summary>
