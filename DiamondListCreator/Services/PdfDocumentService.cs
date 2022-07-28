@@ -1,5 +1,6 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
+using System;
 using System.Drawing.Imaging;
 using System.IO;
 using Bitmap = System.Drawing.Bitmap;
@@ -111,11 +112,18 @@ namespace DiamondListCreator.Services
         /// <param name="path"></param>
         public void Save(string path)
         {
-            document.Close();
-            byte[] content = stream.ToArray();
-            using (FileStream fs = File.Create(path))
+            try
             {
-                fs.Write(content, 0, content.Length);
+                document.Close();
+                byte[] content = stream.ToArray();
+                using (FileStream fs = File.Create(path))
+                {
+                    fs.Write(content, 0, content.Length);
+                }
+            }
+            catch (Exception)
+            {
+
             }
         }
     }
