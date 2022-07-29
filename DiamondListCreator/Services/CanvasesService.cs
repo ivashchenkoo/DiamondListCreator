@@ -26,13 +26,22 @@ namespace DiamondListCreator.Services
             {
                 if (diamonds[i].IsStretchedCanvas)
                 {
-                    diamondsListString += $"{diamonds[i].Name}P\n";
+                    diamondsListString += $"{diamonds[i].Name}P";
 
-                    using (Bitmap canvas = stretchedCanvasCreator.Create(diamonds[i]))
+                    try
                     {
-                        canvas.SetResolution(72f, 72f);
-                        FileService.SaveBitmapInTif(canvas, paths.CanvasesSavePath, diamonds[i].Name + "P");
+                        using (Bitmap canvas = stretchedCanvasCreator.Create(diamonds[i]))
+                        {
+                            canvas.SetResolution(72f, 72f);
+                            FileService.SaveBitmapInTif(canvas, paths.CanvasesSavePath, diamonds[i].Name + "P");
+                        }
                     }
+                    catch (Exception ex)
+                    {
+                        diamondsListString += " - " + ex.Message;
+                    }
+
+                    diamondsListString += "\n";
                 }
                 else
                 {

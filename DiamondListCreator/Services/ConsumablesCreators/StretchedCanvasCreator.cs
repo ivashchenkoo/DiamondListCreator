@@ -1,4 +1,5 @@
 ﻿using DiamondListCreator.Models;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Text;
@@ -42,11 +43,12 @@ namespace DiamondListCreator.Services.ConsumablesCreators
             // if didn't find, then create the canvas settings by aspect ratio from standard and save it to json
             if (canvasSettings == null)
             {
-                canvasSettings = new StretchedCanvasSettings(GetCanvasSettings(diamond.SizeLetter));
-                /*if (!canvasSettings.IsVertical)
+                StretchedCanvasSettings stretchedCanvasSettings = GetCanvasSettings(diamond.SizeLetter);
+                if (stretchedCanvasSettings == null)
                 {
-                    throw new Exception("Creating horizontally placed canvases on a sheet is currently not available.");
-                }*/
+                    throw new Exception($"Не знадено розмір {diamond.SizeLetter} у файлі stretched_canvases.json!");
+                }
+                canvasSettings = new StretchedCanvasSettings(GetCanvasSettings(diamond.SizeLetter));
                 canvasSettings.SetSize(width, height);
                 canvasesSettings.Add(canvasSettings);
                 StretchedCanvasSettingsService.WriteSettings(canvasesSettings.ToArray());
