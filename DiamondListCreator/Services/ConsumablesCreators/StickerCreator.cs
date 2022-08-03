@@ -26,9 +26,18 @@ namespace DiamondListCreator.Services.ConsumablesCreators
         /// <returns>Array of Bitmaps with created stickers pages</returns>
         public Bitmap[] CreateStickersPage(List<DiamondSettings> diamonds)
         {
-            int pageCount = diamonds.Count / 12 != 0 ? diamonds.Count / 12 : 1;
-            Bitmap[] stickersPages = new Bitmap[pageCount];
+            int pageCount = diamonds.Count / 12;
+            if (pageCount == 0)
+            {
+                pageCount = 1;
+            }
+            else if (diamonds.Count % 12 > 0)
+            {
+                pageCount++;
+            }
 
+            Bitmap[] stickersPages = new Bitmap[pageCount];
+            
             float pageWidth = 2480f;
             float pageHeight = 3507f;
 

@@ -59,9 +59,12 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                 legends[0] = AppendColumnOfLegend(new Bitmap(legendPage), GraphicsService.CutRectangleFromBitmap(legend1Bitmap, 260, 780, 1100, 2450), 95, 782);
             }
 
-            using (Bitmap legend2Bitmap = new Bitmap(diamond.Path + "/Легенда, лист 2.png"))
+            if (File.Exists(diamond.Path + "/Легенда, лист 2.png"))
             {
-                legends[0] = AppendColumnOfLegend(legends[0], GraphicsService.CutRectangleFromBitmap(legend2Bitmap, 250, 540, 1100, 2700), 1335, 542);
+                using (Bitmap legend2Bitmap = new Bitmap(diamond.Path + "/Легенда, лист 2.png"))
+                {
+                    legends[0] = AppendColumnOfLegend(legends[0], GraphicsService.CutRectangleFromBitmap(legend2Bitmap, 250, 540, 1100, 2700), 1335, 542);
+                } 
             }
 
             return legends;
