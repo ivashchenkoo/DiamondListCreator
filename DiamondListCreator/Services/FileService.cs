@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace DiamondListCreator.Services
 {
-    public class FileService
+    static class FileService
     {
         public static void SaveBitmapsInTif(Bitmap[] bitmaps, string savingPath, string fileName)
         {

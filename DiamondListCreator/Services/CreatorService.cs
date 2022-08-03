@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DiamondListCreator.Services
 {
-    public class CreatorService
+    static class CreatorService
     {
         public static void Create(List<DiamondSettings> diamonds, bool createList, bool saveAccounting, bool createListStickers, bool createLegends, bool createStickers, bool createCanvases)
         {

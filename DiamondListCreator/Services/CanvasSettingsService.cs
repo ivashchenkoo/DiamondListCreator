@@ -5,7 +5,7 @@ using System.IO;
 
 namespace DiamondListCreator.Services
 {
-    public class CanvasSettingsService
+    static class CanvasSettingsService
     {
         private static readonly string jsonPath = Environment.CurrentDirectory + "\\Config\\canvases.json";
 

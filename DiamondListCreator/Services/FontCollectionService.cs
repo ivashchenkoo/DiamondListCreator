@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace DiamondListCreator.Services
 {
-    public class FontCollectionService
+    static class FontCollectionService
     {
         public static PrivateFontCollection InitCustomFont(byte[] fontData)
         {

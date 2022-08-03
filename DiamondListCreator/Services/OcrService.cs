@@ -3,7 +3,7 @@ using Patagames.Ocr;
 
 namespace DiamondListCreator.Services
 {
-    public class OcrService
+    static class OcrService
     {
         /// <summary>
         /// Recognizes text from bitmap.

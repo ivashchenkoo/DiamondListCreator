@@ -5,7 +5,7 @@ using System.Drawing.Text;
 
 namespace DiamondListCreator.Services
 {
-    public class GraphicsService
+    static class GraphicsService
     {
         public static Graphics GetGraphFromImage(Bitmap image)
         {

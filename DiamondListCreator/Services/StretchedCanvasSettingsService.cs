@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace DiamondListCreator.Services
 {
-    public class StretchedCanvasSettingsService
+    static class StretchedCanvasSettingsService
     {
         private static readonly string jsonPath = Environment.CurrentDirectory + "\\Config\\stretched_canvases.json";
 

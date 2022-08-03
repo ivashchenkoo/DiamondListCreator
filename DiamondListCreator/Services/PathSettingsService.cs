@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace DiamondListCreator.Services
 {
-    public class PathSettingsService
+    static class PathSettingsService
     {
         private static readonly string jsonPath = Environment.CurrentDirectory + "\\Config\\PathSettings.json";
 

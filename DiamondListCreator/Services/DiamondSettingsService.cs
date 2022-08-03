@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace DiamondListCreator.Services
 {
-    public class DiamondSettingsService
+    static class DiamondSettingsService
     {
         /// <summary>
         /// Converts passed string to the list with DiamondSettings.
