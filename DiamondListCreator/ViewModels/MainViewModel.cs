@@ -12,6 +12,12 @@ namespace DiamondListCreator.ViewModels
         public MainViewModel()
         {
             Paths = PathSettingsService.ReadSettings();
+
+            IsListChecked = true;
+            IsLegendsChecked = true;
+            IsStickersChecked = true;
+            IsCanvasesChecked = true;
+            ListText = "";
         }
 
         private PathSettings _paths;
