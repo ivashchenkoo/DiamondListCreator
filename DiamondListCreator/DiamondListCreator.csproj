@@ -29,10 +29,16 @@
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>\\VANTOR-PC\wortex\Diamond List Creator\</InstallUrl>
     <UpdateUrl>\\VANTOR-PC\wortex\Diamond List Creator\</UpdateUrl>
-    <MinimumRequiredVersion>2.0.0.0</MinimumRequiredVersion>
-    <ApplicationRevision>1</ApplicationRevision>
+    <TargetCulture>uk</TargetCulture>
+    <ProductName>Diamonds List Creator</ProductName>
+    <PublisherName>Oleksandr Ivashchenko</PublisherName>
+    <MinimumRequiredVersion>2.0.0.1</MinimumRequiredVersion>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>Diamonds List Creator.html</WebPage>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
