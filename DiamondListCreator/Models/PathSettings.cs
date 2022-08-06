@@ -1,6 +1,7 @@
 ﻿using DevExpress.Mvvm;
 using DiamondListCreator.Services;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace DiamondListCreator.Models
 {
@@ -105,6 +106,36 @@ namespace DiamondListCreator.Models
                 }
                 RaisePropertyChanged(() => SavedCanvasesPath);
             }
+        }
+
+        public bool IsFilesSavePathExists()
+        {
+            return Directory.Exists(FilesSavePath);
+        }
+
+        public bool IsDiamondsFolderPathExists()
+        {
+            return Directory.Exists(DiamondsFolderPath);
+        }
+
+        public bool IsAccountingExcelFilePathExists()
+        {
+            return File.Exists(AccountingExcelFilePath);
+        }
+
+        public bool IsSavedLegendsPathExists()
+        {
+            return Directory.Exists(SavedLegendsPath);
+        }
+
+        public bool IsCanvasesSavePathExists()
+        {
+            return Directory.Exists(CanvasesSavePath);
+        }
+
+        public bool IsSavedCanvasesPathExists()
+        {
+            return Directory.Exists(SavedCanvasesPath);
         }
     }
 }

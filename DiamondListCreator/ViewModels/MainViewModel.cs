@@ -20,6 +20,8 @@ namespace DiamondListCreator.ViewModels
             IsStickersChecked = true;
             IsCanvasesChecked = true;
             ListText = "";
+
+            CheckMainPathes();
         }
 
         private PathSettings _paths;
@@ -118,6 +120,17 @@ namespace DiamondListCreator.ViewModels
             {
                 return new DelegateCommand(() =>
                 {
+                    if (!CheckMainPathes(true))
+                    {
+                        return;
+                    }
+
+                    if (!CheckAdditionalPathes(true) &&
+                        MessageBox.Show("Продовжити виконання без введення цих шляхів?", "Продовжити?", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                    {
+                        return;
+                    }
+
                     var diamonds = DiamondSettingsService.GetFromString(ListText, Paths.DiamondsFolderPath);
                     CreatorService.Create(diamonds, IsListChecked, IsAccountingChecked, IsListStickersChecked, IsLegendsChecked, IsStickersChecked, IsCanvasesChecked);
                 },
@@ -230,6 +243,79 @@ namespace DiamondListCreator.ViewModels
                     }
                 });
             }
+        }
+
+        private bool CheckMainPathes(bool showMessageBox = false)
+        {
+            string pathNotFoundMessage = "";
+
+            if (!Paths.IsFilesSavePathExists())
+            {
+                IsListChecked = false;
+                IsLegendsChecked = false;
+                IsStickersChecked = false;
+                pathNotFoundMessage += "Не знайдено шлях до збереження файлів пдф!\n";
+            }
+
+            if (!Paths.IsDiamondsFolderPathExists())
+            {
+                IsListChecked = false;
+                IsLegendsChecked = false;
+                IsStickersChecked = false;
+                IsCanvasesChecked = false;
+                pathNotFoundMessage += "Не знайдено шлях до папки з алмазками!\n";
+            }
+
+            if (!Paths.IsCanvasesSavePathExists())
+            {
+                IsCanvasesChecked = false;
+                pathNotFoundMessage += "Не знайдено шлях до збереження холстів!\n";
+            }
+
+            if (pathNotFoundMessage != "")
+            {
+                if (showMessageBox)
+                {
+                    _ = MessageBox.Show(pathNotFoundMessage.TrimEnd(), "Перевірка прописаних шляхів"); 
+                }
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool CheckAdditionalPathes(bool showMessageBox = false)
+        {
+            string pathNotFoundMessage = "";
+
+            if (!Paths.IsAccountingExcelFilePathExists())
+            {
+                IsAccountingChecked = false;
+                pathNotFoundMessage += "Не знайдено шлях до файлу обліку!\n";
+            }
+
+            if (!Paths.IsSavedLegendsPathExists())
+            {
+                IsLegendsChecked = false;
+                pathNotFoundMessage += "Не знайдено шлях до збережених легенд!\n";
+            }
+
+            if (!Paths.IsSavedCanvasesPathExists())
+            {
+                IsCanvasesChecked = false;
+                pathNotFoundMessage += "Не знайдено шлях до збережених холстів!\n";
+            }
+
+            if (pathNotFoundMessage != "")
+            {
+                if (showMessageBox)
+                {
+                    _ = MessageBox.Show(pathNotFoundMessage.TrimEnd(), "Перевірка прописаних шляхів");
+                }
+                return false;
+            }
+
+            return true;
         }
     }
 }
