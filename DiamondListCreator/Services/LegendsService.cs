@@ -34,7 +34,10 @@ namespace DiamondListCreator.Services
 
                     if (diamonds[i].DiamondType == DiamondType.Standard)
                     {
-                        FileService.SaveBitmapsInTif(legends, paths.SavedLegendsPath, diamonds[i].Name);
+                        if (Directory.Exists(paths.SavedLegendsPath))
+                        {
+                            FileService.SaveBitmapsInTif(legends, paths.SavedLegendsPath, diamonds[i].Name);
+                        }
                     }
                 }
 
@@ -45,7 +48,7 @@ namespace DiamondListCreator.Services
                 }
             }
 
-            document.Save($"{paths.FilesSavePath}/Legends {DateTime.Now: dd.MM.yyyy}.pdf");
+            document.Save($"{paths.FilesSavePath}/Legends {DateTime.Now:dd.MM.yyyy}.pdf");
         }
 
         /// <summary>

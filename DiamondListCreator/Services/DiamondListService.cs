@@ -4,6 +4,7 @@ using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace DiamondListCreator.Services
@@ -73,11 +74,14 @@ namespace DiamondListCreator.Services
 
             xlWorkBook.CheckCompatibility = false;
             xlWorkBook.DoNotPromptForConvert = true;
-            xlWorkBook.SaveAs($"{paths.FilesSavePath}/DiamondsList {DateTime.Now: dd.MM.yyyy}.xls", XlFileFormat.xlWorkbookNormal);
+            xlWorkBook.SaveAs($"{paths.FilesSavePath}/DiamondsList {DateTime.Now:dd.MM.yyyy}.xls", XlFileFormat.xlWorkbookNormal);
 
             if (isSaveAccounting)
             {
-                SaveAccounting(xlWorkSheet, paths.AccountingExcelFilePath, row);
+                if (File.Exists(paths.AccountingExcelFilePath))
+                {
+                    SaveAccounting(xlWorkSheet, paths.AccountingExcelFilePath, row);
+                }
             }
 
             xlWorkBook.Close(true);

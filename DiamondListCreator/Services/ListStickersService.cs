@@ -102,7 +102,7 @@ namespace DiamondListCreator.Services
                 }
             }
 
-            document.Save(savePath + "/DiamondsListStickers " + DateTime.Now.ToString("dd.MM.yyyy") + ".pdf");
+            document.Save($"{savePath}/DiamondsListStickers {DateTime.Now:dd.MM.yyyy}.pdf");
         }
     }
 }

@@ -22,7 +22,7 @@ namespace DiamondListCreator.Services
             Bitmap[] stickers = stickerCreator.CreateStickersPage(diamonds);
             
             document.AddPagesReverse(stickers);
-            document.Save($"{paths.FilesSavePath}/Stickers {DateTime.Now: dd.MM.yyyy}.pdf");
+            document.Save($"{paths.FilesSavePath}/Stickers {DateTime.Now:dd.MM.yyyy}.pdf");
         }
 
         /// <summary>

@@ -58,19 +58,22 @@ namespace DiamondListCreator.Services
 
                                 if (diamonds[i].DiamondType == DiamondType.Standard)
                                 {
-                                    FileService.SaveBitmapInTif(canvas, paths.SavedCanvasesPath, diamonds[i].Name);
+                                    if (Directory.Exists(paths.SavedCanvasesPath))
+                                    {
+                                        FileService.SaveBitmapInTif(canvas, paths.SavedCanvasesPath, diamonds[i].Name);
+                                    }
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
                             diamondsListString += " - " + ex.Message;
-                        }                        
+                        }
                     }
                 }
             }
 
-            File.WriteAllText($"{paths.CanvasesSavePath}/Canvases {DateTime.Now : dd.MM.yyyy}.txt", diamondsListString);
+            File.WriteAllText($"{paths.CanvasesSavePath}/Canvases {DateTime.Now:dd.MM.yyyy}.txt", diamondsListString);
         }
 
         /// <summary>
