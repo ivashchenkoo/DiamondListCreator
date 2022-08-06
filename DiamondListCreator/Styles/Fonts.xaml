@@ -4,7 +4,7 @@
     <FontFamily x:Key="Troika">/DiamondListCreator;component/Resources/Fonts/#Troika</FontFamily>
     <system:Double x:Key="Small">14</system:Double>
     <system:Double x:Key="Regular">16</system:Double>
-    <system:Double x:Key="Big">30</system:Double>
+    <system:Double x:Key="Big">22</system:Double>
     <system:Double x:Key="H1">35</system:Double>
     
 </ResourceDictionary>

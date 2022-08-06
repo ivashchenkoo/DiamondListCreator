@@ -2,6 +2,8 @@
 using DiamondListCreator.Models;
 using DiamondListCreator.Services;
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 
@@ -116,15 +118,8 @@ namespace DiamondListCreator.ViewModels
             {
                 return new DelegateCommand(() =>
                 {
-                    try
-                    {
-                        var diamonds = DiamondSettingsService.GetFromString(ListText, Paths.DiamondsFolderPath);
-                        CreatorService.Create(diamonds, IsListChecked, IsAccountingChecked, IsListStickersChecked, IsLegendsChecked, IsStickersChecked, IsCanvasesChecked);
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
+                    var diamonds = DiamondSettingsService.GetFromString(ListText, Paths.DiamondsFolderPath);
+                    CreatorService.Create(diamonds, IsListChecked, IsAccountingChecked, IsListStickersChecked, IsLegendsChecked, IsStickersChecked, IsCanvasesChecked);
                 },
                 () => ListText != "" && (IsListChecked || IsLegendsChecked || IsStickersChecked || IsCanvasesChecked));
             }
@@ -193,6 +188,46 @@ namespace DiamondListCreator.ViewModels
                 return new DelegateCommand(() =>
                 {
                     Paths.CanvasesSavePath = FileService.OpenDirectory("Обріть шлях до збереження холстів", Paths.CanvasesSavePath);
+                });
+            }
+        }
+
+        public ICommand OpenCanvasesSettings
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    string fpath = $"{Environment.CurrentDirectory}\\Config\\canvases.json";
+                    DateTime l_date = File.GetLastWriteTime(fpath);
+                    Process proc = Process.Start("notepad.exe", fpath);
+                    proc.WaitForExit();
+                    proc.Close();
+                    DateTime date = File.GetLastWriteTime(fpath);
+                    if (date != l_date)
+                    {
+                        _ = MessageBox.Show("Зміни збережено!", "Налаштування розмірів");
+                    }
+                });
+            }
+        }
+
+        public ICommand OpenStretchedCanvasesSettings
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    string fpath = $"{Environment.CurrentDirectory}\\Config\\stretched_canvases.json";
+                    DateTime l_date = File.GetLastWriteTime(fpath);
+                    Process proc = Process.Start("notepad.exe", fpath);
+                    proc.WaitForExit();
+                    proc.Close();
+                    DateTime date = File.GetLastWriteTime(fpath);
+                    if (date != l_date)
+                    {
+                        _ = MessageBox.Show("Зміни збережено!", "Налаштування розмірів");
+                    }
                 });
             }
         }
