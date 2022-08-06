@@ -49,16 +49,23 @@ namespace DiamondListCreator.Services
 
                     if (!CopySavedCanvas(diamonds[i].Name, paths.SavedCanvasesPath, paths.CanvasesSavePath))
                     {
-                        using (Bitmap canvas = canvasCreator.Create(diamonds[i]))
+                        try
                         {
-                            canvas.SetResolution(72f, 72f);
-                            FileService.SaveBitmapInTif(canvas, paths.CanvasesSavePath, diamonds[i].Name);
-
-                            if (diamonds[i].DiamondType == DiamondType.Standard)
+                            using (Bitmap canvas = canvasCreator.Create(diamonds[i]))
                             {
-                                FileService.SaveBitmapInTif(canvas, paths.SavedCanvasesPath, diamonds[i].Name);
+                                canvas.SetResolution(72f, 72f);
+                                FileService.SaveBitmapInTif(canvas, paths.CanvasesSavePath, diamonds[i].Name);
+
+                                if (diamonds[i].DiamondType == DiamondType.Standard)
+                                {
+                                    FileService.SaveBitmapInTif(canvas, paths.SavedCanvasesPath, diamonds[i].Name);
+                                }
                             }
                         }
+                        catch (Exception ex)
+                        {
+                            diamondsListString += " - " + ex.Message;
+                        }                        
                     }
                 }
             }

@@ -50,7 +50,12 @@ namespace DiamondListCreator.Services.ConsumablesCreators
             // if didn't find, then create the canvas settings by aspect ratio from standard and save it to json
             if (canvasSettings == null)
             {
-                canvasSettings = new CanvasSettings(GetCanvasSettings(diamond.SizeLetter));
+                canvasSettings = GetCanvasSettings(diamond.SizeLetter);
+                if (canvasSettings == null)
+                {
+                    throw new Exception($"Не знайдено розмір {diamond.SizeLetter} у файлі canvases.json!");
+                }
+                canvasSettings = new CanvasSettings(canvasSettings);
                 canvasSettings.SetSize(width, height);
                 canvasesSettings.Add(canvasSettings);
                 CanvasSettingsService.WriteSettings(canvasesSettings.ToArray());

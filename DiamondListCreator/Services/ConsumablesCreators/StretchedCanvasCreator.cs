@@ -43,12 +43,12 @@ namespace DiamondListCreator.Services.ConsumablesCreators
             // if didn't find, then create the canvas settings by aspect ratio from standard and save it to json
             if (canvasSettings == null)
             {
-                StretchedCanvasSettings stretchedCanvasSettings = GetCanvasSettings(diamond.SizeLetter);
-                if (stretchedCanvasSettings == null)
+                canvasSettings = GetCanvasSettings(diamond.SizeLetter);
+                if (canvasSettings == null)
                 {
-                    throw new Exception($"Не знадено розмір {diamond.SizeLetter} у файлі stretched_canvases.json!");
+                    throw new Exception($"Не знайдено розмір {diamond.SizeLetter} у файлі stretched_canvases.json!");
                 }
-                canvasSettings = new StretchedCanvasSettings(GetCanvasSettings(diamond.SizeLetter));
+                canvasSettings = new StretchedCanvasSettings(canvasSettings);
                 canvasSettings.SetSize(width, height);
                 canvasesSettings.Add(canvasSettings);
                 StretchedCanvasSettingsService.WriteSettings(canvasesSettings.ToArray());
