@@ -8,6 +8,7 @@
         mc:Ignorable="d"
         Title="DLC" Height="550" Width="850"
         ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen"
         Background="{StaticResource LightBaseColorBrush}">
 
     <Window.DataContext>
