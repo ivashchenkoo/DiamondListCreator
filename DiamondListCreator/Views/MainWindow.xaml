@@ -65,7 +65,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBox x:Name="DiamondsFolderPathTextBox"
-                         Text="{Binding DiamondsFolderPath}"
+                         Text="{Binding DiamondsFolderPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Grid.Row="0"
                          Grid.Column="0"
                          ToolTip="Шлях до папки з алмазками"
@@ -78,7 +78,8 @@
                         Grid.Column="1"
                         ToolTip="Обрати шлях до папки з алмазками"
                         Margin="0,0,0,7"
-                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.ChooseDiamondsFolder}"
+                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.MyCommand}"
+                        CommandParameter="{Binding ElementName=DiamondsFolderPathTextBox, Path=Text}"
                         Content="{StaticResource FolderIcon}"
                         Style="{StaticResource ButtonPathStyle}"/>
 
@@ -201,12 +202,14 @@
                         <Button Grid.Column="0"
                                 Margin="0,0,10,0"
                                 Style="{StaticResource ButtonSettingsStyle}"
-                                Command="{Binding OpenCanvasesSettings}"
+                                Command="{Binding EditTxtFile}"
+                                CommandParameter="canvases.json"
                                 Content="Стандартні"/>
 
                         <Button Grid.Column="1"
                                 Style="{StaticResource ButtonSettingsStyle}"
-                                Command="{Binding OpenStretchedCanvasesSettings}"
+                                Command="{Binding EditTxtFile}"
+                                CommandParameter="stretched_canvases.json"
                                 Content="Підрамники"/>
 
                     </Grid>

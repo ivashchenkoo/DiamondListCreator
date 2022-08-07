@@ -138,7 +138,6 @@ namespace DiamondListCreator.ViewModels
             }
         }
 
-
         public ICommand ChooseDiamondsFolder
         {
             get
@@ -205,13 +204,13 @@ namespace DiamondListCreator.ViewModels
             }
         }
 
-        public ICommand OpenCanvasesSettings
+        public ICommand EditTxtFile
         {
             get
             {
-                return new DelegateCommand(() =>
+                return new DelegateCommand<string>((fileName) =>
                 {
-                    string fpath = $"{Environment.CurrentDirectory}\\Config\\canvases.json";
+                    string fpath = $"{Environment.CurrentDirectory}\\Config\\{fileName}";
                     DateTime l_date = File.GetLastWriteTime(fpath);
                     Process proc = Process.Start("notepad.exe", fpath);
                     proc.WaitForExit();
@@ -219,27 +218,7 @@ namespace DiamondListCreator.ViewModels
                     DateTime date = File.GetLastWriteTime(fpath);
                     if (date != l_date)
                     {
-                        _ = MessageBox.Show("Зміни збережено!", "Налаштування розмірів");
-                    }
-                });
-            }
-        }
-
-        public ICommand OpenStretchedCanvasesSettings
-        {
-            get
-            {
-                return new DelegateCommand(() =>
-                {
-                    string fpath = $"{Environment.CurrentDirectory}\\Config\\stretched_canvases.json";
-                    DateTime l_date = File.GetLastWriteTime(fpath);
-                    Process proc = Process.Start("notepad.exe", fpath);
-                    proc.WaitForExit();
-                    proc.Close();
-                    DateTime date = File.GetLastWriteTime(fpath);
-                    if (date != l_date)
-                    {
-                        _ = MessageBox.Show("Зміни збережено!", "Налаштування розмірів");
+                        _ = MessageBox.Show("Зміни збережено!", "Редагування txt файлу");
                     }
                 });
             }
