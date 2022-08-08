@@ -1,64 +1,50 @@
 ﻿using DiamondListCreator.Models;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using DiamondListCreator.Services.ConsumablesCreators;
 using System.Drawing;
-using System.Threading.Tasks;
 
 namespace DiamondListCreator.Services
 {
     public class LegendsService
     {
-        /// <summary>
-        /// Creating Legends and saving them into pdf /Legends {Date.Now}.pdf
-        /// </summary>
-        /// <param name="diamonds">DiamondSettings list</param>
-        /// <param name="paths">Path settings</param>
-        public void CreateLegendsPdf(List<DiamondSettings> diamonds, PathSettings paths)
+        private readonly LegendCreator legendCreator;
+
+        public LegendsService()
         {
-            PdfDocumentService document = new PdfDocumentService(2480, 3507);
-
-            LegendCreator legendCreator = new LegendCreator(FontCollectionService.InitCustomFont(Properties.Resources.VanishingSizeName_Regular));
-
-            for (int i = 0; i < diamonds.Count; i++)
-            {
-                if (diamonds[i].DiamondType == DiamondType.Standard && GetSavedLegends(diamonds[i], paths.SavedLegendsPath) is Bitmap[] savedLegends)
-                {
-                    document.AddPagesReverse(savedLegends);
-                }
-                else
-                {
-                    Bitmap[] legends = legendCreator.CreateUkrainian(diamonds[i]);
-                    document.AddPagesReverse(legends);
-
-                    if (diamonds[i].DiamondType == DiamondType.Standard)
-                    {
-                        if (Directory.Exists(paths.SavedLegendsPath))
-                        {
-                            FileService.SaveBitmapsInTif(legends, paths.SavedLegendsPath, diamonds[i].Name);
-                        }
-                    }
-                }
-
-                if (diamonds[i].IsEnglishVersion)
-                {
-                    Bitmap[] legends = legendCreator.CreateEnglish(diamonds[i]);
-                    document.AddPagesReverse(legends);
-                }
-            }
-
-            document.Save($"{paths.FilesSavePath}/Legends {DateTime.Now:dd.MM.yyyy}.pdf");
+            legendCreator = new LegendCreator(FontCollectionService.InitCustomFont(Properties.Resources.VanishingSizeName_Regular));
         }
 
         /// <summary>
-        /// Creating Legends and saving them into pdf /Legends {Date.Now}.pdf async
+        /// Creates legends or finds them if they are already created
         /// </summary>
-        /// <param name="diamonds">DiamondSettings list</param>
+        /// <param name="diamond"></param>
         /// <param name="paths">Path settings</param>
-        public async void CreateLegendsPdfAsync(List<DiamondSettings> diamonds, PathSettings paths)
+        public Bitmap[] CreateLegends(DiamondSettings diamond, PathSettings paths)
         {
-            await Task.Run(() => CreateLegendsPdf(diamonds, paths));
+            if (diamond.DiamondType == DiamondType.Standard && GetSavedLegends(diamond, paths.SavedLegendsPath) is Bitmap[] savedLegends)
+            {
+                return savedLegends;
+            }
+            else
+            {
+                List<Bitmap> legends = new List<Bitmap>(legendCreator.CreateUkrainian(diamond));
+
+                if (diamond.DiamondType == DiamondType.Standard)
+                {
+                    if (Directory.Exists(paths.SavedLegendsPath))
+                    {
+                        FileService.SaveBitmapsInTif(legends.ToArray(), paths.SavedLegendsPath, diamond.Name);
+                    }
+                }
+
+                if (diamond.IsEnglishVersion)
+                {
+                    legends.AddRange(legendCreator.CreateEnglish(diamond));
+                }
+
+                return legends.ToArray();
+            }           
         }
 
         /// <summary>

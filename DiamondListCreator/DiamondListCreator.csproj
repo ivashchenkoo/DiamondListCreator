@@ -68,10 +68,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>1BA45B1D419BD4DA19430E0D47F77EFC97075A30</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>B6B774656FDEB98CBA58392DEEADDCE6FF07B7E0</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>DiamondListCreator_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>DiamondListCreator_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -177,7 +177,6 @@
     <Compile Include="Services\ConsumablesCreators\ColorsListCreator.cs" />
     <Compile Include="Services\ConsumablesCreators\StickerCreator.cs" />
     <Compile Include="Services\ConsumablesCreators\StretchedCanvasCreator.cs" />
-    <Compile Include="Services\CreatorService.cs" />
     <Compile Include="Services\DiamondListService.cs" />
     <Compile Include="Services\DiamondSettingsService.cs" />
     <Compile Include="Services\FileService.cs" />
@@ -188,7 +187,6 @@
     <Compile Include="Services\ListStickersService.cs" />
     <Compile Include="Services\OcrService.cs" />
     <Compile Include="Services\PdfDocumentService.cs" />
-    <Compile Include="Services\StickersService.cs" />
     <Compile Include="Services\PathSettingsService.cs" />
     <Compile Include="Services\StretchedCanvasSettingsService.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -219,6 +217,10 @@
     <Content Include="Config\stretched_canvases.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Config\colors.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="DiamondListCreator_1_TemporaryKey.pfx" />
     <None Include="DiamondListCreator_TemporaryKey.pfx" />
     <None Include="Properties\app.manifest" />
     <None Include="tessdata\configs\config.cfg">

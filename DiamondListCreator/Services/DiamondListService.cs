@@ -1,23 +1,23 @@
 ﻿using DiamondListCreator.Models;
-using DiamondListCreator.Services.ConsumablesCreators;
 using Microsoft.Office.Interop.Excel;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Threading.Tasks;
 
 namespace DiamondListCreator.Services
 {
     public class DiamondListService
     {
         private readonly Application xlApp;
-        private readonly string[] colors = { "#ebf1dd", "#99ff66", "#ffccff", "#dbeef3", "#8db3e2", "#ff99ff", "#fdeada", "#92cddc", "#ffff99", "#6699ff",
-                                   "#dbe5f1", "#938953", "#99ff99", "#7f7f7f", "#f2dcdb", "#00b0f0", "#cc66ff", "#ddd9c3", "#f2f2f2", "#ccc1d9",
-                                   "#e5e0ec", "#ff0000", "#fac08f", "#d99694", "#95b3d7", "#b7dde8", "#b8cce4", "#c4bd97", "#ff7c80", "#e5b9b7",
-                                   "#cccc00", "#66ffff", "#548dd4", "#d7e3bc", "#c6d9f0", "#c3d69b", "#b2a1c7", "#cc66ff", "#fbd5b5", "#ffc000"};
+        private readonly Workbook xlWorkBook;
+        private readonly Worksheet xlWorkSheet;
 
-        public DiamondListService()
+        private readonly string[] colors;
+        private int rowsCount = 0, diamondsIndex = 0;
+
+        public DiamondListService(PathSettings paths)
         {
             xlApp = new Application();
             if (xlApp == null)
@@ -25,93 +25,61 @@ namespace DiamondListCreator.Services
                 throw new Exception("Excel is not properly installed!");
             }
             xlApp.DisplayAlerts = false;
+
+            colors = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(Environment.CurrentDirectory + "\\Config\\colors.json"));
+
+            xlWorkBook = xlApp.Workbooks.Add(System.Reflection.Missing.Value);
+            xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
         }
 
         ~DiamondListService()
         {
+            xlWorkBook.Close(true);
             xlApp.Quit();
         }
 
         /// <summary>
-        /// Creates diamonds list in MS Excel
+        /// Appends diamonds colors to the Excel workbook
         /// </summary>
-        /// <param name="diamonds"></param>
-        /// <param name="paths"></param>
-        /// <param name="isSaveAccounting">Saves created Excel file to accounting table</param>
-        /// <param name="isSaveListStickersPdf">Creates pdf with diamonds colors list stickers</param>
-        public void CreateDiamondsList(List<DiamondSettings> diamonds, PathSettings paths, bool isSaveAccounting, bool isSaveListStickersPdf)
+        /// <param name="diamondColors">The list with diamonds colors</param>
+        /// <param name="diamondName">The short diamond name</param>
+        public void AddDiamondColorsToWorkBook(List<DiamondColor> diamondColors, string diamondName)
         {
-            Workbook xlWorkBook = xlApp.Workbooks.Add(System.Reflection.Missing.Value);
-            Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
+            int lastRow = rowsCount;
 
-            ColorsListCreator colorsListCreator = new ColorsListCreator();
-            List<DiamondColor> diamondsColors = new List<DiamondColor>();
-
-            int row = 0;
-            for (int i = 0; i < diamonds.Count; i++)
+            for (int j = 0; j < diamondColors.Count; j++)
             {
-                List<DiamondColor> diamondColors = colorsListCreator.Create(diamonds[i]);
-                int lastRow = row;
-
-                for (int j = 0; j < diamondColors.Count; j++)
-                {
-                    row++;
-                    xlWorkSheet.Cells[row, 1] = diamondColors[j].Name;
-                    xlWorkSheet.Cells[row, 2] = diamondColors[j].Quantity;
-                    xlWorkSheet.Cells[row, 3] = diamondColors[j].Weight;
-                    xlWorkSheet.Cells[row, 4] = diamonds[i].ShortName;
-                }
-
-                xlWorkSheet.Range[$"A{lastRow + 1}:D{row}"].Interior.Color = ColorTranslator.ToOle(ColorTranslator.FromHtml(colors[i]));
-
-                if (isSaveListStickersPdf)
-                {
-                    diamondsColors.AddRange(diamondColors);
-                }
+                rowsCount++;
+                xlWorkSheet.Cells[rowsCount, 1] = diamondColors[j].Name;
+                xlWorkSheet.Cells[rowsCount, 2] = diamondColors[j].Quantity;
+                xlWorkSheet.Cells[rowsCount, 3] = diamondColors[j].Weight;
+                xlWorkSheet.Cells[rowsCount, 4] = diamondName;
             }
 
-            FormatWorksheet(row, ref xlWorkSheet);
+            xlWorkSheet.Range[$"A{lastRow + 1}:D{rowsCount}"].Interior.Color = ColorTranslator.ToOle(ColorTranslator.FromHtml(colors[diamondsIndex]));
+
+            diamondsIndex++;
+        }
+
+        /// <summary>
+        /// Saves the created Excel workbook
+        /// </summary>
+        /// <param name="savePath">The directory to save the created workbook</param>
+        /// <param name="fileName">The name of the workbook</param>
+        public void SaveWorkbook(string savePath, string fileName)
+        {
+            FormatWorksheet();
 
             xlWorkBook.CheckCompatibility = false;
             xlWorkBook.DoNotPromptForConvert = true;
-            xlWorkBook.SaveAs($"{paths.FilesSavePath}/DiamondsList {DateTime.Now:dd.MM.yyyy}.xls", XlFileFormat.xlWorkbookNormal);
-
-            if (isSaveAccounting)
-            {
-                if (File.Exists(paths.AccountingExcelFilePath))
-                {
-                    SaveAccounting(xlWorkSheet, paths.AccountingExcelFilePath, row);
-                }
-            }
-
-            xlWorkBook.Close(true);
-
-            if (isSaveListStickersPdf)
-            {
-                ListStickersService listStickersService = new ListStickersService();
-                listStickersService.CreateListStickersPdf(diamondsColors, paths.FilesSavePath);
-            }
+            xlWorkBook.SaveAs($"{savePath}/{fileName}.xls", XlFileFormat.xlWorkbookNormal);
         }
 
         /// <summary>
-        /// Creates diamonds list in MS Excel async
+        /// Saves the created Excel file to the accounting Excel file
         /// </summary>
-        /// <param name="diamonds"></param>
-        /// <param name="paths"></param>
-        /// <param name="isSaveAccounting">Saves created Excel file to accounting table</param>
-        /// <param name="isSaveListStickersPdf">Creates pdf with diamonds colors list stickers</param>
-        public async void CreateDiamondsListAsync(List<DiamondSettings> diamonds, PathSettings paths, bool isSaveAccounting, bool isSaveListStickersPdf)
-        {
-            await Task.Run(() => CreateDiamondsList(diamonds, paths, isSaveAccounting, isSaveListStickersPdf));
-        }
-
-        /// <summary>
-        /// Saves created Excel file to accounting table
-        /// </summary>
-        /// <param name="xlWorkSheet"></param>
-        /// <param name="accountingPath"></param>
-        /// <param name="rowsCount"></param>
-        private void SaveAccounting(Worksheet xlWorkSheet, string accountingPath, int rowsCount)
+        /// <param name="accountingPath">The path to the Excel file with diamonds colors accounting</param>
+        public void SaveAccounting(string accountingPath)
         {
             Workbook xlWorkBookAccounting = xlApp.Workbooks.Open(accountingPath);
             Worksheet xlWorkSheetAccounting = (Worksheet)xlWorkBookAccounting.Worksheets.get_Item(1);
@@ -130,24 +98,22 @@ namespace DiamondListCreator.Services
         /// <summary>
         /// Formats Excel worksheet
         /// </summary>
-        /// <param name="lastRow"></param>
-        /// <param name="xlWorkSheet"></param>
-        private void FormatWorksheet(int lastRow, ref Worksheet xlWorkSheet)
+        private void FormatWorksheet()
         {
-            Range range = xlWorkSheet.Range[$"A1:D{lastRow}"];
+            Range range = xlWorkSheet.Range[$"A1:D{rowsCount}"];
             range.Borders.LineStyle = XlLineStyle.xlContinuous;
             range.Borders.Weight = XlBorderWeight.xlMedium;
-            xlWorkSheet.Range[$"A1:A{lastRow}"].Font.Bold = true;
-            xlWorkSheet.Range[$"C1:D{lastRow}"].Font.Bold = true;
-            xlWorkSheet.Range[$"A1:A{lastRow}"].Font.Size = 16;
-            xlWorkSheet.Range[$"C1:C{lastRow}"].Font.Size = 16;
-            xlWorkSheet.Range[$"B1:C{lastRow}"].HorizontalAlignment = XlHAlign.xlHAlignCenter;
-            xlWorkSheet.Range[$"A1:A{lastRow}"].HorizontalAlignment = XlHAlign.xlHAlignRight;
-            xlWorkSheet.Range[$"D1:D{lastRow}"].HorizontalAlignment = XlHAlign.xlHAlignLeft;
-            xlWorkSheet.Range[$"D1:D{lastRow}"].Font.Size = 12;
+            xlWorkSheet.Range[$"A1:A{rowsCount}"].Font.Bold = true;
+            xlWorkSheet.Range[$"C1:D{rowsCount}"].Font.Bold = true;
+            xlWorkSheet.Range[$"A1:A{rowsCount}"].Font.Size = 16;
+            xlWorkSheet.Range[$"C1:C{rowsCount}"].Font.Size = 16;
+            xlWorkSheet.Range[$"B1:C{rowsCount}"].HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            xlWorkSheet.Range[$"A1:A{rowsCount}"].HorizontalAlignment = XlHAlign.xlHAlignRight;
+            xlWorkSheet.Range[$"D1:D{rowsCount}"].HorizontalAlignment = XlHAlign.xlHAlignLeft;
+            xlWorkSheet.Range[$"D1:D{rowsCount}"].Font.Size = 12;
             range.Columns.EntireColumn.AutoFit();
 
-            dynamic allDataRange = xlWorkSheet.Range[$"A1:D{lastRow}"];
+            dynamic allDataRange = xlWorkSheet.Range[$"A1:D{rowsCount}"];
             allDataRange.Sort(allDataRange.Columns[3], XlSortOrder.xlAscending);
             allDataRange.Sort(allDataRange.Columns[1], XlSortOrder.xlAscending);
         }
