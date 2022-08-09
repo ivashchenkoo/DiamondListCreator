@@ -11,6 +11,7 @@
                 <ResourceDictionary Source="Styles/Texts.xaml"/>
                 <ResourceDictionary Source="Styles/Icons.xaml"/>
                 
+                <ResourceDictionary Source="Styles/Progressbar.xaml"/>
                 <ResourceDictionary Source="Styles/Button.xaml"/>
                 <ResourceDictionary Source="Styles/CheckBoxes.xaml"/>
                 <ResourceDictionary Source="Styles/ScrollBar.xaml"/>
