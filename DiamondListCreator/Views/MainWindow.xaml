@@ -4,9 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiamondListCreator"
-        xmlns:vm="clr-namespace:DiamondListCreator.ViewModels"
+        xmlns:vm="clr-namespace:DiamondListCreator.ViewModels"        
+        xmlns:c="clr-namespace:DiamondListCreator.Controls"
+        xmlns:i="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
         mc:Ignorable="d"
-        Title="DLC" Height="550" Width="850"
+        Title="DLC"
+        Width="850"
+        Height="555"
         ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen"
         Background="{StaticResource LightBaseColorBrush}">
@@ -31,9 +35,9 @@
                  Grid.Column="0"
                  Margin="0,0,0,15"/>
 
-        <Button Style="{StaticResource ButtonBase}"
-                 Grid.Row="1"
-                 Grid.Column="0"
+        <Button Style="{StaticResource ButtonStartStyle}"
+                Grid.Row="1"
+                Grid.Column="0"
                 Command="{Binding Start}">
             СТАРТ
         </Button>
@@ -65,7 +69,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBox x:Name="DiamondsFolderPathTextBox"
-                         Text="{Binding DiamondsFolderPath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Text="{Binding DiamondsFolderPath}"
                          Grid.Row="0"
                          Grid.Column="0"
                          ToolTip="Шлях до папки з алмазками"
@@ -78,8 +82,7 @@
                         Grid.Column="1"
                         ToolTip="Обрати шлях до папки з алмазками"
                         Margin="0,0,0,7"
-                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.MyCommand}"
-                        CommandParameter="{Binding ElementName=DiamondsFolderPathTextBox, Path=Text}"
+                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=DataContext.ChooseDiamondsFolder}"
                         Content="{StaticResource FolderIcon}"
                         Style="{StaticResource ButtonPathStyle}"/>
 
@@ -177,14 +180,15 @@
 
             <Border Grid.Row="1"
                     BorderThickness="3"
-                    Margin="0,10,0,0"
+                    Margin="0,0,0,0"
                     Background="Black"
+                    VerticalAlignment="Top"
                     BorderBrush="{StaticResource DarkAdditionalColorBrush}">
 
                 <Grid Margin="5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0"
@@ -232,6 +236,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
                 <CheckBox Style="{StaticResource CheckBoxBase}"
@@ -239,7 +244,7 @@
                               IsChecked="{Binding IsListChecked}"
                               Grid.Row="0"
                               Grid.Column="0"
-                              Margin="0,0,5,5">
+                              Margin="0,0,5,0">
                     СПИСОК
                 </CheckBox>
 
@@ -247,7 +252,7 @@
                               IsChecked="{Binding IsAccountingChecked}"
                               Grid.Row="0"
                               Grid.Column="1"
-                              Margin="0,0,5,5">
+                              Margin="0,0,5,0">
                     ОБЛІК
 
                     <CheckBox.Style>
@@ -296,7 +301,7 @@
                 <CheckBox Style="{StaticResource CheckBoxBase}"
                               IsChecked="{Binding IsLegendsChecked}"
                               x:Name="LegendsCheckBox"
-                              Grid.Row="1"
+                              Grid.Row="2"
                               Grid.Column="0"
                               Margin="0,0,5,0">
                     ЛЕГЕНДИ
@@ -305,7 +310,7 @@
                 <CheckBox Style="{StaticResource CheckBoxBase}"
                               IsChecked="{Binding IsStickersChecked}"
                               x:Name="StickersCheckBox"
-                              Grid.Row="1"
+                              Grid.Row="2"
                               Grid.Column="1"
                               Margin="0,0,5,0">
                     СТІКЕРИ
@@ -314,11 +319,53 @@
                 <CheckBox Style="{StaticResource CheckBoxBase}"
                               IsChecked="{Binding IsCanvasesChecked}"
                               x:Name="CanvasesCheckBox"
-                              Grid.Row="1"
+                              Grid.Row="2"
                               Grid.Column="2">
                     ХОЛСТИ
                 </CheckBox>
 
+                <ProgressBar Grid.Row="1"
+                             Grid.Column="0"
+                             Value="{Binding ListProgressValue}"
+                             
+                             Margin="21,0,15,5">
+                    <i:Interaction.Behaviors>
+                        <c:SmoothProgressBarBehavior />
+                    </i:Interaction.Behaviors>
+                </ProgressBar>
+
+                <ProgressBar Grid.Row="1"
+                             Grid.Column="1"
+                             IsIndeterminate="{Binding ListStickersProgressStatus}"
+                             Margin="21,0,5,5"/>
+
+                <ProgressBar Grid.Row="1"
+                             Grid.Column="2"
+                             IsIndeterminate="{Binding ListStickersProgressStatus}"
+                             Margin="21,0,5,5"/>
+
+                <ProgressBar Grid.Row="3"
+                             Grid.Column="0"
+                             Value="{Binding LegendsProgressValue}"
+                             Margin="21,0,5,0">
+                    <i:Interaction.Behaviors>
+                        <c:SmoothProgressBarBehavior />
+                    </i:Interaction.Behaviors>
+                </ProgressBar>
+
+                <ProgressBar Grid.Row="3"
+                             Grid.Column="1"
+                             IsIndeterminate="{Binding StickersProgressStatus}"
+                             Margin="21,0,5,0"/>
+
+                <ProgressBar Grid.Row="3"
+                             Grid.Column="2"
+                             Value="{Binding CanvasesProgressValue}"
+                             Margin="21,0,26,0">
+                    <i:Interaction.Behaviors>
+                        <c:SmoothProgressBarBehavior />
+                    </i:Interaction.Behaviors>
+                </ProgressBar>
             </Grid>
         </Viewbox>
     </Grid>

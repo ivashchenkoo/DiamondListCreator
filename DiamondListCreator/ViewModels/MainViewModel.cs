@@ -19,7 +19,7 @@ namespace DiamondListCreator.ViewModels
         private readonly BackgroundWorker stickersBgWorker = new BackgroundWorker();
         private readonly BackgroundWorker canvasesBgWorker = new BackgroundWorker();
 
-        List<DiamondSettings> diamonds;
+        private List<DiamondSettings> diamonds;
 
         public MainViewModel()
         {
@@ -138,6 +138,72 @@ namespace DiamondListCreator.ViewModels
             {
                 _isCanvasesChecked = value;
                 RaisePropertyChanged(() => IsCanvasesChecked);
+            }
+        }
+
+        private int _listProgressValue;
+        public int ListProgressValue
+        {
+            get { return _listProgressValue; }
+            set
+            {
+                _listProgressValue = value;
+                RaisePropertyChanged(() => ListProgressValue);
+            }
+        }
+
+        private int _legendsProgressValue;
+        public int LegendsProgressValue
+        {
+            get { return _legendsProgressValue; }
+            set
+            {
+                _legendsProgressValue = value;
+                RaisePropertyChanged(() => LegendsProgressValue);
+            }
+        }
+
+        private bool _stickersProgressStatus;
+        public bool StickersProgressStatus
+        {
+            get { return _stickersProgressStatus; }
+            set
+            {
+                _stickersProgressStatus = value;
+                RaisePropertyChanged(() => StickersProgressStatus);
+            }
+        }
+
+        private int _canvasesProgressValue;
+        public int CanvasesProgressValue
+        {
+            get { return _canvasesProgressValue; }
+            set
+            {
+                _canvasesProgressValue = value;
+                RaisePropertyChanged(() => CanvasesProgressValue);
+            }
+        }
+
+        private bool _accountingProgressStatus;
+        public bool AccountingProgressStatus
+        {
+            get { return _accountingProgressStatus; }
+            set
+            {
+                _accountingProgressStatus = value;
+                RaisePropertyChanged(() => AccountingProgressStatus);
+            }
+        }
+
+        private bool _listStickersProgressStatus;
+        public bool ListStickersProgressStatus
+        {
+            get { return _listStickersProgressStatus; }
+            set
+            {
+                _listStickersProgressStatus = value;
+                RaisePropertyChanged(() => ListStickersProgressStatus);
             }
         }
 
@@ -283,7 +349,7 @@ namespace DiamondListCreator.ViewModels
         /// <param name="e"></param>
         private void CanvasesBgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Debug.WriteLine("CanvasesBgWorker_RunWorkerCompleted");
+            CanvasesProgressValue = 0;
         }
 
         /// <summary>
@@ -300,8 +366,11 @@ namespace DiamondListCreator.ViewModels
             CanvasesService canvasesService = new CanvasesService();
 
             string diamondsListString = "";
+
+            float percentCoef = 100f / diamonds.Count;
             for (int i = 0; i < diamonds.Count; i++)
             {
+                CanvasesProgressValue = (int)(percentCoef * (i + 1));
                 diamondsListString += canvasesService.CreateAndSaveCanvas(diamonds[i], paths) + "\n";
             }
 
@@ -315,7 +384,7 @@ namespace DiamondListCreator.ViewModels
         /// <param name="e"></param>
         private void StickersBgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Debug.WriteLine("StickersBgWorker_RunWorkerCompleted");
+            StickersProgressStatus = false;
         }
 
         /// <summary>
@@ -325,6 +394,7 @@ namespace DiamondListCreator.ViewModels
         /// <param name="e"></param>
         private void StickersBgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+            StickersProgressStatus = true;
             string savePath = Paths.FilesSavePath;
             PdfDocumentService document = new PdfDocumentService(2480, 3507);
 
@@ -341,7 +411,7 @@ namespace DiamondListCreator.ViewModels
         /// <param name="e"></param>
         private void LegendsBgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Debug.WriteLine("LegendsBgWorker_RunWorkerCompleted");
+            LegendsProgressValue = 0;
         }
 
         /// <summary>
@@ -351,6 +421,7 @@ namespace DiamondListCreator.ViewModels
         /// <param name="e"></param>
         private void LegendsBgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+            Debug.WriteLine("\n\n\nLegendsBgWorker_DoWork\n\n");
             List<DiamondSettings> diamonds = this.diamonds;
             PathSettings paths = Paths;
 
@@ -358,8 +429,17 @@ namespace DiamondListCreator.ViewModels
 
             LegendsService legendsService = new LegendsService();
 
+            float percentCoef = 100f / diamonds.Count;
             for (int i = 0; i < diamonds.Count; i++)
             {
+                if (i == diamonds.Count - 1)
+                {
+                    LegendsProgressValue = 100;
+                }
+                else
+                {
+                    LegendsProgressValue = (int)(percentCoef * (i + 1)); 
+                }
                 document.AddPagesReverse(legendsService.CreateLegends(diamonds[i], paths));
             }
 
@@ -373,7 +453,7 @@ namespace DiamondListCreator.ViewModels
         /// <param name="e"></param>
         private void ListBgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Debug.WriteLine("ListBgWorker_RunWorkerCompleted");
+            ListProgressValue = 0;
         }
 
         /// <summary>
@@ -386,14 +466,24 @@ namespace DiamondListCreator.ViewModels
             PathSettings paths = Paths;
             bool isSaveAccounting = IsAccountingChecked;
             bool isSaveListStickers = IsListStickersChecked;
+            if (isSaveAccounting)
+            {
+                AccountingProgressStatus = true;
+            }
+            if (isSaveListStickers)
+            {
+                ListStickersProgressStatus = true;
+            }
 
             List<DiamondSettings> diamonds = this.diamonds;
             List<DiamondColor> diamondsColors = new List<DiamondColor>();
             DiamondListService diamondListService = new DiamondListService(Paths);
             ColorsListCreator colorsListCreator = new ColorsListCreator();
 
+            float percentCoef = 100f / diamonds.Count;
             for (int i = 0; i < diamonds.Count; i++)
             {
+                ListProgressValue = (int)(percentCoef * (i + 1));
                 List<DiamondColor> diamondColors = colorsListCreator.Create(diamonds[i]);
                 diamondsColors.AddRange(diamondColors);
 
@@ -405,12 +495,14 @@ namespace DiamondListCreator.ViewModels
             if (isSaveAccounting)
             {
                 diamondListService.SaveAccounting(paths.AccountingExcelFilePath);
+                AccountingProgressStatus = false;
             }
 
             if (isSaveListStickers)
             {
                 ListStickersService listStickersService = new ListStickersService();
                 listStickersService.CreateListStickersPdf(diamondsColors, Paths.FilesSavePath);
+                ListStickersProgressStatus = false;
             }
         }
 
@@ -452,7 +544,7 @@ namespace DiamondListCreator.ViewModels
 
             return true;
         }
-
+        
         private bool CheckAdditionalPathes(bool showMessageBox = false)
         {
             string pathNotFoundMessage = "";
