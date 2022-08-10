@@ -1,6 +1,7 @@
 ﻿using DiamondListCreator.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
@@ -407,31 +408,30 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                 using (Bitmap canvasShemeBitmap = new Bitmap(diamondPath + "/Схема для печати.png"))
                 {
                     // Legend
-                    Bitmap legendBitmap = GraphicsService.CutRectangleFromBitmap(canvasShemeBitmap, canvasSettings.LegendsFromShemeVerticalMarginLeft, canvasSettings.LegendsFromShemeVerticalMarginTop, canvasSettings.LegendsFromShemeVerticalWidth, canvasSettings.LegendsFromShemeVerticalHeight);
-
-                    // Calculate legend height on canvas sheme
-                    string ocrText = OcrService.GetTextFromImage(legendBitmap);
-                    string[] ocrTextArr = ocrText.Split('\n');
-                    int legendHeight = ocrTextArr.Length * canvasSettings.LegendsFromShemeRowHeight;
-
-                    // Cut legend from sheme
-                    legendBitmap = GraphicsService.CutRectangleFromBitmap(legendBitmap, 0, 0, legendBitmap.Width, legendHeight);
-                    legendBitmap = GraphicsService.RemoveBottomBorder(legendBitmap, Color.FromArgb(255, 255, 255, 255));
-
-                    legendHeight = legendBitmap.Height;
-                    graph.DrawImage(legendBitmap, canvasSettings.PageWidth - canvasSettings.MarginRight + ((canvasSettings.MarginRight - legendBitmap.Width) / 2), RightElementsMarginTop, legendBitmap.Width, legendHeight);
-
-                    graph.FillRectangle(new SolidBrush(Color.White), new Rectangle(canvasSettings.PageWidth - canvasSettings.MarginRight + ((canvasSettings.MarginRight - legendBitmap.Width) / 2) - 1, RightElementsMarginTop - 1, legendBitmap.Width, 45));
+                    Bitmap legendBitmap = GraphicsService.CutRectangleFromBitmap(canvasShemeBitmap, canvasSettings.LegendsFromShemeVerticalMarginLeft, canvasSettings.LegendsFromShemeVerticalMarginTop + 47, canvasSettings.LegendsFromShemeVerticalWidth, canvasSettings.LegendsFromShemeVerticalHeight - 47);
+                    int oldHeight = legendBitmap.Height;
+                    legendBitmap = GraphicsService.RemoveBorders(legendBitmap, Color.FromArgb(255, 255, 255, 255));
+                    if (legendBitmap.Height == oldHeight)
+                    {
+                        legendBitmap = GraphicsService.RemoveBorders(legendBitmap, Color.FromArgb(0, 0, 0, 0));
+                    }
+                    int leftOffset = canvasSettings.PageWidth - canvasSettings.MarginRight + ((canvasSettings.MarginRight - legendBitmap.Width) / 2);
 
                     // Image "DMC"
                     using (Bitmap dmc = new Bitmap(Properties.Resources.dmc))
                     {
                         float dmcAspectRatio = dmc.Width / (float)dmc.Height;
-                        graph.DrawImage(dmc, canvasSettings.PageWidth - canvasSettings.MarginRight + ((canvasSettings.MarginRight - thumbnailWidth) / 2), RightElementsMarginTop, 35 * dmcAspectRatio, 35);
+                        graph.DrawImage(dmc, leftOffset, RightElementsMarginTop, 35 * dmcAspectRatio, 35);
                     }
 
                     // Update X coord for next element to draw
-                    RightElementsMarginTop += legendHeight + canvasSettings.Spacing;
+                    RightElementsMarginTop += 35 + canvasSettings.Spacing;
+                    
+                    // Draw the legend
+                    graph.DrawImage(legendBitmap, leftOffset, RightElementsMarginTop, legendBitmap.Width, legendBitmap.Height);
+
+                    // Update X coord for next element to draw
+                    RightElementsMarginTop += legendBitmap.Height + canvasSettings.Spacing;
 
                     legendBitmap.Dispose();
 

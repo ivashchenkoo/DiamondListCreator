@@ -44,28 +44,32 @@ namespace DiamondListCreator.Services
             }
             else
             {
-                if (!CopySavedCanvas(diamond.Name, paths.SavedCanvasesPath, paths.CanvasesSavePath))
+                string savedCanvasDirectory = $"{paths.SavedCanvasesPath}/{diamond.ShortName.Substring(0, 2)} 000";
+                if (diamond.DiamondType == DiamondType.Standard && CopySavedCanvas(diamond.Name, savedCanvasDirectory, paths.CanvasesSavePath))
                 {
-                    try
-                    {
-                        using (Bitmap canvas = canvasCreator.Create(diamond))
-                        {
-                            canvas.SetResolution(72f, 72f);
-                            FileService.SaveBitmapInTif(canvas, paths.CanvasesSavePath, diamond.Name);
+                    return $"{diamond.Name}";
+                }
 
-                            if (diamond.DiamondType == DiamondType.Standard)
+                try
+                {
+                    using (Bitmap canvas = canvasCreator.Create(diamond))
+                    {
+                        canvas.SetResolution(72f, 72f);
+                        FileService.SaveBitmapInTif(canvas, paths.CanvasesSavePath, diamond.Name);
+
+                        if (diamond.DiamondType == DiamondType.Standard)
+                        {
+                            if (!Directory.Exists(savedCanvasDirectory))
                             {
-                                if (Directory.Exists(paths.SavedCanvasesPath))
-                                {
-                                    FileService.SaveBitmapInTif(canvas, paths.SavedCanvasesPath, diamond.Name);
-                                }
+                                Directory.CreateDirectory(savedCanvasDirectory);
                             }
+                            FileService.SaveBitmapInTif(canvas, savedCanvasDirectory, diamond.Name);
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        return $"{diamond.Name} - {ex.Message}";
-                    }
+                }
+                catch (Exception ex)
+                {
+                    return $"{diamond.Name} - {ex.Message}";
                 }
 
                 return $"{diamond.Name}";
@@ -79,13 +83,16 @@ namespace DiamondListCreator.Services
         /// <param name="savedCanvasesPath">The directory, where previously created canvases are saved</param>
         /// <param name="canvasesSavePath">The directory, where needed canvases should be saved</param>
         /// <returns>True if the file was successfully copied and false if its not</returns>
-        private bool CopySavedCanvas(string diamondName, string savedCanvasesPath, string canvasesSavePath)
+        private bool CopySavedCanvas(string diamondName, string savedCanvasDirectory, string canvasesSavePath)
         {
-            string canvasPath = $"{savedCanvasesPath}/{diamondName.Replace("TWD", "").Substring(0, 2)} 000";
-
-            if (File.Exists($"{canvasPath}/{diamondName}.tif"))
+            if (!Directory.Exists(savedCanvasDirectory))
             {
-                File.Copy($"{canvasPath}/{diamondName}.tif", $"{canvasesSavePath}/{diamondName}.tif", true);
+                Directory.CreateDirectory(savedCanvasDirectory);
+            }
+
+            if (File.Exists($"{savedCanvasDirectory}/{diamondName}.tif"))
+            {
+                File.Copy($"{savedCanvasDirectory}/{diamondName}.tif", $"{canvasesSavePath}/{diamondName}.tif", true);
                 return true;
             }
             else

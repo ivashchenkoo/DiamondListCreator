@@ -3,7 +3,6 @@ using Microsoft.Office.Interop.Excel;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 
@@ -35,7 +34,6 @@ namespace DiamondListCreator.Services
 
         ~DiamondListService()
         {
-            xlWorkBook.Close(true);
             xlApp.Quit();
         }
 
@@ -58,26 +56,32 @@ namespace DiamondListCreator.Services
             }
 
             xlWorkSheet.Range[$"A{lastRow + 1}:D{rowsCount}"].Interior.Color = ColorTranslator.ToOle(ColorTranslator.FromHtml(colors[diamondsIndex]));
+            FormatWorksheet(lastRow + 1, rowsCount);
 
             diamondsIndex++;
         }
 
         /// <summary>
-        /// Saves the created Excel workbook
+        /// Saves the created Excel workbook.
+        /// Closes the Excel workbook after saving.
         /// </summary>
         /// <param name="savePath">The directory to save the created workbook</param>
         /// <param name="fileName">The name of the workbook</param>
         public void SaveWorkbook(string savePath, string fileName)
         {
-            FormatWorksheet();
+            dynamic allDataRange = xlWorkSheet.Range[$"A1:D{rowsCount}"];
+            allDataRange.Sort(allDataRange.Columns[3], XlSortOrder.xlAscending);
+            allDataRange.Sort(allDataRange.Columns[1], XlSortOrder.xlAscending);
 
             xlWorkBook.CheckCompatibility = false;
             xlWorkBook.DoNotPromptForConvert = true;
             xlWorkBook.SaveAs($"{savePath}/{fileName}.xls", XlFileFormat.xlWorkbookNormal);
+            xlWorkBook.Close(true);
         }
 
         /// <summary>
-        /// Saves the created Excel file to the accounting Excel file
+        /// Saves the created Excel file to the accounting Excel file.
+        /// Must be called before SaveWorkbook method.
         /// </summary>
         /// <param name="accountingPath">The path to the Excel file with diamonds colors accounting</param>
         public void SaveAccounting(string accountingPath)
@@ -99,24 +103,28 @@ namespace DiamondListCreator.Services
         /// <summary>
         /// Formats Excel worksheet
         /// </summary>
-        private void FormatWorksheet()
+        private void FormatWorksheet(int startRow, int endRow)
         {
-            Range range = xlWorkSheet.Range[$"A1:D{rowsCount}"];
+            if (startRow <= 0)
+            {
+                startRow = 1;
+            }
+            if (startRow > endRow)
+            {
+                (endRow, startRow) = (startRow, endRow);
+            }
+            Range range = xlWorkSheet.Range[$"A1:D{endRow}"];
             range.Borders.LineStyle = XlLineStyle.xlContinuous;
             range.Borders.Weight = XlBorderWeight.xlMedium;
-            xlWorkSheet.Range[$"A1:A{rowsCount}"].Font.Bold = true;
-            xlWorkSheet.Range[$"C1:D{rowsCount}"].Font.Bold = true;
-            xlWorkSheet.Range[$"A1:A{rowsCount}"].Font.Size = 16;
-            xlWorkSheet.Range[$"C1:C{rowsCount}"].Font.Size = 16;
-            xlWorkSheet.Range[$"B1:C{rowsCount}"].HorizontalAlignment = XlHAlign.xlHAlignCenter;
-            xlWorkSheet.Range[$"A1:A{rowsCount}"].HorizontalAlignment = XlHAlign.xlHAlignRight;
-            xlWorkSheet.Range[$"D1:D{rowsCount}"].HorizontalAlignment = XlHAlign.xlHAlignLeft;
-            xlWorkSheet.Range[$"D1:D{rowsCount}"].Font.Size = 12;
+            xlWorkSheet.Range[$"A{startRow}:A{endRow}"].Font.Bold = true;
+            xlWorkSheet.Range[$"C{startRow}:D{endRow}"].Font.Bold = true;
+            xlWorkSheet.Range[$"A{startRow}:A{endRow}"].Font.Size = 16;
+            xlWorkSheet.Range[$"C{startRow}:C{endRow}"].Font.Size = 16;
+            xlWorkSheet.Range[$"B{startRow}:C{endRow}"].HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            xlWorkSheet.Range[$"A{startRow}:A{endRow}"].HorizontalAlignment = XlHAlign.xlHAlignRight;
+            xlWorkSheet.Range[$"D{startRow}:D{endRow}"].HorizontalAlignment = XlHAlign.xlHAlignLeft;
+            xlWorkSheet.Range[$"D{startRow}:D{endRow}"].Font.Size = 12;
             range.Columns.EntireColumn.AutoFit();
-
-            dynamic allDataRange = xlWorkSheet.Range[$"A1:D{rowsCount}"];
-            allDataRange.Sort(allDataRange.Columns[3], XlSortOrder.xlAscending);
-            allDataRange.Sort(allDataRange.Columns[1], XlSortOrder.xlAscending);
         }
     }
 }
