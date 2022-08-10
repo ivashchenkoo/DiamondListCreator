@@ -224,7 +224,16 @@ namespace DiamondListCreator.ViewModels
                         return;
                     }
 
-                    diamonds = DiamondSettingsService.GetFromString(ListText, Paths.DiamondsFolderPath);
+                    try
+                    {
+                        diamonds = DiamondSettingsService.GetFromString(ListText, Paths.DiamondsFolderPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                        return;
+                    }
+
                     if (diamonds.Count == 0)
                     {
                         return;
@@ -249,8 +258,6 @@ namespace DiamondListCreator.ViewModels
                     {
                         canvasesBgWorker.RunWorkerAsync();
                     }
-
-                    //CreatorService.Create(diamonds, IsListChecked, IsAccountingChecked, IsListStickersChecked, IsLegendsChecked, IsStickersChecked, IsCanvasesChecked);
                 },
                 () => ListText != "" && (IsListChecked || IsLegendsChecked || IsStickersChecked || IsCanvasesChecked));
             }
@@ -464,20 +471,18 @@ namespace DiamondListCreator.ViewModels
         private void ListBgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             PathSettings paths = Paths;
-            bool isSaveAccounting = IsAccountingChecked;
-            bool isSaveListStickers = IsListStickersChecked;
-            if (isSaveAccounting)
+            if (IsAccountingChecked)
             {
                 AccountingProgressStatus = true;
             }
-            if (isSaveListStickers)
+            if (IsListStickersChecked)
             {
                 ListStickersProgressStatus = true;
             }
 
             List<DiamondSettings> diamonds = this.diamonds;
             List<DiamondColor> diamondsColors = new List<DiamondColor>();
-            DiamondListService diamondListService = new DiamondListService(Paths);
+            ExcelDiamondsListService excelService = new ExcelDiamondsListService(Paths);
             ColorsListCreator colorsListCreator = new ColorsListCreator();
 
             float percentCoef = 100f / diamonds.Count;
@@ -487,18 +492,18 @@ namespace DiamondListCreator.ViewModels
                 List<DiamondColor> diamondColors = colorsListCreator.Create(diamonds[i]);
                 diamondsColors.AddRange(diamondColors);
 
-                diamondListService.AddDiamondColorsToWorkBook(diamondColors, diamonds[i].ShortName);
+                excelService.AddDiamondColorsToWorkBook(diamondColors, diamonds[i].ShortName);
             }
 
-            diamondListService.SaveWorkbook(paths.FilesSavePath, $"DiamondsList {DateTime.Now:dd.MM.yyyy}");
-
-            if (isSaveAccounting)
+            if (AccountingProgressStatus)
             {
-                diamondListService.SaveAccounting(paths.AccountingExcelFilePath);
+                excelService.SaveAccounting(paths.AccountingExcelFilePath);
                 AccountingProgressStatus = false;
             }
 
-            if (isSaveListStickers)
+            excelService.SaveWorkbook(paths.FilesSavePath, $"DiamondsList {DateTime.Now:dd.MM.yyyy}");
+
+            if (ListStickersProgressStatus)
             {
                 ListStickersService listStickersService = new ListStickersService();
                 listStickersService.CreateListStickersPdf(diamondsColors, Paths.FilesSavePath);
