@@ -8,7 +8,7 @@ using System.IO;
 
 namespace DiamondListCreator.Services
 {
-    public class DiamondListService
+    public class ExcelDiamondsListService
     {
         private readonly Application xlApp;
         private readonly Workbook xlWorkBook;
@@ -17,7 +17,7 @@ namespace DiamondListCreator.Services
         private readonly string[] colors;
         private int rowsCount = 0, diamondsIndex = 0;
 
-        public DiamondListService(PathSettings paths)
+        public ExcelDiamondsListService(PathSettings paths)
         {
             xlApp = new Application();
             if (xlApp == null)
@@ -32,7 +32,7 @@ namespace DiamondListCreator.Services
             xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
         }
 
-        ~DiamondListService()
+        ~ExcelDiamondsListService()
         {
             xlApp.Quit();
         }
