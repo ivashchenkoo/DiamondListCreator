@@ -11,13 +11,7 @@ namespace DiamondListCreator.Services
         /// </summary>
         public static string GetTextFromImage(Bitmap image)
         {
-            using (OcrApi ocrApi = OcrApi.Create())
-            {
-                ocrApi.Init(Patagames.Ocr.Enums.Languages.English);
-                ocrApi.SetVariable("tessedit_char_whitelist", "0123456789BlancErux");
-
-                return ocrApi.GetTextFromImage(image);
-            }
+            return GetTextFromImage(image, Patagames.Ocr.Enums.Languages.English, "0123456789BlancErux");
         }
 
         /// <summary>
