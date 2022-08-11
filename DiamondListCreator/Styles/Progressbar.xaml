@@ -2,6 +2,14 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:c="clr-namespace:DiamondListCreator.Controls">
 
+    <Storyboard x:Key="ProgressBarCompleteAnimation">
+        <ColorAnimation From="{StaticResource DarkBaseColor}"
+                        To="{StaticResource DarkAdditionalColor}" 
+                        Storyboard.TargetProperty="(c:SmoothProgressBar.Background).(SolidColorBrush.Color)" 
+                        AutoReverse="True"
+                        Duration="0:0:1"/>
+    </Storyboard>
+    
     <Style TargetType="{x:Type c:SmoothProgressBar}">
         <Setter Property="Foreground" Value="{StaticResource DarkAdditionalColorBrush}"/>
         <Setter Property="Background" Value="{StaticResource DarkBaseColorBrush}"/>
@@ -61,6 +69,14 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        
+        <Style.Triggers>
+            <Trigger Property="IsIndeterminate" Value="False">
+                <Trigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource ProgressBarCompleteAnimation}"/>
+                </Trigger.EnterActions>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>
