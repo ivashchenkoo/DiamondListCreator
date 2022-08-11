@@ -29,7 +29,7 @@ namespace DiamondListCreator.ViewModels
             IsLegendsChecked = true;
             IsStickersChecked = true;
             IsCanvasesChecked = true;
-            ListText = "";
+            ListText = string.Empty;
 
             CheckMainPathes();
 
@@ -259,7 +259,7 @@ namespace DiamondListCreator.ViewModels
                         canvasesBgWorker.RunWorkerAsync();
                     }
                 },
-                () => ListText != "" && (IsListChecked || IsLegendsChecked || IsStickersChecked || IsCanvasesChecked));
+                () => ListText != string.Empty && (IsListChecked || IsLegendsChecked || IsStickersChecked || IsCanvasesChecked));
             }
         }
 
@@ -372,7 +372,7 @@ namespace DiamondListCreator.ViewModels
             FileService.SaveAllToNewFolder(paths.CanvasesSavePath, $"Old {DateTime.Now}".Replace(":", "_"));
             CanvasesService canvasesService = new CanvasesService();
 
-            string diamondsListString = "";
+            string diamondsListString = string.Empty;
 
             float percentCoef = 100f / diamonds.Count;
             for (int i = 0; i < diamonds.Count; i++)
@@ -428,7 +428,6 @@ namespace DiamondListCreator.ViewModels
         /// <param name="e"></param>
         private void LegendsBgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            Debug.WriteLine("\n\n\nLegendsBgWorker_DoWork\n\n");
             List<DiamondSettings> diamonds = this.diamonds;
             PathSettings paths = Paths;
 
@@ -511,17 +510,14 @@ namespace DiamondListCreator.ViewModels
             }
         }
 
+        /// <summary>
+        /// Checks for existence by main paths
+        /// </summary>
+        /// <param name="showMessageBox">Shows a message box with an error message if errors exist</param>
+        /// <returns>True if there are no problems with main paths, otherwise false</returns>
         private bool CheckMainPathes(bool showMessageBox = false)
         {
-            string pathNotFoundMessage = "";
-
-            if (!Paths.IsFilesSavePathExists())
-            {
-                IsListChecked = false;
-                IsLegendsChecked = false;
-                IsStickersChecked = false;
-                pathNotFoundMessage += "Не знайдено шлях до збереження файлів пдф!\n";
-            }
+            string pathNotFoundMessage = string.Empty;
 
             if (!Paths.IsDiamondsFolderPathExists())
             {
@@ -532,13 +528,21 @@ namespace DiamondListCreator.ViewModels
                 pathNotFoundMessage += "Не знайдено шлях до папки з алмазками!\n";
             }
 
-            if (!Paths.IsCanvasesSavePathExists())
+            if ((IsListChecked || IsLegendsChecked || IsStickersChecked) && !Paths.IsFilesSavePathExists())
+            {
+                IsListChecked = false;
+                IsLegendsChecked = false;
+                IsStickersChecked = false;
+                pathNotFoundMessage += "Не знайдено шлях до збереження файлів пдф!\n";
+            }
+
+            if (IsCanvasesChecked && !Paths.IsCanvasesSavePathExists())
             {
                 IsCanvasesChecked = false;
                 pathNotFoundMessage += "Не знайдено шлях до збереження холстів!\n";
             }
 
-            if (pathNotFoundMessage != "")
+            if (pathNotFoundMessage != string.Empty)
             {
                 if (showMessageBox)
                 {
@@ -549,30 +553,35 @@ namespace DiamondListCreator.ViewModels
 
             return true;
         }
-        
+
+        /// <summary>
+        /// Checks for existence by additional paths
+        /// </summary>
+        /// <param name="showMessageBox">Shows a message box with an error message if errors exist</param>
+        /// <returns>True if there are no problems with additional paths, otherwise false</returns>
         private bool CheckAdditionalPathes(bool showMessageBox = false)
         {
-            string pathNotFoundMessage = "";
+            string pathNotFoundMessage = string.Empty;
 
-            if (!Paths.IsAccountingExcelFilePathExists())
+            if (IsAccountingChecked && !Paths.IsAccountingExcelFilePathExists())
             {
                 IsAccountingChecked = false;
                 pathNotFoundMessage += "Не знайдено шлях до файлу обліку!\n";
             }
 
-            if (!Paths.IsSavedLegendsPathExists())
+            if (IsLegendsChecked && !Paths.IsSavedLegendsPathExists())
             {
                 IsLegendsChecked = false;
                 pathNotFoundMessage += "Не знайдено шлях до збережених легенд!\n";
             }
 
-            if (!Paths.IsSavedCanvasesPathExists())
+            if (IsCanvasesChecked && !Paths.IsSavedCanvasesPathExists())
             {
                 IsCanvasesChecked = false;
                 pathNotFoundMessage += "Не знайдено шлях до збережених холстів!\n";
             }
 
-            if (pathNotFoundMessage != "")
+            if (pathNotFoundMessage != string.Empty)
             {
                 if (showMessageBox)
                 {
