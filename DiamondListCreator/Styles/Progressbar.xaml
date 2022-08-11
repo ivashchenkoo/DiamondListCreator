@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:c="clr-namespace:DiamondListCreator.Controls">
 
-    <Style TargetType="{x:Type ProgressBar}">
+    <Style TargetType="{x:Type c:SmoothProgressBar}">
         <Setter Property="Foreground" Value="{StaticResource DarkAdditionalColorBrush}"/>
         <Setter Property="Background" Value="{StaticResource DarkBaseColorBrush}"/>
         <Setter Property="BorderThickness" Value="0"/>

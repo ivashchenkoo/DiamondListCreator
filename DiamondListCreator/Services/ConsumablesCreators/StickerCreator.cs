@@ -21,47 +21,6 @@ namespace DiamondListCreator.Services.ConsumablesCreators
         }
 
         /// <summary>
-        /// Creating page with stikers from diamonds list
-        /// </summary>
-        /// <returns>Array of Bitmaps with created stickers pages</returns>
-        public Bitmap[] CreateStickersPage(List<DiamondSettings> diamonds)
-        {
-            int pageCount = diamonds.Count / 12;
-            if (pageCount == 0)
-            {
-                pageCount = 1;
-            }
-            else if (diamonds.Count % 12 > 0)
-            {
-                pageCount++;
-            }
-
-            Bitmap[] stickersPages = new Bitmap[pageCount];
-            
-            float pageWidth = 2480f;
-            float pageHeight = 3507f;
-
-            stickersPages[0] = new Bitmap((int)pageWidth, (int)pageHeight, PixelFormat.Format32bppArgb);
-
-            for (int i = 0, j = 0, p = 0; i < diamonds.Count; i++)
-            {
-                if (i % 12 == 0 && i > 0)
-                {
-                    stickersPages[p] = new Bitmap((int)pageWidth, (int)pageHeight, PixelFormat.Format32bppArgb);
-                    p++;
-                    j = 0;
-                }
-
-                int row = j / 3;
-                int column = j++ % 3;
-
-                stickersPages[p] = AppendStickerOnPage(stickersPages[p], diamonds[i], row, column);
-            }
-
-            return stickersPages;
-        }
-
-        /// <summary>
         /// Appending sticker on page on specified position
         /// </summary>
         /// <returns>Page with appended sticker on specified position</returns>

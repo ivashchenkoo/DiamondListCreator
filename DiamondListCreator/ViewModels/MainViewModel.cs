@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -163,14 +165,14 @@ namespace DiamondListCreator.ViewModels
             }
         }
 
-        private bool _stickersProgressStatus;
-        public bool StickersProgressStatus
+        private int _stickersProgressValue;
+        public int StickersProgressValue
         {
-            get { return _stickersProgressStatus; }
+            get { return _stickersProgressValue; }
             set
             {
-                _stickersProgressStatus = value;
-                RaisePropertyChanged(() => StickersProgressStatus);
+                _stickersProgressValue = value;
+                RaisePropertyChanged(() => StickersProgressValue);
             }
         }
 
@@ -377,7 +379,14 @@ namespace DiamondListCreator.ViewModels
             float percentCoef = 100f / diamonds.Count;
             for (int i = 0; i < diamonds.Count; i++)
             {
-                CanvasesProgressValue = (int)(percentCoef * (i + 1));
+                if (i == diamonds.Count - 1)
+                {
+                    CanvasesProgressValue = 100;
+                }
+                else
+                {
+                    CanvasesProgressValue = (int)(percentCoef * (i + 1));
+                }
                 diamondsListString += canvasesService.CreateAndSaveCanvas(diamonds[i], paths) + "\n";
             }
 
@@ -391,7 +400,7 @@ namespace DiamondListCreator.ViewModels
         /// <param name="e"></param>
         private void StickersBgWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            StickersProgressStatus = false;
+            StickersProgressValue = 0;
         }
 
         /// <summary>
@@ -401,12 +410,42 @@ namespace DiamondListCreator.ViewModels
         /// <param name="e"></param>
         private void StickersBgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            StickersProgressStatus = true;
             string savePath = Paths.FilesSavePath;
-            PdfDocumentService document = new PdfDocumentService(2480, 3507);
+            List<DiamondSettings> diamonds = this.diamonds;
 
+            PdfDocumentService document = new PdfDocumentService(2480, 3507);
             StickerCreator stickerCreator = new StickerCreator(FontCollectionService.InitCustomFont(Properties.Resources.VanishingSizeName_Regular));
-            document.AddPagesReverse(stickerCreator.CreateStickersPage(diamonds));
+
+            float percentCoef = 100f / diamonds.Count;
+            Bitmap stickersPage = new Bitmap(2480, 3507);
+            for (int i = 0, j = 0; i < diamonds.Count; i++)
+            {
+                if (i == diamonds.Count - 1)
+                {
+                    StickersProgressValue = 100;
+                }
+                else
+                {
+                    StickersProgressValue = (int)(percentCoef * (i + 1));
+                }
+
+                if ((i % 12 == 0 && i > 0))
+                {
+                    document.AddPage(stickersPage);
+                    stickersPage = new Bitmap(2480, 3507);
+                    j = 0;
+                }
+
+                int row = j / 3;
+                int column = j++ % 3;
+
+                stickersPage = stickerCreator.AppendStickerOnPage(stickersPage, diamonds[i], row, column);
+
+                if (i == diamonds.Count - 1)
+                {
+                    document.AddPage(stickersPage);
+                }
+            }
 
             document.Save($"{savePath}/Stickers {DateTime.Now:dd.MM.yyyy}.pdf");
         }
@@ -487,7 +526,14 @@ namespace DiamondListCreator.ViewModels
             float percentCoef = 100f / diamonds.Count;
             for (int i = 0; i < diamonds.Count; i++)
             {
-                ListProgressValue = (int)(percentCoef * (i + 1));
+                if (i == diamonds.Count - 1)
+                {
+                    ListProgressValue = 100;
+                }
+                else
+                {
+                    ListProgressValue = (int)(percentCoef * (i + 1));
+                }
                 List<DiamondColor> diamondColors = colorsListCreator.Create(diamonds[i]);
                 diamondsColors.AddRange(diamondColors);
 

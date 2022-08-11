@@ -171,6 +171,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controls\SmoothProgressBar.cs" />
+    <Compile Include="Controls\SmoothProgressBarBehavior.cs" />
     <Compile Include="Models\CanvasSettings.cs" />
     <Compile Include="Models\DiamondColor.cs" />
     <Compile Include="Models\DiamondSettings.cs" />
