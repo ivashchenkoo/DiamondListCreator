@@ -408,7 +408,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                 using (Bitmap canvasShemeBitmap = new Bitmap(diamondPath + "/Схема для печати.png"))
                 {
                     // Legend
-                    Bitmap legendBitmap = GraphicsService.CutRectangleFromBitmap(canvasShemeBitmap, canvasSettings.LegendsFromShemeVerticalMarginLeft, canvasSettings.LegendsFromShemeVerticalMarginTop + 47, canvasSettings.LegendsFromShemeVerticalWidth, canvasSettings.LegendsFromShemeVerticalHeight - 47);
+                    Bitmap legendBitmap = GraphicsService.CutRectangleFromBitmap(canvasShemeBitmap, canvasSettings.LegendsFromShemeVerticalMarginLeft, canvasSettings.LegendsFromShemeVerticalMarginTop + 47, canvasSettings.LegendsFromShemeVerticalWidth, canvasShemeBitmap.Height - canvasSettings.LegendsFromShemeVerticalMarginTop - 47);
                     int oldHeight = legendBitmap.Height;
                     legendBitmap = GraphicsService.RemoveBorders(legendBitmap, Color.FromArgb(255, 255, 255, 255));
                     if (legendBitmap.Height == oldHeight)
