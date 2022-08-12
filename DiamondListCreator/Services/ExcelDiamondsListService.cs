@@ -1,14 +1,14 @@
-﻿using DiamondListCreator.Models;
-using Microsoft.Office.Interop.Excel;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using DiamondListCreator.Models;
+using Microsoft.Office.Interop.Excel;
+using Newtonsoft.Json;
 
 namespace DiamondListCreator.Services
 {
-    public class ExcelDiamondsListService
+    public class ExcelDiamondsListService : IDisposable
     {
         private readonly Application xlApp;
         private readonly Workbook xlWorkBook;
@@ -32,7 +32,7 @@ namespace DiamondListCreator.Services
             xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
         }
 
-        ~ExcelDiamondsListService()
+        public void Dispose()
         {
             xlApp.Quit();
         }
@@ -75,7 +75,14 @@ namespace DiamondListCreator.Services
 
             xlWorkBook.CheckCompatibility = false;
             xlWorkBook.DoNotPromptForConvert = true;
-            xlWorkBook.SaveAs($"{savePath}/{fileName}.xls", XlFileFormat.xlWorkbookNormal);
+            try
+            {
+                xlWorkBook.SaveAs($"{savePath}/{fileName}.xls", XlFileFormat.xlWorkbookNormal);
+            }
+            catch (Exception)
+            {
+                xlWorkBook.SaveAs($"{savePath}/{fileName} {DateTime.Now:HH-mm-ss}.xls", XlFileFormat.xlWorkbookNormal);
+            }
             xlWorkBook.Close(true);
         }
 

@@ -1,18 +1,24 @@
-﻿using DiamondListCreator.Models;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using DiamondListCreator.Services.ConsumablesCreators;
 using System.Drawing;
+using System.IO;
+using DiamondListCreator.Models;
+using DiamondListCreator.Services.ConsumablesCreators;
 
 namespace DiamondListCreator.Services
 {
-    public class LegendsService
+    public class LegendsService : IDisposable
     {
         private readonly LegendCreator legendCreator;
 
         public LegendsService()
         {
-            legendCreator = new LegendCreator(FontCollectionService.InitCustomFont(Properties.Resources.VanishingSizeName_Regular));
+            legendCreator = new LegendCreator();
+        }
+
+        public void Dispose()
+        {
+            legendCreator.Dispose();
         }
 
         /// <summary>
@@ -44,7 +50,7 @@ namespace DiamondListCreator.Services
                 }
 
                 return legends.ToArray();
-            }           
+            }
         }
 
         /// <summary>

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 
@@ -7,6 +6,11 @@ namespace DiamondListCreator.Services
 {
     static class GraphicsService
     {
+        /// <summary>
+        /// Creates a Graphics object from a bitmap with the necessary settings for working with text
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns></returns>
         public static Graphics GetGraphFromImage(Bitmap image)
         {
             Graphics graph = Graphics.FromImage(image);

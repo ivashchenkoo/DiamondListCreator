@@ -1,21 +1,20 @@
-﻿using DiamondListCreator.Models;
-using System.Collections.Generic;
+﻿using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Drawing.Text;
+using DiamondListCreator.Models;
 
 namespace DiamondListCreator.Services.ConsumablesCreators
 {
-    public class StickerCreator
+    public class StickerCreator : IDisposable
     {
         private readonly PrivateFontCollection pfc;
 
-        public StickerCreator(PrivateFontCollection pfc)
+        public StickerCreator()
         {
-            this.pfc = pfc;
+            pfc = FontCollectionService.InitCustomFont(Properties.Resources.VanishingSizeName_Regular);
         }
 
-        ~StickerCreator()
+        public void Dispose()
         {
             pfc.Dispose();
         }

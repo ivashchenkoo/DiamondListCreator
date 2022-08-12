@@ -1,13 +1,13 @@
-﻿using iTextSharp.text;
-using iTextSharp.text.pdf;
-using System;
+﻿using System;
 using System.Drawing.Imaging;
 using System.IO;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using Bitmap = System.Drawing.Bitmap;
 
 namespace DiamondListCreator.Services
 {
-    public class PdfDocumentService
+    public class PdfDocumentService : IDisposable
     {
         private readonly MemoryStream stream;
         private readonly Rectangle pageSize;
@@ -30,7 +30,7 @@ namespace DiamondListCreator.Services
             bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
         }
 
-        ~PdfDocumentService()
+        public void Dispose()
         {
             document.Dispose();
             stream.Dispose();

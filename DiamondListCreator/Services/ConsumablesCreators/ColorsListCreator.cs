@@ -1,19 +1,19 @@
-﻿using DiamondListCreator.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using DiamondListCreator.Models;
 
 namespace DiamondListCreator.Services.ConsumablesCreators
 {
-    public class ColorsListCreator
+    static class ColorsListCreator
     {
         /// <summary>
         /// Creates a list with diamond colors
         /// </summary>
         /// <returns>List of diamond colors</returns>
-        public List<DiamondColor> Create(DiamondSettings diamond)
+        public static List<DiamondColor> Create(DiamondSettings diamond)
         {
             if (File.Exists($"{diamond.Path}/Легенда.png"))
             {
@@ -53,7 +53,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
         /// </summary>
         /// <param name="legend"></param>
         /// <returns></returns>
-        private List<DiamondColor> GetDiamondColorsFromLegend(Bitmap legend)
+        private static List<DiamondColor> GetDiamondColorsFromLegend(Bitmap legend)
         {
             if (ParseString(LegendOcr(legend, new Rectangle(720, 550, 300, 2680)), LegendOcr(legend, new Rectangle(1140, 550, 300, 2680))) is List<DiamondColor> colors)
             {
@@ -70,7 +70,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
         /// </summary>
         /// <param name="legend"></param>
         /// <returns></returns>
-        private List<DiamondColor> GetDiamondColorsFromShortLegend(Bitmap legend)
+        private static List<DiamondColor> GetDiamondColorsFromShortLegend(Bitmap legend)
         {
             if (ParseString(LegendOcr(legend, new Rectangle(720, 770, 300, 2480)), LegendOcr(legend, new Rectangle(1140, 770, 300, 2480))) is List<DiamondColor> colors)
             {
@@ -87,7 +87,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
         /// </summary>
         /// <param name="text"></param>
         /// <returns>List of DiamondColor objects or null if colums have different rows count</returns>
-        private List<DiamondColor> ParseString(string firstColumn, string secondColumn)
+        private static List<DiamondColor> ParseString(string firstColumn, string secondColumn)
         {
             string[] firstColumnArr = firstColumn.Split('\n').Where(x => x.Length > 2).ToArray();
             string[] secondColumnArr = secondColumn.Split('\n').Where(x => x != string.Empty).ToArray();
@@ -115,7 +115,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
         /// </summary>
         /// <param name="text"></param>
         /// <returns>List of DiamondColor objects</returns>
-        private List<DiamondColor> ParseString(string table)
+        private static List<DiamondColor> ParseString(string table)
         {
             string[] tableArr = table.Split('\n').Where(x => x.Length > 4).ToArray();
 
@@ -158,7 +158,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
         /// Recognizes text on the legend bitmap
         /// </summary>
         /// <returns>Recognized text</returns>
-        private string LegendOcr(Bitmap legend, Rectangle rectangle)
+        private static string LegendOcr(Bitmap legend, Rectangle rectangle)
         {
             legend = GraphicsService.CutRectangleFromBitmap(legend, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
             return OcrService.GetTextFromImage(legend);

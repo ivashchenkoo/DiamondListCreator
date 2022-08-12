@@ -7,6 +7,9 @@ namespace DiamondListCreator.Services
 {
     static class FileService
     {
+        /// <summary>
+        /// Saves bitmaps to tif extension
+        /// </summary>
         public static void SaveBitmapsInTif(Bitmap[] bitmaps, string savingPath, string fileName)
         {
             for (int i = 0; i < bitmaps.Length; i++)
@@ -15,6 +18,9 @@ namespace DiamondListCreator.Services
             }
         }
 
+        /// <summary>
+        /// Saves a bitmap to tif extension
+        /// </summary>
         public static void SaveBitmapInTif(Bitmap bitmap, string savingPath, string fileName)
         {
             ImageCodecInfo myImageCodecInfo = GetEncoderInfo("image/tiff");

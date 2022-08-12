@@ -1,24 +1,24 @@
-﻿using DiamondListCreator.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
+using DiamondListCreator.Models;
 
 namespace DiamondListCreator.Services.ConsumablesCreators
 {
-    public class StretchedCanvasCreator
+    public class StretchedCanvasCreator : IDisposable
     {
         private readonly PrivateFontCollection pfc;
         private readonly List<StretchedCanvasSettings> canvasesSettings;
 
-        public StretchedCanvasCreator(PrivateFontCollection pfc)
+        public StretchedCanvasCreator()
         {
-            this.pfc = pfc;
+            pfc = FontCollectionService.InitCustomFont(Properties.Resources.VanishingSizeName_Regular);
             canvasesSettings = StretchedCanvasSettingsService.ReadSettings().ToList();
         }
 
-        ~StretchedCanvasCreator()
+        public void Dispose()
         {
             pfc.Dispose();
         }

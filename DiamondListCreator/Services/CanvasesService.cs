@@ -1,20 +1,26 @@
-﻿using DiamondListCreator.Models;
-using DiamondListCreator.Services.ConsumablesCreators;
-using System;
+﻿using System;
 using System.Drawing;
 using System.IO;
+using DiamondListCreator.Models;
+using DiamondListCreator.Services.ConsumablesCreators;
 
 namespace DiamondListCreator.Services
 {
-    public class CanvasesService
+    public class CanvasesService : IDisposable
     {
         private readonly CanvasCreator canvasCreator;
         private readonly StretchedCanvasCreator stretchedCanvasCreator;
 
         public CanvasesService()
         {
-            canvasCreator = new CanvasCreator(FontCollectionService.InitCustomFont(Properties.Resources.VanishingSizeName_Regular));
-            stretchedCanvasCreator = new StretchedCanvasCreator(FontCollectionService.InitCustomFont(Properties.Resources.VanishingSizeName_Regular));
+            canvasCreator = new CanvasCreator();
+            stretchedCanvasCreator = new StretchedCanvasCreator();
+        }
+
+        public void Dispose()
+        {
+            canvasCreator.Dispose();
+            stretchedCanvasCreator.Dispose();
         }
 
         /// <summary>

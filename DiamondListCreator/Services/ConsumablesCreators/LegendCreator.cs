@@ -1,21 +1,22 @@
-﻿using DiamondListCreator.Models;
+﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
+using DiamondListCreator.Models;
 
 namespace DiamondListCreator.Services.ConsumablesCreators
 {
-    public class LegendCreator
+    public class LegendCreator : IDisposable
     {
         private readonly PrivateFontCollection pfc;
 
-        public LegendCreator(PrivateFontCollection pfc)
+        public LegendCreator()
         {
-            this.pfc = pfc;
+            pfc = FontCollectionService.InitCustomFont(Properties.Resources.VanishingSizeName_Regular);
         }
 
-        ~LegendCreator()
+        public void Dispose()
         {
             pfc.Dispose();
         }
@@ -64,7 +65,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                 using (Bitmap legend2Bitmap = new Bitmap(diamond.Path + "/Легенда, лист 2.png"))
                 {
                     legends[0] = AppendColumnOfLegend(legends[0], GraphicsService.CutRectangleFromBitmap(legend2Bitmap, 250, 540, 1100, 2700), 1335, 542);
-                } 
+                }
             }
 
             return legends;
