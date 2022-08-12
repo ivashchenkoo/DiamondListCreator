@@ -1,12 +1,11 @@
 ﻿<Window x:Class="DiamondListCreator.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DiamondListCreator"
-        xmlns:vm="clr-namespace:DiamondListCreator.ViewModels"        
-        xmlns:c="clr-namespace:DiamondListCreator.Controls"
         xmlns:i="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:c="clr-namespace:DiamondListCreator.Controls"
+        xmlns:vm="clr-namespace:DiamondListCreator.ViewModels"
         mc:Ignorable="d"
         Title="DLC"
         Width="850"
@@ -18,7 +17,7 @@
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
-    
+
     <Grid Margin="20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2.3*"/>

@@ -150,7 +150,7 @@ namespace DiamondListCreator.Services
         public static Bitmap CreateTextBitmap(string text, FontFamily fontFamily, int fontSize, FontStyle fontStyle, Color color)
         {
             Bitmap textBitmap;
-            
+
             using (Font font = new Font(fontFamily, fontSize, fontStyle))
             {
                 textBitmap = CreateTextBitmap(text, font, color);

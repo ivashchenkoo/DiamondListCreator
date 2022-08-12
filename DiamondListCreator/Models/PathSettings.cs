@@ -1,7 +1,7 @@
-﻿using DevExpress.Mvvm;
+﻿using System.IO;
+using DevExpress.Mvvm;
 using DiamondListCreator.Services;
 using Newtonsoft.Json;
-using System.IO;
 
 namespace DiamondListCreator.Models
 {
@@ -94,7 +94,8 @@ namespace DiamondListCreator.Models
 
         private string _savedCanvasesPath;
         [JsonProperty("Шлях до збережених холстів")]
-        public string SavedCanvasesPath {
+        public string SavedCanvasesPath
+        {
             get { return _savedCanvasesPath; }
             set
             {

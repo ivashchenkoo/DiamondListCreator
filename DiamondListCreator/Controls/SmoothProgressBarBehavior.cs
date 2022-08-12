@@ -1,7 +1,7 @@
-﻿using DevExpress.Mvvm.UI.Interactivity;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Media.Animation;
+using DevExpress.Mvvm.UI.Interactivity;
 
 namespace DiamondListCreator.Controls
 {

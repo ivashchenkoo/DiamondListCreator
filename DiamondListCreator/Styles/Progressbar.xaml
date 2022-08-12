@@ -9,7 +9,7 @@
                         AutoReverse="True"
                         Duration="0:0:1"/>
     </Storyboard>
-    
+
     <Style TargetType="{x:Type c:SmoothProgressBar}">
         <Setter Property="Foreground" Value="{StaticResource DarkAdditionalColorBrush}"/>
         <Setter Property="Background" Value="{StaticResource DarkBaseColorBrush}"/>
@@ -69,7 +69,7 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        
+
         <Style.Triggers>
             <Trigger Property="IsIndeterminate" Value="False">
                 <Trigger.EnterActions>

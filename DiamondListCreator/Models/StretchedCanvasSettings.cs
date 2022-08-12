@@ -165,7 +165,7 @@ namespace DiamondListCreator.Models
 
             SizeName += "+";
         }
-        
+
         private void SwapCanvasHeightAndWidth()
         {
             (CanvasHeight, CanvasWidth) = (CanvasWidth, CanvasHeight);

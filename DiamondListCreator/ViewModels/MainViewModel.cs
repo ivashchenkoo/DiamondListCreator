@@ -1,8 +1,4 @@
-﻿using DevExpress.Mvvm;
-using DiamondListCreator.Models;
-using DiamondListCreator.Services;
-using DiamondListCreator.Services.ConsumablesCreators;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -10,6 +6,10 @@ using System.Drawing;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
+using DevExpress.Mvvm;
+using DiamondListCreator.Models;
+using DiamondListCreator.Services;
+using DiamondListCreator.Services.ConsumablesCreators;
 
 namespace DiamondListCreator.ViewModels
 {
@@ -387,7 +387,7 @@ namespace DiamondListCreator.ViewModels
                         CanvasesProgressValue = (int)(percentCoef * (i + 1));
                     }
                     diamondsListString += canvasesService.CreateAndSaveCanvas(diamonds[i], paths) + "\n";
-                } 
+                }
             }
 
             File.WriteAllText($"{paths.CanvasesSavePath}/Canvases {DateTime.Now:dd.MM.yyyy}.txt", diamondsListString.TrimEnd());
@@ -489,10 +489,10 @@ namespace DiamondListCreator.ViewModels
                             LegendsProgressValue = (int)(percentCoef * (i + 1));
                         }
                         document.AddPagesReverse(legendsService.CreateLegends(diamonds[i], paths));
-                    } 
+                    }
                 }
 
-                document.Save($"{paths.FilesSavePath}/Legends {DateTime.Now:dd.MM.yyyy}.pdf"); 
+                document.Save($"{paths.FilesSavePath}/Legends {DateTime.Now:dd.MM.yyyy}.pdf");
             }
         }
 
@@ -524,7 +524,7 @@ namespace DiamondListCreator.ViewModels
             if (IsListStickersChecked)
             {
                 ListStickersProgressStatus = true;
-            }                       
+            }
 
             using (ExcelDiamondsListService excelService = new ExcelDiamondsListService(paths))
             {

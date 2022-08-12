@@ -45,7 +45,7 @@
     <Style x:Key="PathTextBoxStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxBase}">
         <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
-        
+
         <Setter Property="Padding" Value="5"/>
     </Style>
 
@@ -63,5 +63,5 @@
         <Setter Property="FontSize" Value="{StaticResource Big}"/>
         <Setter Property="FontWeight" Value="Bold"/>
     </Style>
-    
+
 </ResourceDictionary>

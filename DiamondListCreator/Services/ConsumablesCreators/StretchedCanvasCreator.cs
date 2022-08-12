@@ -85,7 +85,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                             thumbnailGraph.Clear(Color.Black);
                             thumbnailGraph.DrawImage(thumbnailTemp, 0, 0, thumbnailTemp.Width, thumbnailTemp.Height);
                         }
-                    }                   
+                    }
 
                     if (IsVertical(thumbnail))
                     {

@@ -76,7 +76,7 @@ namespace DiamondListCreator.Services
         /// <returns>The path to a picked directory if dialog was successfully closed, null if dialog was closed by close button</returns>
         public static string OpenDirectory(string title = "Оберіть папку", string selectedPath = "C:\\Users")
         {
-            using (FolderBrowserDialog dialog = new FolderBrowserDialog { Description = title, SelectedPath = selectedPath})
+            using (FolderBrowserDialog dialog = new FolderBrowserDialog { Description = title, SelectedPath = selectedPath })
             {
                 DialogResult result = dialog.ShowDialog();
                 if (result == DialogResult.OK)

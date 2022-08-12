@@ -9,7 +9,7 @@
                   Stretch="Fill"/>
         </Viewbox>
     </Grid>
-    
+
     <Grid x:Key="FileIcon"
           x:Shared="False">
         <Viewbox Margin="5" Stretch="Uniform" VerticalAlignment="Center" HorizontalAlignment="Center">

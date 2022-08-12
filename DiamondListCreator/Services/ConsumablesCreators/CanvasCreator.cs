@@ -425,7 +425,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
 
                     // Update X coord for next element to draw
                     RightElementsMarginTop += 35 + canvasSettings.Spacing;
-                    
+
                     // Draw the legend
                     graph.DrawImage(legendBitmap, leftOffset, RightElementsMarginTop, legendBitmap.Width, legendBitmap.Height);
 

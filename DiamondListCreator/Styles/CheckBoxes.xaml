@@ -10,7 +10,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style x:Key="OptionMarkFocusVisual">
         <Setter Property="Control.Template">
             <Setter.Value>
@@ -20,7 +20,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style x:Key="CheckBoxBase" TargetType="{x:Type CheckBox}">
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
         <Setter Property="Background" Value="{StaticResource OptionMark.Static.Background}"/>
@@ -85,7 +85,7 @@
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Cursor" Value="Hand" />
             </Trigger>
-        </Style.Triggers>        
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>
