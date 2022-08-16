@@ -16,7 +16,8 @@ namespace DiamondListCreator.Controls
 
         private void ProgressBar_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (e.NewValue.ToString().Contains(".") || e.OldValue.ToString().Contains("."))
+            if (e.NewValue.ToString().Contains(".") || e.OldValue.ToString().Contains(".")
+                || e.NewValue.ToString().Contains(",") || e.OldValue.ToString().Contains(","))
             {
                 return;
             }
