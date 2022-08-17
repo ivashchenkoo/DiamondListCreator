@@ -22,34 +22,44 @@ namespace DiamondListCreator.Services
         }
 
         /// <summary>
+        /// Creates list with legends for specified diamond
+        /// </summary>
+        /// <returns>Array of bitmaps with created/retrieved legends</returns>
+        public Bitmap[] CreateLegends(DiamondSettings diamond, string savedLegendsPath)
+        {
+            List<Bitmap> legends = new List<Bitmap>(CreateOrGetLegends(diamond, savedLegendsPath, false));
+
+            if (diamond.IsEnglishVersion)
+            {
+                legends.AddRange(CreateOrGetLegends(diamond, savedLegendsPath, true));
+            }
+
+            return legends.ToArray();
+        }
+
+        /// <summary>
         /// Creates legends or finds them if they are already created
         /// </summary>
         /// <param name="diamond"></param>
-        /// <param name="paths">Path settings</param>
-        public Bitmap[] CreateLegends(DiamondSettings diamond, PathSettings paths)
+        private Bitmap[] CreateOrGetLegends(DiamondSettings diamond, string savedLegendsPath, bool isEnglish)
         {
-            if (diamond.DiamondType == DiamondType.Standard && GetSavedLegends(diamond, paths.SavedLegendsPath) is Bitmap[] savedLegends)
+            string legendSavePath = Path.Combine(savedLegendsPath, $"{diamond.ShortName.Substring(0, 2)}000");
+            string diamondName = diamond.Name + (isEnglish ? "E" : "");
+
+            if (diamond.DiamondType == DiamondType.Standard && GetSavedLegends(diamondName, legendSavePath) is Bitmap[] savedLegends)
             {
                 return savedLegends;
             }
             else
             {
-                List<Bitmap> legends = new List<Bitmap>(legendCreator.CreateUkrainian(diamond));
+                Bitmap[] legends = isEnglish ? legendCreator.CreateEnglish(diamond) : legendCreator.CreateUkrainian(diamond);
 
                 if (diamond.DiamondType == DiamondType.Standard)
                 {
-                    if (Directory.Exists(paths.SavedLegendsPath))
-                    {
-                        FileService.SaveBitmapsInTif(legends.ToArray(), paths.SavedLegendsPath, diamond.Name);
-                    }
+                    FileService.SaveBitmapsInTif(legends, legendSavePath, diamondName);
                 }
 
-                if (diamond.IsEnglishVersion)
-                {
-                    legends.AddRange(legendCreator.CreateEnglish(diamond));
-                }
-
-                return legends.ToArray();
+                return legends;
             }
         }
 
@@ -58,24 +68,28 @@ namespace DiamondListCreator.Services
         /// </summary>
         /// <param name="savedLegendsPath">Legends saving folder</param>
         /// <returns>Array of Legends Bitmaps if it exist, otherwise returns null</returns>
-        private Bitmap[] GetSavedLegends(DiamondSettings diamond, string savedLegendsPath)
+        private Bitmap[] GetSavedLegends(string diamondName, string legendSavePath)
         {
             Bitmap[] result;
-            string legendPath = $"{savedLegendsPath}/{diamond.ShortName.Substring(0, 2)}000";
 
-            if (File.Exists($"{legendPath}/{diamond.Name}.tif"))
+            if (!Directory.Exists(legendSavePath))
             {
-                if (File.Exists($"{legendPath}/{diamond.Name}_1.tif"))
+                Directory.CreateDirectory(legendSavePath);
+            }
+
+            if (File.Exists(Path.Combine(legendSavePath, $"{diamondName}.tif")))
+            {
+                if (File.Exists(Path.Combine(legendSavePath, $"{diamondName}_1.tif")))
                 {
                     result = new Bitmap[2];
-                    result[1] = new Bitmap($"{legendPath}/{diamond.Name}_1.tif");
+                    result[1] = new Bitmap(Path.Combine(legendSavePath, $"{diamondName}_1.tif"));
                 }
                 else
                 {
                     result = new Bitmap[1];
                 }
 
-                result[0] = new Bitmap($"{legendPath}/{diamond.Name}.tif");
+                result[0] = new Bitmap(Path.Combine(legendSavePath, $"{diamondName}.tif"));
 
                 return result;
             }

@@ -488,7 +488,7 @@ namespace DiamondListCreator.ViewModels
                         {
                             LegendsProgressValue = (int)(percentCoef * (i + 1));
                         }
-                        document.AddPagesReverse(legendsService.CreateLegends(diamonds[i], paths));
+                        document.AddPagesReverse(legendsService.CreateLegends(diamonds[i], paths.SavedLegendsPath));
                     }
                 }
 
