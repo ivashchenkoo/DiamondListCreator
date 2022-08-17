@@ -31,54 +31,36 @@ namespace DiamondListCreator.Services
         /// <returns>Message with a diamond name and an error if it is exists</returns>
         public string CreateAndSaveCanvas(DiamondSettings diamond, PathSettings paths)
         {
-            if (diamond.IsStretchedCanvas)
-            {
-                try
-                {
-                    using (Bitmap canvas = stretchedCanvasCreator.Create(diamond))
-                    {
-                        canvas.SetResolution(72f, 72f);
-                        FileService.SaveBitmapInTif(canvas, paths.CanvasesSavePath, diamond.Name + "P");
-                    }
+            string savedCanvasDirectory = Path.Combine(paths.SavedCanvasesPath, $"{diamond.ShortName.Substring(0, 2)} 000");
+            string diamondName = diamond.Name + (diamond.IsStretchedCanvas ? "P" : "");
 
-                    return $"{diamond.Name}P";
-                }
-                catch (Exception ex)
-                {
-                    return $"{diamond.Name}P - {ex.Message}";
-                }
+            if (diamond.DiamondType == DiamondType.Standard && CopySavedCanvas(diamondName, savedCanvasDirectory, paths.CanvasesSavePath))
+            {
+                return diamondName;
             }
-            else
+
+            try
             {
-                string savedCanvasDirectory = $"{paths.SavedCanvasesPath}/{diamond.ShortName.Substring(0, 2)} 000";
-                if (diamond.DiamondType == DiamondType.Standard && CopySavedCanvas(diamond.Name, savedCanvasDirectory, paths.CanvasesSavePath))
+                using (Bitmap canvas = diamond.IsStretchedCanvas ? stretchedCanvasCreator.Create(diamond) : canvasCreator.Create(diamond))
                 {
-                    return $"{diamond.Name}";
-                }
+                    canvas.SetResolution(72f, 72f);
+                    FileService.SaveBitmapInTif(canvas, paths.CanvasesSavePath, diamondName);
 
-                try
-                {
-                    using (Bitmap canvas = canvasCreator.Create(diamond))
+                    if (diamond.DiamondType == DiamondType.Standard)
                     {
-                        canvas.SetResolution(72f, 72f);
-                        FileService.SaveBitmapInTif(canvas, paths.CanvasesSavePath, diamond.Name);
-
-                        if (diamond.DiamondType == DiamondType.Standard)
+                        if (!Directory.Exists(savedCanvasDirectory))
                         {
-                            if (!Directory.Exists(savedCanvasDirectory))
-                            {
-                                Directory.CreateDirectory(savedCanvasDirectory);
-                            }
-                            FileService.SaveBitmapInTif(canvas, savedCanvasDirectory, diamond.Name);
+                            Directory.CreateDirectory(savedCanvasDirectory);
                         }
+                        FileService.SaveBitmapInTif(canvas, savedCanvasDirectory, diamondName);
                     }
                 }
-                catch (Exception ex)
-                {
-                    return $"{diamond.Name} - {ex.Message}";
-                }
 
-                return $"{diamond.Name}";
+                return diamondName;
+            }
+            catch (Exception ex)
+            {
+                return $"{diamondName} - {ex.Message}";
             }
         }
 
@@ -96,9 +78,9 @@ namespace DiamondListCreator.Services
                 Directory.CreateDirectory(savedCanvasDirectory);
             }
 
-            if (File.Exists($"{savedCanvasDirectory}/{diamondName}.tif"))
+            if (File.Exists(Path.Combine(savedCanvasDirectory, $"{diamondName}.tif")))
             {
-                File.Copy($"{savedCanvasDirectory}/{diamondName}.tif", $"{canvasesSavePath}/{diamondName}.tif", true);
+                File.Copy(Path.Combine(savedCanvasDirectory, $"{diamondName}.tif"), Path.Combine(canvasesSavePath, $"{diamondName}.tif"), true);
                 return true;
             }
             else
