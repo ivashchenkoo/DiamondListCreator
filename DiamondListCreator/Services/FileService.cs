@@ -29,7 +29,7 @@ namespace DiamondListCreator.Services
             EncoderParameters myEncoderParameters = new EncoderParameters(1);
             myEncoderParameters.Param[0] = myEncoderParameter;
 
-            bitmap.Save($"{savingPath}/{fileName}.tif", myImageCodecInfo, myEncoderParameters);
+            bitmap.Save(Path.Combine(savingPath, fileName + ".tif"), myImageCodecInfo, myEncoderParameters);
         }
 
         private static ImageCodecInfo GetEncoderInfo(string mimeType)
@@ -54,7 +54,7 @@ namespace DiamondListCreator.Services
         {
             if (Directory.Exists(directory))
             {
-                string newFolder = $"{directory}/{newFolderName}";
+                string newFolder = Path.Combine(directory, newFolderName);
                 foreach (FileInfo file in new DirectoryInfo(directory).GetFiles())
                 {
                     if (file.Name.Contains(".db"))
@@ -63,9 +63,9 @@ namespace DiamondListCreator.Services
                     }
                     if (!Directory.Exists(newFolder))
                     {
-                        _ = Directory.CreateDirectory($"{newFolder}");
+                        _ = Directory.CreateDirectory(newFolder);
                     }
-                    file.MoveTo($@"{newFolder}\{file.Name}");
+                    file.MoveTo(Path.Combine(newFolder, file.Name));
                 }
             }
         }

@@ -39,11 +39,12 @@ namespace DiamondListCreator.Services.ConsumablesCreators
         {
             Bitmap[] legends;
 
-            if (File.Exists(diamond.Path + "/Легенда, лист 3.png"))
+            string legendPath = Path.Combine(diamond.Path, "Легенда, лист 3.png");
+            if (File.Exists(legendPath))
             {
                 legends = new Bitmap[2];
 
-                using (Bitmap legend3Bitmap = new Bitmap(diamond.Path + "/Легенда, лист 3.png"))
+                using (Bitmap legend3Bitmap = new Bitmap(legendPath))
                 {
                     legends[1] = AppendColumnOfLegend(new Bitmap(legendPage), GraphicsService.CutRectangleFromBitmap(legend3Bitmap, 250, 540, 1100, 2450), 95, 775);
                 }
@@ -53,16 +54,18 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                 legends = new Bitmap[1];
             }
 
-            using (Bitmap legend1Bitmap = File.Exists(diamond.Path + "/Легенда, лист 1.png")
-                ? new Bitmap(diamond.Path + "/Легенда, лист 1.png")
+            legendPath = Path.Combine(diamond.Path, "Легенда, лист 1.png");
+            using (Bitmap legend1Bitmap = File.Exists(legendPath)
+                ? new Bitmap(legendPath)
                 : new Bitmap(diamond.Path + "/Легенда.png"))
             {
                 legends[0] = AppendColumnOfLegend(new Bitmap(legendPage), GraphicsService.CutRectangleFromBitmap(legend1Bitmap, 260, 780, 1100, 2450), 95, 782);
             }
 
-            if (File.Exists(diamond.Path + "/Легенда, лист 2.png"))
+            legendPath = Path.Combine(diamond.Path, "Легенда, лист 2.png");
+            if (File.Exists(legendPath))
             {
-                using (Bitmap legend2Bitmap = new Bitmap(diamond.Path + "/Легенда, лист 2.png"))
+                using (Bitmap legend2Bitmap = new Bitmap(legendPath))
                 {
                     legends[0] = AppendColumnOfLegend(legends[0], GraphicsService.CutRectangleFromBitmap(legend2Bitmap, 250, 540, 1100, 2700), 1335, 542);
                 }
@@ -98,25 +101,27 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                 graph.DrawImage(legendTemplate, 0, 0);
 
                 // Append thumbnail
-                Bitmap OverlayBitmap = new Bitmap(diamond.Path + "/Вид вышивки.png");
-                float OldWidth = OverlayBitmap.Width;
-                float OldHeight = OverlayBitmap.Height;
-                float NewWidth = 600f;
-                float NewHeight = 450f;
-                if (OldWidth > OldHeight)
+                using (Bitmap OverlayBitmap = new Bitmap(Path.Combine(diamond.Path, "Вид вышивки.png")))
                 {
-                    NewHeight = NewWidth / (OldWidth / OldHeight);
+                    float OldWidth = OverlayBitmap.Width;
+                    float OldHeight = OverlayBitmap.Height;
+                    float NewWidth = 600f;
+                    float NewHeight = 450f;
+                    if (OldWidth > OldHeight)
+                    {
+                        NewHeight = NewWidth / (OldWidth / OldHeight);
+                    }
+                    else
+                    {
+                        NewWidth = NewHeight / (OldHeight / OldWidth);
+                    }
+                    float osX = 1800f + ((600f - NewWidth) / 2f);
+                    float osY = 50f + ((450f - NewHeight) / 2f);
+                    graph.DrawImage(OverlayBitmap, osX, osY, NewWidth, NewHeight);
+                    graph.DrawImage(OverlayBitmap, osX, osY, NewWidth, NewHeight);
+                    graph.DrawImage(OverlayBitmap, osX, osY, NewWidth, NewHeight);
                 }
-                else
-                {
-                    NewWidth = NewHeight / (OldHeight / OldWidth);
-                }
-                float osX = 1800f + ((600f - NewWidth) / 2f);
-                float osY = 50f + ((450f - NewHeight) / 2f);
-                graph.DrawImage(OverlayBitmap, osX, osY, NewWidth, NewHeight);
-                graph.DrawImage(OverlayBitmap, osX, osY, NewWidth, NewHeight);
-                graph.DrawImage(OverlayBitmap, osX, osY, NewWidth, NewHeight);
-
+                
                 // Append diamond name
                 Font font = new Font(pfc.Families[0], 165);
                 SolidBrush drawBrush = new SolidBrush(Color.Black);

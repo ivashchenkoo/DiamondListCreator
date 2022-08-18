@@ -77,11 +77,11 @@ namespace DiamondListCreator.Services
             xlWorkBook.DoNotPromptForConvert = true;
             try
             {
-                xlWorkBook.SaveAs($"{savePath}/{fileName}.xls", XlFileFormat.xlWorkbookNormal);
+                xlWorkBook.SaveAs(Path.Combine(savePath, fileName + ".xls"), XlFileFormat.xlWorkbookNormal);
             }
             catch (Exception)
             {
-                xlWorkBook.SaveAs($"{savePath}/{fileName} {DateTime.Now:HH-mm-ss}.xls", XlFileFormat.xlWorkbookNormal);
+                xlWorkBook.SaveAs(Path.Combine(savePath, fileName + DateTime.Now.ToString("HH-mm-ss") + ".xls"), XlFileFormat.xlWorkbookNormal);
             }
             xlWorkBook.Close(true);
         }

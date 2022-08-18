@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Text;
+using System.IO;
 using System.Linq;
 using DiamondListCreator.Models;
 
@@ -74,10 +75,10 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                 int sideBarHeight = canvasSettings.BorderHeight;
                 int sideElementOffset = canvasSettings.SideElementOffsetHorizontal;
 
-                using (Bitmap shemeBitmap = new Bitmap(diamond.Path + "/Схема для печати.png"))
+                using (Bitmap shemeBitmap = new Bitmap(Path.Combine(diamond.Path, "Схема для печати.png")))
                 {
                     Bitmap thumbnail;
-                    using (Bitmap thumbnailTemp = new Bitmap(diamond.Path + "/Вид вышивки.png"))
+                    using (Bitmap thumbnailTemp = new Bitmap(Path.Combine(diamond.Path, "Вид вышивки.png")))
                     {
                         thumbnail = new Bitmap(thumbnailTemp.Width, thumbnailTemp.Height);
                         using (Graphics thumbnailGraph = GraphicsService.GetGraphFromImage(thumbnail))
@@ -146,10 +147,10 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                 int sideBarHeight = canvasSettings.BorderHeight;
                 int sideElementOffset = canvasSettings.SideElementOffsetVertical;
 
-                using (Bitmap shemeBitmap = new Bitmap(diamond.Path + "/Схема для печати.png"))
+                using (Bitmap shemeBitmap = new Bitmap(Path.Combine(diamond.Path, "Схема для печати.png")))
                 {
                     Bitmap thumbnail;
-                    using (Bitmap thumbnailTemp = new Bitmap(diamond.Path + "/Вид вышивки.png"))
+                    using (Bitmap thumbnailTemp = new Bitmap(Path.Combine(diamond.Path, "Вид вышивки.png")))
                     {
                         thumbnail = new Bitmap(thumbnailTemp.Width, thumbnailTemp.Height);
                         using (Graphics thumbnailGraph = GraphicsService.GetGraphFromImage(thumbnail))
@@ -307,7 +308,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
 
         private bool IsVertical(string diamondPath)
         {
-            using (Bitmap thumbnailBitmap = new Bitmap(diamondPath + "/Вид вышивки.png"))
+            using (Bitmap thumbnailBitmap = new Bitmap(Path.Combine(diamondPath, "Вид вышивки.png")))
             {
                 return thumbnailBitmap.Height >= thumbnailBitmap.Width;
             }

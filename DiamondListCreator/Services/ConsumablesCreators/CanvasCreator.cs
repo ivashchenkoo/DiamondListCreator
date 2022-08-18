@@ -129,7 +129,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                 int thumbnailX;
 
                 // Thumbnail
-                using (Bitmap thumbnailBitmap = new Bitmap(diamondPath + "/Вид вышивки.png"))
+                using (Bitmap thumbnailBitmap = new Bitmap(Path.Combine(diamondPath, "Вид вышивки.png")))
                 {
                     float thumbnailAspectRatio = thumbnailBitmap.Width / thumbnailBitmap.Height;
                     thumbnailBitmap.RotateFlip(RotateFlipType.Rotate270FlipNone);
@@ -151,7 +151,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                     }
                 }
 
-                using (Bitmap canvasShemeBitmap = new Bitmap(diamondPath + "/Схема для печати.png"))
+                using (Bitmap canvasShemeBitmap = new Bitmap(Path.Combine(diamondPath, "Схема для печати.png")))
                 {
                     using (Bitmap legendBitmap = CreateHorizontalLegend(canvasShemeBitmap, canvasSettings, GetColorsCountFromLegend(diamondPath, diamondSize)))
                     {
@@ -319,9 +319,9 @@ namespace DiamondListCreator.Services.ConsumablesCreators
             string ocrText;
             int colorsCount = 0;
 
-            using (Bitmap legendPage = File.Exists(diamondPath + "/Легенда, лист 1.png")
-                        ? new Bitmap(diamondPath + "/Легенда, лист 1.png")
-                        : new Bitmap(diamondPath + "/Легенда.png"))
+            using (Bitmap legendPage = File.Exists(Path.Combine(diamondPath, "Легенда, лист 1.png"))
+                        ? new Bitmap(Path.Combine(diamondPath, "Легенда, лист 1.png"))
+                        : new Bitmap(Path.Combine(diamondPath, "Легенда.png")))
             {
                 if (diamondSize != "S")
                 {
@@ -383,7 +383,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                 int thumbnailWidth;
 
                 // Thumbnail
-                using (Bitmap thumbnailBitmap = new Bitmap(diamondPath + "/Вид вышивки.png"))
+                using (Bitmap thumbnailBitmap = new Bitmap(Path.Combine(diamondPath, "Вид вышивки.png")))
                 {
                     float thumbnailAspectRatio = (float)thumbnailBitmap.Width / (float)thumbnailBitmap.Height;
 
@@ -404,7 +404,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                     }
                 }
 
-                using (Bitmap canvasShemeBitmap = new Bitmap(diamondPath + "/Схема для печати.png"))
+                using (Bitmap canvasShemeBitmap = new Bitmap(Path.Combine(diamondPath, "Схема для печати.png")))
                 {
                     // Legend
                     Bitmap legendBitmap = GraphicsService.CutRectangleFromBitmap(canvasShemeBitmap, canvasSettings.LegendsFromShemeVerticalMarginLeft, canvasSettings.LegendsFromShemeVerticalMarginTop + 47, canvasSettings.LegendsFromShemeVerticalWidth, canvasShemeBitmap.Height - canvasSettings.LegendsFromShemeVerticalMarginTop - 47);

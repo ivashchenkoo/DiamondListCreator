@@ -7,7 +7,7 @@ namespace DiamondListCreator.Services
 {
     static class CanvasSettingsService
     {
-        private static readonly string jsonPath = Environment.CurrentDirectory + "\\Config\\canvases.json";
+        private static readonly string jsonPath = Path.Combine(Environment.CurrentDirectory, "Config", "canvases.json");
 
         public static CanvasSettings[] ReadSettings()
         {

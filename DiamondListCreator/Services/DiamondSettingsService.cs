@@ -51,12 +51,12 @@ namespace DiamondListCreator.Services
                 if (name.StartsWith("0"))
                 {
                     diamond.DiamondType = DiamondType.PoPhoto;
-                    path = $"{mainDiamondsDirectory}/almaz_4u/{name}";
+                    path = Path.Combine(mainDiamondsDirectory, "almaz_4u", name);
                 }
                 else
                 {
                     diamond.DiamondType = DiamondType.Standard;
-                    path = $"{mainDiamondsDirectory}/almaz/{name.Substring(0, 2)}000/{name.Replace("M", "").Replace("SL", "")}";
+                    path = Path.Combine(mainDiamondsDirectory, "almaz", name.Substring(0, 2) + "000", name.Replace("M", "").Replace("SL", ""));
                 }
 
                 diamond.Path = path;
@@ -114,8 +114,9 @@ namespace DiamondListCreator.Services
         /// <param name="diamond"></param>
         private static void AddCustomWidthAndHeight(ref DiamondSettings diamond)
         {
-            using (Bitmap legend = File.Exists(diamond.Path + "/Легенда, лист 1.png")
-                    ? new Bitmap(diamond.Path + "/Легенда, лист 1.png")
+            string legendPath = Path.Combine(diamond.Path, "Легенда, лист 1.png");
+            using (Bitmap legend = File.Exists(legendPath)
+                    ? new Bitmap(legendPath)
                     : new Bitmap(diamond.Path + "/Легенда.png"))
             {
                 string ocrText = OcrService.GetTextFromImage(GraphicsService.CutRectangleFromBitmap(legend, 1190, 120, 450, 90)).Trim();

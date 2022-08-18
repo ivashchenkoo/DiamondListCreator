@@ -7,7 +7,7 @@ namespace DiamondListCreator.Services
 {
     static class StretchedCanvasSettingsService
     {
-        private static readonly string jsonPath = Environment.CurrentDirectory + "\\Config\\stretched_canvases.json";
+        private static readonly string jsonPath = Path.Combine(Environment.CurrentDirectory, "Config", "stretched_canvases.json");
 
         public static StretchedCanvasSettings[] ReadSettings()
         {

@@ -110,13 +110,13 @@ namespace DiamondListCreator.Services
         /// Saves pdf file by given path
         /// </summary>
         /// <param name="path"></param>
-        public void Save(string path)
+        public void Save(string path, string name)
         {
             try
             {
                 document.Close();
                 byte[] content = stream.ToArray();
-                using (FileStream fs = File.Create(path))
+                using (FileStream fs = File.Create(Path.Combine(path, name + ".pdf")))
                 {
                     fs.Write(content, 0, content.Length);
                 }

@@ -336,7 +336,7 @@ namespace DiamondListCreator.ViewModels
             {
                 return new DelegateCommand<string>((fileName) =>
                 {
-                    string fpath = $"{Environment.CurrentDirectory}\\Config\\{fileName}";
+                    string fpath = Path.Combine(Environment.CurrentDirectory, "Config", fileName);
                     DateTime l_date = File.GetLastWriteTime(fpath);
                     Process proc = Process.Start("notepad.exe", fpath);
                     proc.WaitForExit();
@@ -390,7 +390,7 @@ namespace DiamondListCreator.ViewModels
                 }
             }
 
-            File.WriteAllText($"{paths.CanvasesSavePath}/Canvases {DateTime.Now:dd.MM.yyyy}.txt", diamondsListString.TrimEnd());
+            File.WriteAllText(Path.Combine(paths.CanvasesSavePath, $"Canvases {DateTime.Now:dd.MM.yyyy}.txt"), diamondsListString.TrimEnd());
         }
 
         /// <summary>
@@ -449,7 +449,7 @@ namespace DiamondListCreator.ViewModels
                     }
                 }
 
-                document.Save($"{savePath}/Stickers {DateTime.Now:dd.MM.yyyy}.pdf");
+                document.Save(savePath, $"Stickers {DateTime.Now:dd.MM.yyyy}");
             }
         }
 
@@ -492,7 +492,7 @@ namespace DiamondListCreator.ViewModels
                     }
                 }
 
-                document.Save($"{paths.FilesSavePath}/Legends {DateTime.Now:dd.MM.yyyy}.pdf");
+                document.Save(paths.FilesSavePath, $"Legends {DateTime.Now:dd.MM.yyyy}");
             }
         }
 

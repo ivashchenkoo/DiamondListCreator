@@ -15,9 +15,10 @@ namespace DiamondListCreator.Services.ConsumablesCreators
         /// <returns>List of diamond colors</returns>
         public static List<DiamondColor> Create(DiamondSettings diamond)
         {
-            if (File.Exists($"{diamond.Path}/Легенда.png"))
+            string legendPath = Path.Combine(diamond.Path, "Легенда.png");
+            if (File.Exists(legendPath))
             {
-                using (Bitmap legend = new Bitmap($"{diamond.Path}/Легенда.png"))
+                using (Bitmap legend = new Bitmap(legendPath))
                 {
                     return GetDiamondColorsFromShortLegend(legend);
                 }
@@ -26,19 +27,20 @@ namespace DiamondListCreator.Services.ConsumablesCreators
             {
                 List<DiamondColor> diamondColors = new List<DiamondColor>();
 
-                using (Bitmap legend = new Bitmap($"{diamond.Path}/Легенда, лист 1.png"))
+                using (Bitmap legend = new Bitmap(Path.Combine(diamond.Path, "Легенда, лист 1.png")))
                 {
                     diamondColors.AddRange(GetDiamondColorsFromShortLegend(legend));
                 }
 
-                using (Bitmap legend = new Bitmap($"{diamond.Path}/Легенда, лист 2.png"))
+                using (Bitmap legend = new Bitmap(Path.Combine(diamond.Path, "Легенда, лист 2.png")))
                 {
                     diamondColors.AddRange(GetDiamondColorsFromLegend(legend));
                 }
 
-                if (File.Exists($"{diamond.Path}/Легенда, лист 3.png"))
+                legendPath = Path.Combine(diamond.Path, "Легенда, лист 3.png");
+                if (File.Exists(legendPath))
                 {
-                    using (Bitmap legend = new Bitmap($"{diamond.Path}/Легенда, лист 3.png"))
+                    using (Bitmap legend = new Bitmap(legendPath))
                     {
                         diamondColors.AddRange(GetDiamondColorsFromLegend(legend));
                     }
