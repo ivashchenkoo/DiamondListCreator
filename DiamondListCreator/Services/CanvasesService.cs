@@ -31,7 +31,7 @@ namespace DiamondListCreator.Services
         /// <returns>Message with a diamond name and an error if it is exists</returns>
         public string CreateAndSaveCanvas(DiamondSettings diamond, PathSettings paths)
         {
-            string savedCanvasDirectory = Path.Combine(paths.SavedCanvasesPath, $"{diamond.ShortName.Substring(0, 2)} 000");
+            string savedCanvasDirectory = Path.Combine(paths.SavedCanvasesPath, $"{diamond.ShortName.Substring(0, 2)}000");
             string diamondName = diamond.Name + (diamond.IsStretchedCanvas ? "P" : "");
 
             if (diamond.DiamondType == DiamondType.Standard && CopySavedCanvas(diamondName, savedCanvasDirectory, paths.CanvasesSavePath))
