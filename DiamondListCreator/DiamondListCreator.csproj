@@ -32,10 +32,10 @@
     <TargetCulture>uk</TargetCulture>
     <ProductName>Diamonds List Creator</ProductName>
     <PublisherName>Oleksandr Ivashchenko</PublisherName>
-    <MinimumRequiredVersion>2.2.0.3</MinimumRequiredVersion>
+    <MinimumRequiredVersion>2.2.0.4</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>Diamonds List Creator.html</WebPage>
-    <ApplicationRevision>4</ApplicationRevision>
+    <ApplicationRevision>5</ApplicationRevision>
     <ApplicationVersion>2.2.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -172,6 +172,7 @@
     </Compile>
     <Compile Include="Controls\SmoothProgressBar.cs" />
     <Compile Include="Controls\SmoothProgressBarBehavior.cs" />
+    <Compile Include="Converters\PathExistsToColorBrushConverter.cs" />
     <Compile Include="Models\CanvasSettings.cs" />
     <Compile Include="Models\DiamondColor.cs" />
     <Compile Include="Models\DiamondSettings.cs" />

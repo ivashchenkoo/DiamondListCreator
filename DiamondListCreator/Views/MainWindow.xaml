@@ -5,6 +5,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:c="clr-namespace:DiamondListCreator.Controls"
+        xmlns:converters="clr-namespace:DiamondListCreator.Converters"
         xmlns:vm="clr-namespace:DiamondListCreator.ViewModels"
         mc:Ignorable="d"
         Title="DLC"
@@ -17,6 +18,10 @@
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
+
+    <Window.Resources>
+        <converters:PathExistsToColorBrushConverter x:Key="PathExistsToBrushConverter"></converters:PathExistsToColorBrushConverter>
+    </Window.Resources>
 
     <Grid Margin="20">
         <Grid.ColumnDefinitions>
@@ -74,7 +79,14 @@
                          ToolTip="Шлях до папки з алмазками"
                          BorderThickness="3"
                          Margin="0,0,7,7"
-                         Style="{DynamicResource PathTextBoxStyle}"/>
+                         Style="{DynamicResource PathTextBoxStyle}">
+                    <TextBox.BorderBrush>
+                        <MultiBinding Converter="{StaticResource PathExistsToBrushConverter}">
+                            <Binding ElementName="DiamondsFolderPathTextBox" Path="Text"></Binding>
+                            <Binding ElementName="DiamondsFolderPathTextBox" Path="IsKeyboardFocused"></Binding>
+                        </MultiBinding>
+                    </TextBox.BorderBrush>
+                </TextBox>
 
                 <Button x:Name="ChooseDiamondsFolderPathButton"
                         Grid.Row="0"
@@ -92,7 +104,14 @@
                          ToolTip="Шлях до збереження списку"
                          BorderThickness="3"
                          Margin="0,0,7,7"
-                         Style="{DynamicResource PathTextBoxStyle}"/>
+                         Style="{DynamicResource PathTextBoxStyle}">
+                    <TextBox.BorderBrush>
+                        <MultiBinding Converter="{StaticResource PathExistsToBrushConverter}">
+                            <Binding ElementName="FilesSavePathTextBox" Path="Text"></Binding>
+                            <Binding ElementName="FilesSavePathTextBox" Path="IsKeyboardFocused"></Binding>
+                        </MultiBinding>
+                    </TextBox.BorderBrush>
+                </TextBox>
 
                 <Button x:Name="ChooseFilesSavePathButton"
                         Grid.Row="1"
@@ -110,7 +129,14 @@
                          ToolTip="Шлях до загального обліку"
                          BorderThickness="3"
                          Margin="0,0,7,7"
-                         Style="{DynamicResource PathTextBoxStyle}"/>
+                         Style="{DynamicResource PathTextBoxStyle}">
+                    <TextBox.BorderBrush>
+                        <MultiBinding Converter="{StaticResource PathExistsToBrushConverter}">
+                            <Binding ElementName="AccountingExcelFilePathTextBox" Path="Text"></Binding>
+                            <Binding ElementName="AccountingExcelFilePathTextBox" Path="IsKeyboardFocused"></Binding>
+                        </MultiBinding>
+                    </TextBox.BorderBrush>
+                </TextBox>
 
                 <Button x:Name="ChooseAccountingExcelFilePathButton"
                         Grid.Row="2"
@@ -128,7 +154,14 @@
                          ToolTip="Шлях до створених легенд"
                          BorderThickness="3"
                          Margin="0,0,7,7"
-                         Style="{DynamicResource PathTextBoxStyle}"/>
+                         Style="{DynamicResource PathTextBoxStyle}">
+                    <TextBox.BorderBrush>
+                        <MultiBinding Converter="{StaticResource PathExistsToBrushConverter}">
+                            <Binding ElementName="SavedLegendsPathTextBox" Path="Text"></Binding>
+                            <Binding ElementName="SavedLegendsPathTextBox" Path="IsKeyboardFocused"></Binding>
+                        </MultiBinding>
+                    </TextBox.BorderBrush>
+                </TextBox>
 
                 <Button x:Name="ChooseSavedLegendsPathButton"
                         Grid.Row="3"
@@ -146,7 +179,14 @@
                          ToolTip="Шлях до створених холстів"
                          BorderThickness="3"
                          Margin="0,0,7,7"
-                         Style="{DynamicResource PathTextBoxStyle}"/>
+                         Style="{DynamicResource PathTextBoxStyle}">
+                    <TextBox.BorderBrush>
+                        <MultiBinding Converter="{StaticResource PathExistsToBrushConverter}">
+                            <Binding ElementName="SavedCanvasesPathTextBox" Path="Text"></Binding>
+                            <Binding ElementName="SavedCanvasesPathTextBox" Path="IsKeyboardFocused"></Binding>
+                        </MultiBinding>
+                    </TextBox.BorderBrush>
+                </TextBox>
 
                 <Button x:Name="ChooseSavedCanvasesPathButton"
                         Grid.Row="4"
@@ -164,7 +204,14 @@
                          ToolTip="Шлях до збереження холстів"
                          BorderThickness="3"
                          Margin="0,0,7,7"
-                         Style="{DynamicResource PathTextBoxStyle}"/>
+                         Style="{DynamicResource PathTextBoxStyle}">
+                    <TextBox.BorderBrush>
+                        <MultiBinding Converter="{StaticResource PathExistsToBrushConverter}">
+                            <Binding ElementName="CanvasesSavePathTextBox" Path="Text"></Binding>
+                            <Binding ElementName="CanvasesSavePathTextBox" Path="IsKeyboardFocused"></Binding>
+                        </MultiBinding>
+                    </TextBox.BorderBrush>
+                </TextBox>
 
                 <Button x:Name="ChooseCanvasesSavePathButton"
                         Grid.Row="5"
