@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using DevExpress.Mvvm;
@@ -367,7 +368,7 @@ namespace DiamondListCreator.ViewModels
         /// <param name="e"></param>
         private void CanvasesBgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            List<DiamondSettings> diamonds = this.diamonds;
+            List<DiamondSettings> diamonds = this.diamonds.OrderBy(x => x.Name).ToList();
             PathSettings paths = Paths;
 
             FileService.SaveAllToNewFolder(paths.CanvasesSavePath, $"Old {DateTime.Now}".Replace(":", "_"));
@@ -470,7 +471,7 @@ namespace DiamondListCreator.ViewModels
         /// <param name="e"></param>
         private void LegendsBgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            List<DiamondSettings> diamonds = this.diamonds;
+            List<DiamondSettings> diamonds = this.diamonds.OrderBy(x => x.Name).ToList();
             PathSettings paths = Paths;
 
             using (PdfDocumentService document = new PdfDocumentService(2480, 3507))
