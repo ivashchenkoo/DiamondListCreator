@@ -13,7 +13,10 @@ namespace DiamondListCreator.Models
             set
             {
                 _quantity = value;
-                Weight = Math.Round(_quantity < 1000 ? _quantity / 150f : _quantity / 160f, 1);
+                Weight = Math.Round(_quantity < 500 ? _quantity / 155f :
+                                    _quantity >= 500 && _quantity < 1000 ? _quantity / 165f :
+                                    _quantity >= 1000 && _quantity < 2000 ? _quantity / 175f :
+                                    _quantity / 185f, 1);
             }
         }
 
