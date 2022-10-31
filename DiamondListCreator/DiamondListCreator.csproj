@@ -32,10 +32,10 @@
     <TargetCulture>uk</TargetCulture>
     <ProductName>Diamonds List Creator</ProductName>
     <PublisherName>Oleksandr Ivashchenko</PublisherName>
-    <MinimumRequiredVersion>2.2.0.6</MinimumRequiredVersion>
+    <MinimumRequiredVersion>2.2.0.7</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>Diamonds List Creator.html</WebPage>
-    <ApplicationRevision>7</ApplicationRevision>
+    <ApplicationRevision>8</ApplicationRevision>
     <ApplicationVersion>2.2.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
