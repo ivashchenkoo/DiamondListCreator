@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
 using System.Linq;
+using System.Windows.Controls;
 using DiamondListCreator.Models;
 
 namespace DiamondListCreator.Services.ConsumablesCreators
@@ -215,6 +216,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
 
             template = DuplicateAndAddOffset(template, canvasSettings, diamondSize);
 
+            template.SetResolution(canvasSettings.Dpi, canvasSettings.Dpi);
             return template;
         }
 
@@ -491,6 +493,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
 
             template = DuplicateAndAddOffset(template, canvasSettings, diamondSize);
 
+            template.SetResolution(canvasSettings.Dpi, canvasSettings.Dpi);
             return template;
         }
 

@@ -129,6 +129,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                 }
             }
 
+            canvas.SetResolution(canvasSettings.Dpi, canvasSettings.Dpi);
             return canvas;
         }
 
@@ -197,6 +198,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                 }
             }
 
+            canvas.SetResolution(canvasSettings.Dpi, canvasSettings.Dpi);
             return canvas;
         }
 

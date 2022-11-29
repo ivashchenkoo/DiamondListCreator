@@ -43,7 +43,6 @@ namespace DiamondListCreator.Services
             {
                 using (Bitmap canvas = diamond.IsStretchedCanvas ? stretchedCanvasCreator.Create(diamond) : canvasCreator.Create(diamond))
                 {
-                    canvas.SetResolution(72f, 72f);
                     FileService.SaveBitmapInTif(canvas, paths.CanvasesSavePath, diamondName);
 
                     if (diamond.DiamondType == DiamondType.Standard)
