@@ -517,6 +517,7 @@ namespace DiamondListCreator.ViewModels
             PathSettings paths = Paths;
             List<DiamondSettings> diamonds = this.diamonds;
             List<DiamondColor> diamondsColors = new List<DiamondColor>();
+            string textList = string.Empty;
 
             if (IsAccountingChecked)
             {
@@ -543,7 +544,8 @@ namespace DiamondListCreator.ViewModels
                     List<DiamondColor> diamondColors = ColorsListCreator.Create(diamonds[i]);
                     diamondsColors.AddRange(diamondColors);
 
-                    excelService.AddDiamondColorsToWorkBook(diamondColors, diamonds[i].ShortName);
+                    textList += $"{i + 1} - {diamonds[i].Name}\n";
+                    excelService.AddDiamondColorsToWorkBook(diamondColors, (i + 1).ToString());
                 }
 
                 if (AccountingProgressStatus)
@@ -552,6 +554,7 @@ namespace DiamondListCreator.ViewModels
                     AccountingProgressStatus = false;
                 }
 
+                File.WriteAllText(Path.Combine(paths.FilesSavePath, $"DiamondsList {DateTime.Now:dd.MM.yyyy}.txt"), textList.TrimEnd());
                 excelService.SaveWorkbook(paths.FilesSavePath, $"DiamondsList {DateTime.Now:dd.MM.yyyy}");
             }
 

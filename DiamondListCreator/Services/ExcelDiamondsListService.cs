@@ -56,7 +56,7 @@ namespace DiamondListCreator.Services
             }
 
             xlWorkSheet.Range[$"A{lastRow + 1}:D{rowsCount}"].Interior.Color = ColorTranslator.ToOle(ColorTranslator.FromHtml(colors[diamondsIndex]));
-            FormatWorksheet(lastRow + 1, rowsCount);
+            FormatWorksheet(lastRow + 1, rowsCount, diamondName.Length);
 
             diamondsIndex++;
         }
@@ -110,7 +110,7 @@ namespace DiamondListCreator.Services
         /// <summary>
         /// Formats Excel worksheet
         /// </summary>
-        private void FormatWorksheet(int startRow, int endRow)
+        private void FormatWorksheet(int startRow, int endRow, int nameLength)
         {
             if (startRow <= 0)
             {
@@ -129,9 +129,19 @@ namespace DiamondListCreator.Services
             xlWorkSheet.Range[$"C{startRow}:C{endRow}"].Font.Size = 16;
             xlWorkSheet.Range[$"B{startRow}:C{endRow}"].HorizontalAlignment = XlHAlign.xlHAlignCenter;
             xlWorkSheet.Range[$"A{startRow}:A{endRow}"].HorizontalAlignment = XlHAlign.xlHAlignRight;
-            xlWorkSheet.Range[$"D{startRow}:D{endRow}"].HorizontalAlignment = XlHAlign.xlHAlignLeft;
-            xlWorkSheet.Range[$"D{startRow}:D{endRow}"].Font.Size = 12;
             range.Columns.EntireColumn.AutoFit();
+            if (nameLength > 4)
+            {
+                xlWorkSheet.Range[$"D{startRow}:D{endRow}"].HorizontalAlignment = XlHAlign.xlHAlignLeft;
+                xlWorkSheet.Range[$"D{startRow}:D{endRow}"].Font.Size = 12;
+            }
+            else
+            {
+                xlWorkSheet.Range[$"D{startRow}:D{endRow}"].HorizontalAlignment = XlHAlign.xlHAlignRight;
+                xlWorkSheet.Range[$"D{startRow}:D{endRow}"].Font.Size = 14;
+                xlWorkSheet.Range["D:D"].ColumnWidth = 6;
+                xlWorkSheet.Range["D:D"].Font.Name = "Tahoma";
+            }
         }
     }
 }
