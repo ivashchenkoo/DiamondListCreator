@@ -103,6 +103,9 @@ namespace DiamondListCreator.Models
         [JsonProperty("Висота бокових елементів")]
         public int SideElementHeight { get; set; }
 
+        [JsonProperty("dpi")]
+        public int Dpi { get; set; }
+
         [JsonIgnore]
         public int MarginLeft { get; set; }
 

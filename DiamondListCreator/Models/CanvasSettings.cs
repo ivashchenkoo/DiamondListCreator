@@ -157,6 +157,9 @@ namespace DiamondListCreator.Models
         [JsonProperty("Відступ зверху до легенди на горизонтальній схемі")]
         public int LegendsFromShemeHorizontalMarginTop { get; set; }
 
+        [JsonProperty("dpi")]
+        public int Dpi { get; set; }
+
         [JsonIgnore]
         public int MarginTop { get; set; }
 
