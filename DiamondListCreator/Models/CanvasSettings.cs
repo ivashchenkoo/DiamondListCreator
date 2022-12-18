@@ -215,6 +215,7 @@ namespace DiamondListCreator.Models
             PaddingInLegend = canvasSettings.PaddingInLegend;
             LegendAlignCenter = canvasSettings.LegendAlignCenter;
             LegendsFromShemeHorizontalMarginTop = canvasSettings.LegendsFromShemeHorizontalMarginTop;
+            Dpi = canvasSettings.Dpi;
         }
 
         /// <summary>

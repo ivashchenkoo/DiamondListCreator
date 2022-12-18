@@ -146,6 +146,7 @@ namespace DiamondListCreator.Models
             MarginTop = stretchedCanvasSettings.MarginTop;
             MarginRight = stretchedCanvasSettings.MarginRight;
             MarginBottom = stretchedCanvasSettings.MarginBottom;
+            Dpi = stretchedCanvasSettings.Dpi;
         }
 
         public void SetSize(int sizeWidth, int sizeHeight)
