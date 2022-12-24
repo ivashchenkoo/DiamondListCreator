@@ -230,7 +230,7 @@ namespace DiamondListCreator.Models
 
             MarginTop = (PageHeight - CanvasHeight) / 2;
             MarginBottom = PageHeight - CanvasHeight - MarginTop;
-            if (SizeName == "XL")
+            if (SizeName.Contains("XL"))
             {
                 MarginRight = (PageWidth - CanvasWidth) / 2;
                 MarginLeft = PageWidth - CanvasWidth - MarginRight;
