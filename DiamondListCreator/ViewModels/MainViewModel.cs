@@ -232,7 +232,7 @@ namespace DiamondListCreator.ViewModels
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message);
+                        MessageBox.Show(ex.Message, "Start button");
                         return;
                     }
 
@@ -544,7 +544,8 @@ namespace DiamondListCreator.ViewModels
                     List<DiamondColor> diamondColors = ColorsListCreator.Create(diamonds[i]);
                     diamondsColors.AddRange(diamondColors);
 
-                    textList += $"{i + 1} - {diamonds[i].Name}\n";
+                    textList += $"{i + 1} - {diamonds[i].Name}";
+                    textList += diamonds[i].IsStretchedCanvas ? "P\n" : "\n";
                     excelService.AddDiamondColorsToWorkBook(diamondColors, (i + 1).ToString());
                 }
 
