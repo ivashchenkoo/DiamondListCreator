@@ -72,14 +72,15 @@ namespace DiamondListCreator.Services
                     continue;
                 }
 
-                if (sizeLetter.Contains("+"))
+                AddCustomWidthAndHeight(ref diamond);
+                if (diamond.Width > diamond.Height)
                 {
-                    AddCustomWidthAndHeight(ref diamond);
+                    (diamond.Height, diamond.Width) = (diamond.Width, diamond.Height);
                 }
-                else
+
+                if (diamond.Width % 10 > 0 || diamond.Height % 10 > 0)
                 {
-                    diamond.Width = GetStandardWidth(sizeLetter);
-                    diamond.Height = GetStandardHeight(sizeLetter);
+                    failedDiamonds += $"{name} - нестандартний розмір {diamond.Width}x{diamond.Height}\n";
                 }
 
                 diamonds.Add(diamond);
