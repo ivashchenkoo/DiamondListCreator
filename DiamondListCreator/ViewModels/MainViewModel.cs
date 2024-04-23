@@ -232,7 +232,7 @@ namespace DiamondListCreator.ViewModels
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.Message, "Start button");
+                        MessageBox.Show(ex.Message, "Start button - get list from string");
                         return;
                     }
 

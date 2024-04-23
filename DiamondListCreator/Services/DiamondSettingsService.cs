@@ -25,7 +25,7 @@ namespace DiamondListCreator.Services
 
             string failedDiamonds = "";
 
-            string[] diamondsList = diamondsListStr.ToUpper().Replace((char)13, (char)32).Replace(" ", "").Replace('\n', (char)32).Replace("  ", " ").Split(' ');
+            string[] diamondsList = diamondsListStr.ToUpper().Split(new char[] { '\n', (char)13 }, StringSplitOptions.RemoveEmptyEntries);
             diamondsList = diamondsList.Where(x => x.Length > 3).ToArray();
 
             foreach (var item in diamondsList)
@@ -69,6 +69,13 @@ namespace DiamondListCreator.Services
                 else if (HasSubfolders(path))
                 {
                     failedDiamonds += $"{name} - папка new\n";
+                    continue;
+                }
+                if (!File.Exists(Path.Combine(path, "Легенда, лист 1.png")) && !File.Exists(Path.Combine(path, "Легенда.png")) ||
+                    !File.Exists(Path.Combine(path, "Вид вышивки.png")) ||
+                    !File.Exists(Path.Combine(path, "Схема для печати.png")))
+                {
+                    failedDiamonds += $"{name} - немає усіх потрібних файлів у папці\n";
                     continue;
                 }
 
