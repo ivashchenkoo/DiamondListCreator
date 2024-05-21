@@ -9,7 +9,7 @@
         xmlns:vm="clr-namespace:DiamondListCreator.ViewModels"
         mc:Ignorable="d"
         Title="DLC"
-        Width="850"
+        Width="900"
         Height="555"
         ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen"
@@ -277,6 +277,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -286,19 +287,19 @@
                 </Grid.RowDefinitions>
 
                 <CheckBox Style="{StaticResource CheckBoxBase}"
-                              x:Name="ListCheckBox"
-                              IsChecked="{Binding IsListChecked}"
-                              Grid.Row="0"
-                              Grid.Column="0"
-                              Margin="0,0,5,0">
+                          x:Name="ListCheckBox"
+                          IsChecked="{Binding IsListChecked}"
+                          Grid.Row="0"
+                          Grid.Column="0"
+                          Margin="0,0,5,0">
                     СПИСОК
                 </CheckBox>
 
                 <CheckBox x:Name="AccountingCheckBox"
-                              IsChecked="{Binding IsAccountingChecked}"
-                              Grid.Row="0"
-                              Grid.Column="1"
-                              Margin="0,0,5,0">
+                          IsChecked="{Binding IsAccountingChecked}"
+                          Grid.Row="0"
+                          Grid.Column="1"
+                          Margin="0,0,5,0">
                     ОБЛІК
 
                     <CheckBox.Style>
@@ -325,6 +326,32 @@
                               Grid.Column="2"
                               Margin="0,0,5,0">
                     НАКЛЕЙКИ
+
+                    <CheckBox.Style>
+                        <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource CheckBoxBase}">
+                            <Style.Triggers>
+
+                                <DataTrigger Binding="{Binding ElementName=ListCheckBox, Path=IsChecked}" Value="False">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding ElementName=ListCheckBox, Path=IsChecked}" Value="True">
+                                    <Setter Property="IsEnabled" Value="True"/>
+                                </DataTrigger>
+
+                            </Style.Triggers>
+                        </Style>
+                    </CheckBox.Style>
+
+                </CheckBox>
+
+                <CheckBox x:Name="SaveAsWordCheckBox"
+                          IsChecked="{Binding SaveAsWordChecked}"
+                          Grid.Row="0"
+                          Grid.Column="3"
+                          Margin="0,0,5,0"
+                          ToolTip="Створити список у docx (за замовчуванням xlsx)">
+                    DOCX
 
                     <CheckBox.Style>
                         <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource CheckBoxBase}">
