@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
 using DiamondListCreator.Models;
 using Microsoft.Office.Interop.Excel;
 using Newtonsoft.Json;
+using Action = System.Action;
+using Excel = Microsoft.Office.Interop.Excel;
+using Word = Microsoft.Office.Interop.Word;
 
 namespace DiamondListCreator.Services
 {
@@ -67,7 +71,7 @@ namespace DiamondListCreator.Services
         /// </summary>
         /// <param name="savePath">The directory to save the created workbook</param>
         /// <param name="fileName">The name of the workbook</param>
-        public void SaveWorkbook(string savePath, string fileName)
+        public void SaveWorkbook(string savePath, string fileName, bool isWord = false, string diamondsListStr = "")
         {
             dynamic allDataRange = xlWorkSheet.Range[$"A1:D{rowsCount}"];
             allDataRange.Sort(allDataRange.Columns[3], XlSortOrder.xlAscending);
@@ -75,13 +79,21 @@ namespace DiamondListCreator.Services
 
             xlWorkBook.CheckCompatibility = false;
             xlWorkBook.DoNotPromptForConvert = true;
-            try
+
+            if (!isWord)
             {
-                xlWorkBook.SaveAs(Path.Combine(savePath, fileName + ".xls"), XlFileFormat.xlWorkbookNormal);
+                try
+                {
+                    xlWorkBook.SaveAs(Path.Combine(savePath, fileName + ".xls"), XlFileFormat.xlWorkbookNormal);
+                }
+                catch (Exception)
+                {
+                    xlWorkBook.SaveAs(Path.Combine(savePath, fileName + DateTime.Now.ToString("HH-mm-ss") + ".xls"), XlFileFormat.xlWorkbookNormal);
+                }
             }
-            catch (Exception)
+            else
             {
-                xlWorkBook.SaveAs(Path.Combine(savePath, fileName + DateTime.Now.ToString("HH-mm-ss") + ".xls"), XlFileFormat.xlWorkbookNormal);
+                SaveWordFile(savePath, fileName, diamondsListStr);
             }
             xlWorkBook.Close(true);
         }
@@ -141,6 +153,148 @@ namespace DiamondListCreator.Services
                 xlWorkSheet.Range[$"D{startRow}:D{endRow}"].Font.Size = 14;
                 xlWorkSheet.Range["D:D"].ColumnWidth = 6;
                 xlWorkSheet.Range["D:D"].Font.Name = "Tahoma";
+            }
+        }
+
+        private void SaveWordFile(string savePath, string fileName, string diamondsListStr)
+        {
+            // Create a new Word application instance
+            Word.Application wordApp = new Word.Application
+            {
+                Visible = false,
+                DisplayAlerts = Word.WdAlertLevel.wdAlertsNone
+            };
+            Word.Document document = null;
+
+            try
+            {
+                // Check if Excel is installed on the system
+                if (xlApp == null)
+                {
+                    Console.WriteLine("Excel is not properly installed!!");
+                    return;
+                }
+
+                // Check if Word is installed on the system
+                if (wordApp == null)
+                {
+                    Console.WriteLine("Word is not properly installed!!");
+                    return;
+                }
+
+                // Select the range you want to copy
+                Excel.Range range = xlWorkSheet.Range[$"A1:D{rowsCount}"];
+                RetryAction(() => range.Copy());
+
+                document = RetryAction(() => wordApp.Documents.Add());
+
+                float margin = 0.3f;
+                document.PageSetup.TopMargin = wordApp.CentimetersToPoints(margin);
+                document.PageSetup.BottomMargin = wordApp.CentimetersToPoints(margin);
+                document.PageSetup.LeftMargin = wordApp.CentimetersToPoints(margin);
+                document.PageSetup.RightMargin = wordApp.CentimetersToPoints(margin);
+
+                Word.Section section = document.Sections[1];
+                section.PageSetup.TextColumns.SetCount(3);
+
+                Word.Range wordRange = document.Content;
+                RetryAction(() => wordRange.Paste());
+
+                wordRange.ParagraphFormat.FirstLineIndent = wordApp.CentimetersToPoints(0);
+                wordRange.ParagraphFormat.LineSpacingRule = Word.WdLineSpacing.wdLineSpaceMultiple;
+                wordRange.ParagraphFormat.LineSpacing = wordApp.LinesToPoints(1);
+
+                Word.Table table = document.Tables[1];
+                foreach (Word.Row row in table.Rows)
+                {
+                    row.Height = wordApp.CentimetersToPoints(0.77f);
+                    table.Cell(row.Index, 1).LeftPadding = wordApp.CentimetersToPoints(0.19f);
+                    table.Cell(row.Index, 1).RightPadding = wordApp.CentimetersToPoints(0.19f);
+                    table.Cell(row.Index, 2).LeftPadding = wordApp.CentimetersToPoints(0.19f);
+                    table.Cell(row.Index, 2).RightPadding = wordApp.CentimetersToPoints(0.19f);
+                    table.Cell(row.Index, 3).LeftPadding = wordApp.CentimetersToPoints(0.19f);
+                    table.Cell(row.Index, 3).RightPadding = wordApp.CentimetersToPoints(0.19f);
+                    table.Cell(row.Index, 4).LeftPadding = wordApp.CentimetersToPoints(0.19f);
+                    table.Cell(row.Index, 4).RightPadding = wordApp.CentimetersToPoints(0.19f);
+                }
+
+                table.Columns[1].Width = wordApp.CentimetersToPoints(1.53f);
+                table.Columns[2].Width = wordApp.CentimetersToPoints(1.17f);
+                table.Columns[3].Width = wordApp.CentimetersToPoints(1.41f);
+                table.Columns[4].Width = wordApp.CentimetersToPoints(1.24f);
+
+                Word.Row emptyRow = table.Rows.Add();
+                emptyRow.Range.Shading.BackgroundPatternColor = Word.WdColor.wdColorWhite;
+
+                Word.Row newRow = table.Rows.Add();
+                newRow.Cells[1].Merge(newRow.Cells[newRow.Cells.Count]);
+                Word.Range cellRange = newRow.Cells[1].Range;
+                cellRange.Text = "\n" + diamondsListStr;
+                cellRange.Font.Name = "Calibri";
+                cellRange.Font.Size = 14;
+                cellRange.Font.Bold = 1;
+                cellRange.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
+                cellRange.Shading.BackgroundPatternColor = Word.WdColor.wdColorYellow;
+
+                RetryAction(() => document.SaveAs2((Path.Combine(savePath, fileName + ".docx"), XlFileFormat.xlWorkbookNormal)));
+                document.Close();
+
+                Console.WriteLine("Table copied from Excel and pasted into Word successfully!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+            finally
+            {
+                if (wordApp != null)
+                {
+                    wordApp.Quit();
+                    Marshal.ReleaseComObject(wordApp);
+                }
+            }
+        }
+
+        private void RetryAction(Action action, int maxRetries = 3, int delayMilliseconds = 500)
+        {
+            int attempts = 0;
+            while (true)
+            {
+                try
+                {
+                    action();
+                    return;
+                }
+                catch (COMException ex) when (ex.ErrorCode == unchecked((int)0x8001010A))
+                {
+                    attempts++;
+                    if (attempts >= maxRetries)
+                    {
+                        throw;
+                    }
+                    System.Threading.Thread.Sleep(delayMilliseconds);
+                }
+            }
+        }
+
+        private T RetryAction<T>(Func<T> func, int maxRetries = 3, int delayMilliseconds = 500)
+        {
+            int attempts = 0;
+            while (true)
+            {
+                try
+                {
+                    return func();
+                }
+                catch (COMException ex) when (ex.ErrorCode == unchecked((int)0x8001010A))
+                {
+                    attempts++;
+                    if (attempts >= maxRetries)
+                    {
+                        throw;
+                    }
+                    System.Threading.Thread.Sleep(delayMilliseconds);
+                }
             }
         }
     }

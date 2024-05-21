@@ -33,6 +33,8 @@ namespace DiamondListCreator.ViewModels
             IsCanvasesChecked = true;
             ListText = string.Empty;
 
+            SaveAsWordChecked = false;
+
             CheckMainPathes();
 
             // Initializing workers
@@ -140,6 +142,17 @@ namespace DiamondListCreator.ViewModels
             {
                 _isCanvasesChecked = value;
                 RaisePropertyChanged(() => IsCanvasesChecked);
+            }
+        }
+
+        private bool _saveAsWordChecked = true;
+        public bool SaveAsWordChecked
+        {
+            get { return _saveAsWordChecked; }
+            set
+            {
+                _saveAsWordChecked = value;
+                RaisePropertyChanged(() => SaveAsWordChecked);
             }
         }
 
@@ -514,6 +527,8 @@ namespace DiamondListCreator.ViewModels
         /// <param name="e"></param>
         private void ListBgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             PathSettings paths = Paths;
             List<DiamondSettings> diamonds = this.diamonds;
             List<DiamondColor> diamondsColors = new List<DiamondColor>();
@@ -556,8 +571,10 @@ namespace DiamondListCreator.ViewModels
                 }
 
                 File.WriteAllText(Path.Combine(paths.FilesSavePath, $"DiamondsList {DateTime.Now:dd.MM.yyyy}.txt"), textList.TrimEnd());
-                excelService.SaveWorkbook(paths.FilesSavePath, $"DiamondsList {DateTime.Now:dd.MM.yyyy}");
+                excelService.SaveWorkbook(paths.FilesSavePath, $"DiamondsList {DateTime.Now:dd.MM.yyyy}", SaveAsWordChecked, textList.TrimEnd());
             }
+            stopwatch.Stop();
+            MessageBox.Show($"{stopwatch.Elapsed.Minutes}:{stopwatch.Elapsed.Seconds}");
 
             if (ListStickersProgressStatus)
             {
