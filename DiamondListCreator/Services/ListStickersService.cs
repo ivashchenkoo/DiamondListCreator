@@ -16,7 +16,7 @@ namespace DiamondListCreator.Services
         /// </summary>
         /// <param name="diamondsColors"></param>
         /// <param name="savePath"></param>
-        public static void CreateListStickersPdf(List<DiamondColor> diamondsColors, string savePath)
+        public static void CreateListStickersPdf(List<DiamondColor> diamondsColors, string savePath, string fileName)
         {
             List<DiamondColor> sortedColors = diamondsColors.Where(x => Regex.IsMatch(x.Name, @"^\d+$")).OrderByDescending(x => Convert.ToInt32(x.Name)).ToList();
             sortedColors.InsertRange(0, diamondsColors.Where(x => !Regex.IsMatch(x.Name, @"^\d+$")).OrderByDescending(x => x.Name).ToList());
@@ -102,7 +102,7 @@ namespace DiamondListCreator.Services
                     }
                 }
 
-                document.Save(savePath, $"DiamondsListStickers {DateTime.Now:dd.MM.yyyy}"); ;
+                document.Save(savePath, fileName); ;
             }
         }
     }

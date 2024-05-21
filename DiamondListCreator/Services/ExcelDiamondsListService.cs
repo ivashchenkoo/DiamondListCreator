@@ -236,7 +236,7 @@ namespace DiamondListCreator.Services
                 cellRange.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphLeft;
                 cellRange.Shading.BackgroundPatternColor = Word.WdColor.wdColorYellow;
 
-                RetryAction(() => document.SaveAs2((Path.Combine(savePath, fileName + ".docx"), XlFileFormat.xlWorkbookNormal)));
+                RetryAction(() => document.SaveAs2(Path.Combine(savePath, fileName + ".docx")));
                 document.Close();
 
                 Console.WriteLine("Table copied from Excel and pasted into Word successfully!");

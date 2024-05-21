@@ -463,7 +463,7 @@ namespace DiamondListCreator.ViewModels
                     }
                 }
 
-                document.Save(savePath, $"Stickers {DateTime.Now:dd.MM.yyyy}");
+                document.Save(savePath, $"Стікери {DateTime.Now:dd.MM.yyyy}");
             }
         }
 
@@ -506,7 +506,7 @@ namespace DiamondListCreator.ViewModels
                     }
                 }
 
-                document.Save(paths.FilesSavePath, $"Legends {DateTime.Now:dd.MM.yyyy}");
+                document.Save(paths.FilesSavePath, $"Легенди {DateTime.Now:dd.MM.yyyy}");
             }
         }
 
@@ -570,15 +570,15 @@ namespace DiamondListCreator.ViewModels
                     AccountingProgressStatus = false;
                 }
 
-                File.WriteAllText(Path.Combine(paths.FilesSavePath, $"DiamondsList {DateTime.Now:dd.MM.yyyy}.txt"), textList.TrimEnd());
-                excelService.SaveWorkbook(paths.FilesSavePath, $"DiamondsList {DateTime.Now:dd.MM.yyyy}", SaveAsWordChecked, textList.TrimEnd());
+                File.WriteAllText(Path.Combine(paths.FilesSavePath, $"Список на збірку {DateTime.Now:dd.MM.yyyy}.txt"), textList.TrimEnd());
+                excelService.SaveWorkbook(paths.FilesSavePath, $"Список на збірку {DateTime.Now:dd.MM.yyyy}", SaveAsWordChecked, textList.TrimEnd());
             }
             stopwatch.Stop();
             MessageBox.Show($"{stopwatch.Elapsed.Minutes}:{stopwatch.Elapsed.Seconds}");
 
             if (ListStickersProgressStatus)
             {
-                ListStickersService.CreateListStickersPdf(diamondsColors, paths.FilesSavePath);
+                ListStickersService.CreateListStickersPdf(diamondsColors, paths.FilesSavePath, $"Наклейки для збірки {DateTime.Now:dd.MM.yyyy}");
                 ListStickersProgressStatus = false;
             }
         }
