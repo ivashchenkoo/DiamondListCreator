@@ -33,7 +33,7 @@ namespace DiamondListCreator.ViewModels
             IsCanvasesChecked = true;
             ListText = string.Empty;
 
-            SaveAsWordChecked = false;
+            SaveAsWordChecked = Properties.Settings.Default.SaveAsWordChecked;
 
             CheckMainPathes();
 
@@ -153,6 +153,9 @@ namespace DiamondListCreator.ViewModels
             {
                 _saveAsWordChecked = value;
                 RaisePropertyChanged(() => SaveAsWordChecked);
+
+                Properties.Settings.Default.SaveAsWordChecked = SaveAsWordChecked;
+                Properties.Settings.Default.Save();
             }
         }
 
