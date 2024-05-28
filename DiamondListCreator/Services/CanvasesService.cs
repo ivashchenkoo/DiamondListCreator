@@ -67,7 +67,7 @@ namespace DiamondListCreator.Services
         /// Checking for already created canvas in saved canvases folder and copy it to canvases saving folder if exist
         /// </summary>
         /// <param name="diamondName"></param>
-        /// <param name="savedCanvasesPath">The directory, where previously created canvases are saved</param>
+        /// <param name="savedCanvasDirectory">The directory, where previously created canvases are saved</param>
         /// <param name="canvasesSavePath">The directory, where needed canvases should be saved</param>
         /// <returns>True if the file was successfully copied and false if its not</returns>
         private bool CopySavedCanvas(string diamondName, string savedCanvasDirectory, string canvasesSavePath)
