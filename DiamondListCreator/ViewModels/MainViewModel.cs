@@ -530,8 +530,6 @@ namespace DiamondListCreator.ViewModels
         /// <param name="e"></param>
         private void ListBgWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
             PathSettings paths = Paths;
             List<DiamondSettings> diamonds = this.diamonds;
             List<DiamondColor> diamondsColors = new List<DiamondColor>();
@@ -576,8 +574,6 @@ namespace DiamondListCreator.ViewModels
                 File.WriteAllText(Path.Combine(paths.FilesSavePath, $"Список на збірку {DateTime.Now:dd.MM.yyyy}.txt"), textList.TrimEnd());
                 excelService.SaveWorkbook(paths.FilesSavePath, $"Список на збірку {DateTime.Now:dd.MM.yyyy}", SaveAsWordChecked, textList.TrimEnd());
             }
-            stopwatch.Stop();
-            MessageBox.Show($"{stopwatch.Elapsed.Minutes}:{stopwatch.Elapsed.Seconds}");
 
             if (ListStickersProgressStatus)
             {
