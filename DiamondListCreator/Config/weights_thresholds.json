@@ -1,0 +1,27 @@
+[
+  {
+    "Min": 0,
+    "Max": 500,
+    "Divider": 145
+  },
+  {
+    "Min": 500,
+    "Max": 1000,
+    "Divider": 150
+  },
+  {
+    "Min": 1000,
+    "Max": 2000,
+    "Divider": 155
+  },
+  {
+    "Min": 2000,
+    "Max": 3000,
+    "Divider": 160
+  },
+  {
+    "Min": 3000,
+    "Max": "Infinity",
+    "Divider": 165
+  }
+]

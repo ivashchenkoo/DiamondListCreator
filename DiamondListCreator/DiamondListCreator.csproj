@@ -32,10 +32,10 @@
     <TargetCulture>uk</TargetCulture>
     <ProductName>Diamonds List Creator</ProductName>
     <PublisherName>Oleksandr Ivashchenko</PublisherName>
-    <MinimumRequiredVersion>2.3.1.10</MinimumRequiredVersion>
+    <MinimumRequiredVersion>2.3.1.11</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>Diamonds List Creator.html</WebPage>
-    <ApplicationRevision>11</ApplicationRevision>
+    <ApplicationRevision>12</ApplicationRevision>
     <ApplicationVersion>2.3.1.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -182,6 +182,7 @@
     <Compile Include="Models\DiamondSettings.cs" />
     <Compile Include="Models\PathSettings.cs" />
     <Compile Include="Models\StretchedCanvasSettings.cs" />
+    <Compile Include="Models\Threshold.cs" />
     <Compile Include="Services\CanvasesService.cs" />
     <Compile Include="Services\CanvasSettingsService.cs" />
     <Compile Include="Services\ConsumablesCreators\CanvasCreator.cs" />
@@ -194,6 +195,7 @@
     <Compile Include="Services\FontCollectionService.cs" />
     <Compile Include="Services\GraphicsService.cs" />
     <Compile Include="Services\ConsumablesCreators\LegendCreator.cs" />
+    <Compile Include="Services\JsonIOService.cs" />
     <Compile Include="Services\LegendsService.cs" />
     <Compile Include="Services\ListStickersService.cs" />
     <Compile Include="Services\OcrService.cs" />
@@ -247,6 +249,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Config\colors.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\weights_thresholds.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="DiamondListCreator_1_TemporaryKey.pfx" />

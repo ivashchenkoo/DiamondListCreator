@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using DiamondListCreator.Services;
 
 namespace DiamondListCreator.Models
 {
     public class DiamondColor
     {
+        public static List<Threshold> Thresholds { get; set; } = JsonIOService.Read<List<Threshold>>(Path.Combine(Environment.CurrentDirectory, "Config", "weights_thresholds.json"));
+
         public string Name { get; set; }
 
         private int _quantity;
@@ -13,11 +19,23 @@ namespace DiamondListCreator.Models
             set
             {
                 _quantity = value;
-                Weight = Math.Round(_quantity < 500 ? _quantity / 145f :
-                                    _quantity >= 500 && _quantity < 1000 ? _quantity / 150f :
-                                    _quantity >= 1000 && _quantity < 2000 ? _quantity / 155f :
-                                    _quantity >= 2000 && _quantity < 3000 ? _quantity / 160f :
-                                    _quantity / 165f, 1);
+
+                if (Thresholds != null && Thresholds.Any())
+                {
+                    if (Thresholds.FirstOrDefault(t => _quantity >= t.Min && _quantity < (t.Max == "Infinity" ? float.MaxValue : float.Parse(t.Max)))
+                        is Threshold threshold)
+                    {
+                        Weight = Math.Round(_quantity / threshold.Divider, 1);
+                    }
+                    else
+                    {
+                        throw new Exception("Не знайдено відповідного порогу ваги!");
+                    }
+                }
+                else
+                {
+                    throw new Exception("Список порогів ваги пустий!");
+                }
             }
         }
 
