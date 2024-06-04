@@ -406,11 +406,10 @@
                     </i:Interaction.Behaviors>
                 </c:SmoothProgressBar>
 
-                <c:SmoothProgressBar x:Name="ListStickersProgressBar"
-                                     Grid.Row="1"
+                <c:SmoothProgressBar Grid.Row="1"
                                      Grid.Column="1"
-                                     IsIndeterminate="{Binding ListStickersProgressStatus}"
-                                     Margin="21,0,5,5"/>
+                                     IsIndeterminate="{Binding AccountingProgressStatus}"
+                                     Margin="21,0,18,5"/>
 
                 <c:SmoothProgressBar Grid.Row="1"
                                      Grid.Column="2"
