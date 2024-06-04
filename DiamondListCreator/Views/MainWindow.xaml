@@ -241,26 +241,35 @@
                                Foreground="White"
                                Style="{StaticResource TextBlockBase}"
                                Text="Налаштування холстів"
-                               Margin="0,0,0,5"/>
+                               Margin="5"/>
 
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
                         <Button Grid.Column="0"
-                                Margin="0,0,10,0"
+                                Margin="5"
                                 Style="{StaticResource ButtonSettingsStyle}"
                                 Command="{Binding EditTxtFile}"
                                 CommandParameter="canvases.json"
                                 Content="Стандартні"/>
 
                         <Button Grid.Column="1"
+                                Margin="5"
                                 Style="{StaticResource ButtonSettingsStyle}"
                                 Command="{Binding EditTxtFile}"
                                 CommandParameter="stretched_canvases.json"
                                 Content="Підрамники"/>
+
+                        <Button Grid.Column="2"
+                                Margin="5"
+                                Style="{StaticResource ButtonSettingsStyle}"
+                                Command="{Binding EditTxtFile}"
+                                CommandParameter="weights_thresholds.json"
+                                Content="Грамовка"/>
 
                     </Grid>
                 </Grid>
@@ -271,7 +280,8 @@
         <Viewbox Margin="15,0,0,0"
                  Grid.Row="1"
                  Grid.Column="1"
-                 HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Bottom">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
