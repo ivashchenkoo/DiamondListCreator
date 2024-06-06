@@ -237,11 +237,51 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0"
-                               Foreground="White"
-                               Style="{StaticResource TextBlockBase}"
-                               Text="Налаштування холстів"
-                               Margin="5"/>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0"
+                                   Foreground="White"
+                                   Style="{StaticResource TextBlockBase}"
+                                   Text="Налаштування холстів"
+                                   Margin="5"/>
+
+                        <Grid Grid.Column="1"
+                              HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0"
+                                       Foreground="White"
+                                       Style="{StaticResource TextBlockBase}"
+                                       Text="UV"
+                                       Margin="5"
+                                       TextAlignment="Right"/>
+
+                            <Viewbox Grid.Column="1"
+                                     Margin="5"
+                                     Height="25">
+                                <ToggleButton IsChecked="{Binding IsIPFPrinting}"
+                                              Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                              ToolTip="MaterialDesignSwitchToggleButton" />
+                            </Viewbox>
+
+                            <TextBlock Grid.Column="2"
+                                       Foreground="White"
+                                       Style="{StaticResource TextBlockBase}"
+                                       Text="IPF"
+                                       Margin="5"
+                                       TextAlignment="Left"/>
+
+                        </Grid>
+
+                    </Grid>
 
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
@@ -252,17 +292,39 @@
 
                         <Button Grid.Column="0"
                                 Margin="5"
-                                Style="{StaticResource ButtonSettingsStyle}"
                                 Command="{Binding EditTxtFile}"
-                                CommandParameter="canvases.json"
-                                Content="Стандартні"/>
+                                Content="Стандартні">
+
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource ButtonSettingsStyle}">
+                                    <Setter Property="CommandParameter" Value="canvases.json" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsIPFPrinting}" Value="False">
+                                            <Setter Property="CommandParameter" Value="canvases_uv.json" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+
+                        </Button>
 
                         <Button Grid.Column="1"
                                 Margin="5"
-                                Style="{StaticResource ButtonSettingsStyle}"
                                 Command="{Binding EditTxtFile}"
-                                CommandParameter="stretched_canvases.json"
-                                Content="Підрамники"/>
+                                Content="Підрамники">
+
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource ButtonSettingsStyle}">
+                                    <Setter Property="CommandParameter" Value="stretched_canvases.json" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsIPFPrinting}" Value="False">
+                                            <Setter Property="CommandParameter" Value="stretched_canvases_uv.json" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+
+                        </Button>
 
                         <Button Grid.Column="2"
                                 Margin="5"

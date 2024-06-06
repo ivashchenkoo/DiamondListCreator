@@ -34,6 +34,7 @@ namespace DiamondListCreator.ViewModels
             ListText = string.Empty;
 
             SaveAsWordChecked = Properties.Settings.Default.SaveAsWordChecked;
+            IsIPFPrinting = Properties.Settings.Default.IsIPFPrinting;
 
             CheckMainPathes();
 
@@ -63,6 +64,20 @@ namespace DiamondListCreator.ViewModels
             {
                 _paths = value;
                 RaisePropertyChanged(() => Paths);
+            }
+        }
+
+        private bool _isIPFPrinting;
+        public bool IsIPFPrinting
+        {
+            get { return _isIPFPrinting; }
+            set
+            {
+                _isIPFPrinting = value;
+                RaisePropertyChanged(() => IsIPFPrinting);
+
+                Properties.Settings.Default.IsIPFPrinting = IsIPFPrinting;
+                Properties.Settings.Default.Save();
             }
         }
 
