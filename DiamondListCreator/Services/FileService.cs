@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -58,7 +59,8 @@ namespace DiamondListCreator.Services
                 string newFolder = Path.Combine(directory, newFolderName);
                 foreach (FileInfo file in new DirectoryInfo(directory).GetFiles())
                 {
-                    if (new string[] { ".tif", ".tiff", ".png", ".jpg", ".jpeg", ".txt" }.Any(x => !file.Name.EndsWith(x)))
+                    Console.WriteLine(file.Name);
+                    if (!new string[] { ".tif", ".tiff", ".txt" }.Any(x => file.Name.EndsWith(x)))
                     {
                         continue;
                     }
