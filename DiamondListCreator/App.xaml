@@ -7,18 +7,14 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/Colors.xaml"/>
-                
-                <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="BlueGrey" SecondaryColor="Blue"/>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
-
                 <ResourceDictionary Source="Styles/Fonts.xaml"/>
                 <ResourceDictionary Source="Styles/Texts.xaml"/>
                 <ResourceDictionary Source="Styles/Icons.xaml"/>
-
                 <ResourceDictionary Source="Styles/Progressbar.xaml"/>
                 <ResourceDictionary Source="Styles/Button.xaml"/>
                 <ResourceDictionary Source="Styles/CheckBoxes.xaml"/>
                 <ResourceDictionary Source="Styles/ScrollBar.xaml"/>
+                <ResourceDictionary Source="Styles/ToggleButton.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

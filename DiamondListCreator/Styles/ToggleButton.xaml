@@ -1,0 +1,54 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="CustomToggleButtonStyle" TargetType="ToggleButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Grid Width="70" Height="40">
+                        <Border x:Name="Border"
+                                    Background="Gray"
+                                    CornerRadius="20">
+                            <Grid>
+                                <Ellipse x:Name="Knob" Fill="White" Width="30" Height="30" HorizontalAlignment="Left" Margin="5,0">
+                                    <Ellipse.RenderTransform>
+                                        <TranslateTransform x:Name="KnobTransform" />
+                                    </Ellipse.RenderTransform>
+                                </Ellipse>
+                            </Grid>
+                        </Border>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CheckStates">
+                                <VisualState x:Name="Checked">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="KnobTransform"
+                                                             Storyboard.TargetProperty="X"
+                                                             To="30"
+                                                             Duration="0:0:0.3"/>
+                                        <ColorAnimation Storyboard.TargetName="Border"
+                                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                            To="{DynamicResource MediumBaseColor}"
+                                                            Duration="0:0:0.3"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unchecked">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="KnobTransform"
+                                                             Storyboard.TargetProperty="X"
+                                                             To="0"
+                                                             Duration="0:0:0.3"/>
+                                        <ColorAnimation Storyboard.TargetName="Border"
+                                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                            To="{DynamicResource MediumBaseColor}"
+                                                            Duration="0:0:0.3"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

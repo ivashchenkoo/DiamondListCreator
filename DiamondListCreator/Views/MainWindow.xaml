@@ -268,7 +268,7 @@
                                      Margin="5"
                                      Height="25">
                                 <ToggleButton IsChecked="{Binding IsIPFPrinting}"
-                                              Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                              Style="{StaticResource CustomToggleButtonStyle}"
                                               ToolTip="MaterialDesignSwitchToggleButton" />
                             </Viewbox>
 
