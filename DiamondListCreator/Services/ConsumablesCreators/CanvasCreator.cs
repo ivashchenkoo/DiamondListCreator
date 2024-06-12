@@ -5,7 +5,6 @@ using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.IO;
 using System.Linq;
-using System.Windows.Controls;
 using DiamondListCreator.Models;
 
 namespace DiamondListCreator.Services.ConsumablesCreators

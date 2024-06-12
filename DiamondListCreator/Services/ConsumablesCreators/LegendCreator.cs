@@ -121,7 +121,7 @@ namespace DiamondListCreator.Services.ConsumablesCreators
                     graph.DrawImage(OverlayBitmap, osX, osY, NewWidth, NewHeight);
                     graph.DrawImage(OverlayBitmap, osX, osY, NewWidth, NewHeight);
                 }
-                
+
                 // Append diamond name
                 Font font = new Font(pfc.Families[0], 165);
                 SolidBrush drawBrush = new SolidBrush(Color.Black);
