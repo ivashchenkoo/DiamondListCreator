@@ -187,6 +187,7 @@
     <Compile Include="Models\PathSettings.cs" />
     <Compile Include="Models\StretchedCanvasSettings.cs" />
     <Compile Include="Models\Threshold.cs" />
+    <Compile Include="Models\ZipWeightSettings.cs" />
     <Compile Include="Services\CanvasesService.cs" />
     <Compile Include="Services\CanvasSettingsService.cs" />
     <Compile Include="Services\ConsumablesCreators\CanvasCreator.cs" />
@@ -262,6 +263,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Config\stretched_canvases_uv.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\zippackages_weight.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="DiamondListCreator_1_TemporaryKey.pfx" />

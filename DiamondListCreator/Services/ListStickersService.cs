@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using DiamondListCreator.Models;
@@ -8,9 +9,6 @@ namespace DiamondListCreator.Services
 {
     static class ListStickersService
     {
-        private static readonly double bigZipWage = 23.5;
-        private static readonly double smallZipWage = 10.5;
-
         /// <summary>
         /// Creates pdf with diamonds colors list stickers
         /// </summary>
@@ -21,15 +19,17 @@ namespace DiamondListCreator.Services
             List<DiamondColor> sortedColors = diamondsColors.Where(x => Regex.IsMatch(x.Name, @"^\d+$")).OrderByDescending(x => Convert.ToInt32(x.Name)).ToList();
             sortedColors.InsertRange(0, diamondsColors.Where(x => !Regex.IsMatch(x.Name, @"^\d+$")).OrderByDescending(x => x.Name).ToList());
 
+            ZipWeightSettings zipWeight = JsonIOService.Read<ZipWeightSettings>(Path.Combine(Environment.CurrentDirectory, "Config", "zippackages_weight.json"));
+
             using (PdfDocumentService document = new PdfDocumentService(65, 40))
             {
                 foreach (var color in sortedColors)
                 {
                     double weight = color.Weight;
-                    int bigZipCount = Convert.ToInt32(Math.Truncate(weight / bigZipWage));
+                    int bigZipCount = Convert.ToInt32(Math.Truncate(weight / zipWeight.BigZipWeight));
                     int smallZipCount = 0;
-                    weight %= bigZipWage;
-                    if (weight > smallZipWage)
+                    weight %= zipWeight.BigZipWeight;
+                    if (weight > zipWeight.SmallZipWeight)
                     {
                         bigZipCount++;
                     }
