@@ -20,12 +20,15 @@ namespace DiamondListCreator.Services
             sortedColors.InsertRange(0, diamondsColors.Where(x => !Regex.IsMatch(x.Name, @"^\d+$")).OrderByDescending(x => x.Name).ToList());
 
             ZipWeightSettings zipWeight = JsonIOService.Read<ZipWeightSettings>(Path.Combine(Environment.CurrentDirectory, "Config", "zippackages_weight.json"));
+            List<Threshold> thresholds = JsonIOService.Read<List<Threshold>>(Path.Combine(Environment.CurrentDirectory, "Config", "weights_thresholds.json"));
 
             using (PdfDocumentService document = new PdfDocumentService(65, 40))
             {
                 foreach (var color in sortedColors)
                 {
-                    double weight = color.Weight;
+                    Threshold threshold = thresholds.FirstOrDefault(t => color.Quantity >= t.Min && color.Quantity < (t.Max == "Infinity" ? float.MaxValue : float.Parse(t.Max)));
+                    double weight = Math.Round(color.Quantity / threshold.Divider, 1);
+
                     int bigZipCount = Convert.ToInt32(Math.Truncate(weight / zipWeight.BigZipWeight));
                     int smallZipCount = 0;
                     weight %= zipWeight.BigZipWeight;

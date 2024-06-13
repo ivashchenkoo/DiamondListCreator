@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using DiamondListCreator.Models;
 using Microsoft.Office.Interop.Excel;
@@ -21,6 +22,8 @@ namespace DiamondListCreator.Services
         private readonly string[] colors;
         private int rowsCount = 0, diamondsIndex = 0;
 
+        List<Threshold> _thresholds;
+
         public ExcelDiamondsListService(PathSettings paths)
         {
             xlApp = new Application();
@@ -31,6 +34,7 @@ namespace DiamondListCreator.Services
             xlApp.DisplayAlerts = false;
 
             colors = JsonConvert.DeserializeObject<string[]>(File.ReadAllText(Environment.CurrentDirectory + "\\Config\\colors.json"));
+            _thresholds = JsonIOService.Read<List<Threshold>>(Path.Combine(Environment.CurrentDirectory, "Config", "weights_thresholds.json"));
 
             xlWorkBook = xlApp.Workbooks.Add(System.Reflection.Missing.Value);
             xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
@@ -52,10 +56,13 @@ namespace DiamondListCreator.Services
 
             for (int j = 0; j < diamondColors.Count; j++)
             {
+                Threshold threshold = _thresholds.FirstOrDefault(t => diamondColors[j].Quantity >= t.Min && diamondColors[j].Quantity < (t.Max == "Infinity" ? float.MaxValue : float.Parse(t.Max)));
+                double weight = Math.Round(diamondColors[j].Quantity / threshold.Divider, 1);
+
                 rowsCount++;
                 xlWorkSheet.Cells[rowsCount, 1] = diamondColors[j].Name;
                 xlWorkSheet.Cells[rowsCount, 2] = diamondColors[j].Quantity;
-                xlWorkSheet.Cells[rowsCount, 3] = diamondColors[j].Weight;
+                xlWorkSheet.Cells[rowsCount, 3] = weight;
                 xlWorkSheet.Cells[rowsCount, 4] = diamondName;
             }
 
