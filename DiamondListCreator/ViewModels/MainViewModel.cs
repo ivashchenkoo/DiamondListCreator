@@ -658,14 +658,14 @@ namespace DiamondListCreator.ViewModels
 
             if (IsLegendsChecked && !Paths.IsSavedLegendsPathExists())
             {
-                IsLegendsChecked = false;
-                pathNotFoundMessage += "Не знайдено шлях до збережених легенд!\n";
+                //IsLegendsChecked = false;
+                //pathNotFoundMessage += "Не знайдено шлях до збережених легенд!\n";
             }
 
             if (IsCanvasesChecked && !Paths.IsSavedCanvasesPathExists())
             {
-                IsCanvasesChecked = false;
-                pathNotFoundMessage += "Не знайдено шлях до збережених холстів!\n";
+                //IsCanvasesChecked = false;
+                //pathNotFoundMessage += "Не знайдено шлях до збережених холстів!\n";
             }
 
             if (pathNotFoundMessage != string.Empty)

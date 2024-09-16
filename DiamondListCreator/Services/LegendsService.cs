@@ -56,7 +56,14 @@ namespace DiamondListCreator.Services
 
                 if (diamond.DiamondType == DiamondType.Standard)
                 {
-                    FileService.SaveBitmapsInTif(legends, legendSavePath, diamondName);
+                    if (Directory.Exists(savedLegendsPath))
+                    {
+                        if (!Directory.Exists(legendSavePath))
+                        {
+                            Directory.CreateDirectory(legendSavePath);
+                        }
+                        FileService.SaveBitmapsInTif(legends, legendSavePath, diamondName);
+                    }
                 }
 
                 return legends;
@@ -71,11 +78,6 @@ namespace DiamondListCreator.Services
         private Bitmap[] GetSavedLegends(string diamondName, string legendSavePath)
         {
             Bitmap[] result;
-
-            if (!Directory.Exists(legendSavePath))
-            {
-                Directory.CreateDirectory(legendSavePath);
-            }
 
             if (File.Exists(Path.Combine(legendSavePath, $"{diamondName}.tif")))
             {

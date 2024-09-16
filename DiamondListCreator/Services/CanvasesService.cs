@@ -47,11 +47,14 @@ namespace DiamondListCreator.Services
 
                     if (diamond.DiamondType == DiamondType.Standard)
                     {
-                        if (!Directory.Exists(savedCanvasDirectory))
+                        if (Directory.Exists(paths.SavedCanvasesPath))
                         {
-                            Directory.CreateDirectory(savedCanvasDirectory);
+                            if (!Directory.Exists(savedCanvasDirectory))
+                            {
+                                Directory.CreateDirectory(savedCanvasDirectory);
+                            }
+                            FileService.SaveBitmapInTif(canvas, savedCanvasDirectory, diamondName);
                         }
-                        FileService.SaveBitmapInTif(canvas, savedCanvasDirectory, diamondName);
                     }
                 }
 
@@ -72,11 +75,6 @@ namespace DiamondListCreator.Services
         /// <returns>True if the file was successfully copied and false if its not</returns>
         private bool CopySavedCanvas(string diamondName, string savedCanvasDirectory, string canvasesSavePath)
         {
-            if (!Directory.Exists(savedCanvasDirectory))
-            {
-                Directory.CreateDirectory(savedCanvasDirectory);
-            }
-
             if (File.Exists(Path.Combine(savedCanvasDirectory, $"{diamondName}.tif")))
             {
                 File.Copy(Path.Combine(savedCanvasDirectory, $"{diamondName}.tif"), Path.Combine(canvasesSavePath, $"{diamondName}.tif"), true);
