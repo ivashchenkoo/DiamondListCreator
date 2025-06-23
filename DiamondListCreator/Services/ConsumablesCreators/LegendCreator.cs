@@ -93,7 +93,20 @@ namespace DiamondListCreator.Services.ConsumablesCreators
         /// <returns>Bitmap with legend template</returns>
         private Bitmap CreateLegendTemplate(DiamondSettings diamond, bool isEnglish)
         {
-            Bitmap legendTemplate = new Bitmap(isEnglish ? Properties.Resources.LegendaTemplate_English : Properties.Resources.LegendaTemplate);
+            Bitmap legendTemplate;
+            
+            if (isEnglish)
+            {
+                legendTemplate = new Bitmap(Properties.Resources.LegendaTemplate_English);
+            }
+            else
+            {
+                using (var ms = new MemoryStream(Properties.Resources.LegendaTemplate_discount))
+                {
+                    legendTemplate = new Bitmap(ms);
+                }
+            }
+
             Bitmap resultBitmap = new Bitmap(legendTemplate.Width, legendTemplate.Height, PixelFormat.Format32bppArgb);
 
             using (Graphics graph = GraphicsService.GetGraphFromImage(resultBitmap))

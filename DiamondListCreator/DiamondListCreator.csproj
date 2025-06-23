@@ -16,10 +16,10 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>\\VANTOR-PC\wortex\Diamond List Creator\</PublishUrl>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <PublishUrl>ftps://www347.your-server.de/Diamond List Creator/</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Unc</InstallFrom>
+    <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
@@ -27,16 +27,15 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>true</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>\\VANTOR-PC\wortex\Diamond List Creator\</InstallUrl>
-    <UpdateUrl>\\VANTOR-PC\wortex\Diamond List Creator\</UpdateUrl>
+    <InstallUrl>https://service.thewortex.com/wortexapps/Diamond List Creator/</InstallUrl>
     <TargetCulture>uk</TargetCulture>
     <ProductName>Diamonds List Creator</ProductName>
     <PublisherName>Oleksandr Ivashchenko</PublisherName>
-    <MinimumRequiredVersion>2.3.2.0</MinimumRequiredVersion>
+    <MinimumRequiredVersion>2.3.3.1</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
-    <WebPage>Diamonds List Creator.html</WebPage>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>2.3.2.%2a</ApplicationVersion>
+    <WebPage>index.html</WebPage>
+    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationVersion>2.3.3.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -188,6 +187,11 @@
     <Compile Include="Models\StretchedCanvasSettings.cs" />
     <Compile Include="Models\Threshold.cs" />
     <Compile Include="Models\ZipWeightSettings.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Services\CanvasesService.cs" />
     <Compile Include="Services\CanvasSettingsService.cs" />
     <Compile Include="Services\ConsumablesCreators\CanvasCreator.cs" />
@@ -217,16 +221,12 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Resources\Images\LegendaTemplate_discount.jpg" />
     <Content Include="tesseract.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -283,6 +283,7 @@
     <Resource Include="Resources\Images\LegendaTemplate.jpg" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Content Include="Config\PathSettings.json">

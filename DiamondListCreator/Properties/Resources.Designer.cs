@@ -131,6 +131,16 @@ namespace DiamondListCreator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] LegendaTemplate_discount {
+            get {
+                object obj = ResourceManager.GetObject("LegendaTemplate_discount", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap LegendaTemplate_English {
